@@ -1,0 +1,16 @@
+.biography { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(48px, 9vw, 130px); padding-block: 64px 70px; }
+.biography-copy > .eyebrow { color: var(--teal); margin-bottom: 17px; }
+.biography h2 { font: 400 42px/1.12 var(--serif); letter-spacing: -.025em; margin: 0 0 17px; }
+.biography-copy > p:not(.eyebrow) { max-width: 560px; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.biography-copy .text-link { margin-top: 20px; }
+.biography-education { padding-top: 4px; }
+.biography-education > h3 { color: var(--muted); margin: 0 0 19px; }
+.biography-education ol { margin: 0; padding: 0; list-style: none; }
+.biography-education li { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 19px; border-top: 1px solid var(--line); padding-block: 15px; }
+.biography-period { color: var(--muted); font-size: 10px; padding-top: 3px; white-space: nowrap; }
+.biography-degree { font: 400 20px/1.24 var(--serif); }
+.biography-school { color: var(--muted); font-size: 11px; line-height: 1.6; margin-top: 5px; }
+@media (max-width: 900px) { .biography { gap: 38px; } .biography-education li { grid-template-columns: 1fr; gap: 5px; } .biography-copy > p:not(.eyebrow) { font-size: 14px; } }
+@media (max-width: 640px) { .biography { grid-template-columns: 1fr; gap: 33px; padding-block: 47px 55px; } .biography h2 { font-size: 37px; } .biography-education li { grid-template-columns: 82px minmax(0, 1fr); gap: 15px; } .biography-degree { font-size: 19px; } .biography-copy > p:not(.eyebrow) { font-size: 14px; } }
+@media (max-width: 360px) { .biography-education li { grid-template-columns: 1fr; gap: 6px; } }
+@media print { .biography { padding-block: 15pt; gap: 25pt; break-inside: avoid; } }

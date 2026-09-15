@@ -1,0 +1,168 @@
+[
+  {
+    "abstract": "Psychotherapy delivery relies on a negotiation between patient self-reports and clinical intuition. Growing evidence for technological support of psychotherapy suggests opportunities to aid the mediation of this tension. To explore this prospect, we designed a prototype of a clinical decision support system (CDSS) for treating veterans with post-traumatic stress disorder in a Prolonged Exposure (PE) therapy intensive outpatient program. We conducted a two-phase interview study to collect perspectives from practicing PE clinicians and former PE patients who are United States veterans. Our analysis distills opportunities for a CDSS (e.g., offering homework review at a glance, aiding patient conceptualization) and larger challenges related to context and deployment (e.g., navigating Veterans Affairs). By reframing our findings through three human-centered perspectives (distributed cognition, situated learning …",
+    "authors": [
+      "Cynthia M Baseman",
+      "Myeonghan Ryu",
+      "Nathaniel Swinger",
+      "Kefan Xu",
+      "Andrew M Sherrill",
+      "Rosa I Arriaga"
+    ],
+    "conference": "Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems",
+    "displayId": "HCP-2026",
+    "doi": "https://doi.org/10.1145/3772318.3791575",
+    "id": "human-centered-perspectives-on-a-clinica-se3iqnhoufwc",
+    "publicationDate": "2026/4/13",
+    "scholarId": "ocdZFbwAAAAJ:Se3iqnhoufwC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:Se3iqnhoufwC",
+    "title": "Human-centered Perspectives on a Clinical Decision Support System for Intensive Outpatient Veteran PTSD Care",
+    "year": 2026
+  },
+  {
+    "abstract": "With the rapid growth of the aging population, the prevalence of dementia is expected to increase significantly, leading to a growing reliance on family caregivers to provide essential support. While prior research has extensively examined the experiences of family caregivers, the perspectives of Persons Living with Dementia (PLWDs) and their roles in caregiving relationships remain underexplored in social gerontology, health informatics, and Human-Computer Interaction (HCI) literature. This study addresses this gap by conducting a qualitative analysis on posts created by PLWDs on an online dementia forum. We analyzed PLWD’s posts regarding their self-expressed needs, perceptions of their roles in caregiving relationships, and proposed design solutions to support their interactions with caregivers. We reveal that PLWDs wish to actively engage in shaping their relationships with caregivers and take proactive …",
+    "authors": [
+      "Hao Yuan",
+      "Kefan Xu",
+      "Rosa Arriaga",
+      "Jina Huh-Yoo"
+    ],
+    "conference": "ACM Transactions on Computing for Healthcare",
+    "displayId": "PNP-2026",
+    "doi": "https://doi.org/10.1145/3816696",
+    "id": "i-ma-person-not-a-patient-or-diagnosis-c-uebtzra9y70c",
+    "publicationDate": "2026",
+    "scholarId": "ocdZFbwAAAAJ:UebtZRa9Y70C",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:UebtZRa9Y70C",
+    "title": "“I’ma person–not a patient or diagnosis”: Centering the Person Living with Dementia’s Perspective on Caregiver Dynamics and Technology Design",
+    "year": 2026
+  },
+  {
+    "abstract": "Informal caregivers perform an important role in taking care of family members with chronic disease. Informal caregivers' mental health can be negatively impacted by life-changing events (e.g., patients' diagnosis, care transitioning, etc.). This leads the caregiver to suffer from interpersonal and intrapersonal conflicts, causing a sense of disorientation and escalating malaise. In this study, we investigated informal caregivers' experiences of facing conflicts and life-changing events by qualitatively analyzing the data from online health communities. We categorized conflicts using a psychodynamic framework. We further looked at the interplay of life-changing events and conflicts and how this leads to caregivers' sense-making and decisions to mediate conflicts. We also found that online health communities provide support by helping caregivers interpret and navigate conflicts and raising awareness of the temporal …",
+    "authors": [
+      "Kefan Xu",
+      "Cynthia M Baseman",
+      "Nathaniel Swinger",
+      "Myeonghan Ryu",
+      "Rosa I Arriaga"
+    ],
+    "conference": "Proceedings of the ACM on Human-Computer Interaction (CSCW)",
+    "displayId": "TIC-2025",
+    "doi": "https://doi.org/10.1145/3757519",
+    "id": "understanding-the-temporality-of-informa-rolk4nbrz8uc",
+    "publicationDate": "2025/10/16",
+    "scholarId": "ocdZFbwAAAAJ:roLk4NBRz8UC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:roLk4NBRz8UC",
+    "title": "Understanding the Temporality of Informal Caregivers' Sense-Making on Conflicts and Life-Changing Events through Online Health Communities",
+    "year": 2025
+  },
+  {
+    "abstract": "The sedentary lifestyle increases individuals' risks of developing chronic diseases. To support individuals to be more physically active, we propose a mobile system, MotionShift, that presents users with step count data alongside contextual information (e.g., location, weather, calendar events, etc.) and self-reported records. By implementing and deploying this system, we aim to understand how contextual information impacts individuals' sense-making on sensor-captured data and how individuals leverage contextualized data to identify and reduce sedentary activities. The findings will advance the design of context-aware personal informatics systems, empowering users to derive actionable insights from sensor data while minimizing interpretation biases, ultimately promoting opportunities to be more physically active.",
+    "authors": [
+      "Kefan Xu",
+      "Rosa I Arriaga"
+    ],
+    "conference": "arXiv preprint arXiv:2509.19420",
+    "displayId": "FIS-2025",
+    "doi": "https://arxiv.org/abs/2509.19420",
+    "id": "facilitating-individuals-sensemaking-abo-lkgwnxomwfcc",
+    "publicationDate": "2025/9/23",
+    "scholarId": "ocdZFbwAAAAJ:LkGwnXOMwfcC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:LkGwnXOMwfcC",
+    "title": "Facilitating Individuals' Sensemaking about Sedentary Behavior via Contextualized Data",
+    "year": 2025
+  },
+  {
+    "abstract": "Centering humans in explainable artificial intelligence (XAI) research has primarily focused on AI model development and high-stake scenarios. However, as AI becomes increasingly integrated into everyday applications in often opaque ways, the need for explainability tailored to end-users has grown more urgent. To address this gap, we explore end-users’ perspectives on embedding XAI into daily AI application scenarios. Our findings reveal that XAI is not naturally accepted by end-users in their daily lives. When users seek explanations, they envision XAI design that promotes contextualized understanding, empowers adoption and adaption to AI systems, and considers multistakeholders’ values. We further discuss supporting users’ agency in XAI non-use and alternatives to XAI for managing ambiguity in AI interactions. Additionally, we provide design implications for XAI design at personal and societal levels …",
+    "authors": [
+      "Lingqing Wang",
+      "Chidimma Lois Anyi",
+      "Kefan Xu",
+      "Yifan Liu",
+      "Rosa I Arriaga",
+      "Ashok K Goel"
+    ],
+    "conference": "Proceedings of the 2025 ACM Designing Interactive Systems Conference",
+    "displayId": "EDS-2025",
+    "doi": "https://doi.org/10.1145/3715336.3735796",
+    "id": "explainable-ai-for-daily-scenarios-from-_fxgofyzp5qc",
+    "publicationDate": "2025/7/5",
+    "scholarId": "ocdZFbwAAAAJ:_FxGoFyzp5QC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:_FxGoFyzp5QC",
+    "title": "Explainable AI for Daily Scenarios from End-Users’ Perspective: Non-Use, Concerns, and Ideal Design",
+    "year": 2025
+  },
+  {
+    "abstract": "Many people do not get enough physical activity. Establishing routines to incorporate physical activity into people’s daily lives is known to be effective, but many people struggle to establish and maintain routines when facing disruptions. In this paper, we build on prior self-experimentation work to assist people in establishing or improving physical activity routines using a framework we call “reflective iteration.” This framework encourages individuals to articulate, reflect upon, and iterate on high-level “strategies” that inform their day-to-day physical activity plans. We designed and deployed a mobile application, Planneregy, that implements this framework. Sixteen U.S. college students used the Planneregy app for 42 days to reflectively iterate on their weekly physical exercise routines. Based on an analysis of usage data and interviews, we found that the reflective iteration approach has the potential to help people …",
+    "authors": [
+      "Kefan Xu",
+      "Xinghui Yan",
+      "Myeonghan Ryu",
+      "Mark W Newman",
+      "Rosa I Arriaga"
+    ],
+    "conference": "Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems",
+    "displayId": "ERI-2024",
+    "doi": "https://doi.org/10.1145/3613904.3641937",
+    "id": "understanding-the-effect-of-reflective-i-wf5omc3nynoc",
+    "publicationDate": "2024/5/11",
+    "scholarId": "ocdZFbwAAAAJ:WF5omc3nYNoC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:WF5omc3nYNoC",
+    "title": "Understanding the effect of reflective iteration on individuals’ physical activity planning",
+    "year": 2024
+  },
+  {
+    "abstract": "Today, clinicians have limited visibility into the quality of homework exercises that occur outside of the clinical context; however, understanding patient performance in these exercises is essential for guiding patient-centered care. To address this, we present the Clinician Homework Review (CHR), a unique measure and interface that displays similarity ratings calculated using sensor-captured patient-generated data (sPGD; i.e. heart rate, phone usage, ambient noise, and physical activity) for therapeutic exercises outside of the clinical setting within the post-traumatic stress disorder (PTSD) treatment context. Through concept testing sessions with 10 clinicians, we examine how sPGD can be leveraged to measure and investigate what contributes to patient performance in a therapeutic exercise. We also share in-depth information regarding clinician interpretation and planned use of data displayed by CHR in clinical …",
+    "authors": [
+      "Hayley I Evans",
+      "Myeonghan Ryu",
+      "Theresa Hsieh",
+      "Jiawei Zhou",
+      "Kefan Xu",
+      "Kenneth W Akers",
+      "Andrew M Sherrill",
+      "Rosa I Arriaga"
+    ],
+    "conference": "Proceedings of the ACM on Human-Computer Interaction",
+    "displayId": "SCP-2024",
+    "doi": "https://doi.org/10.1145/3637426",
+    "id": "using-sensor-captured-patient-generated-eqolee2rzwmc",
+    "publicationDate": "2024/4/23",
+    "scholarId": "ocdZFbwAAAAJ:eQOLeE2rZwMC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:eQOLeE2rZwMC",
+    "title": "Using Sensor-Captured Patient-Generated Data to Support Clinical Decision-making in PTSD Therapy",
+    "year": 2024
+  },
+  {
+    "abstract": "Making and executing physical activity plans can help people improve their physical activity levels. However, little is known about how people make physical activity plans in everyday settings and how people can be assisted in creating more successful plans. In this paper, we developed and deployed a mobile app as a probe to investigate the in-the-wild physical activity planning experience for 28 days with 17 participants. Additionally, we explored the impact of presenting successful and unsuccessful planning records on participants’ planning behaviors. Based on interviews before, during, and after the deployment, we offer a description of what factors participants considered to fit their exercise plans into their existing routines, as well as factors leading to plan failures and dissatisfaction with planned physical activity. With access to historical records, participants derived insights to improve their plans, including …",
+    "authors": [
+      "Kefan Xu",
+      "Xinghui Yan",
+      "Mark W Newman"
+    ],
+    "conference": "Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems",
+    "displayId": "PEP-2022",
+    "doi": "https://doi.org/10.1145/3491102.3501997",
+    "id": "understanding-people-s-experience-for-ph-u-x6o8ysg0sc",
+    "publicationDate": "2022/4/29",
+    "scholarId": "ocdZFbwAAAAJ:u-x6o8ySG0sC",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:u-x6o8ySG0sC",
+    "title": "Understanding people’s experience for physical activity planning and exploring the impact of historical records on plan creation and execution",
+    "year": 2022
+  },
+  {
+    "abstract": "Making and executing physical exercise plans have been shown to help people improve their physical activity levels. Still, it’s hard for people to anticipate potential barriers to plan execution, which puts their plan at risk of being disrupted. Little research has been done on leveraging people’s previous planning records to inform their planning for future physical exercises. In this paper, we conducted a 28-day study with 17 participants to understand their experience of planning for regular physical activity without and with historical planning records. Findings show that people could reflect on their historical planning records and develop strategies accordingly to address the challenges in their plan creation and execution. Reflecting on findings, we discuss the implications for supporting people to reflect on historical planning records and use them to inform future planning.",
+    "authors": [
+      "Kefan Xu"
+    ],
+    "conference": "Publication",
+    "displayId": "EEH-2021",
+    "doi": "https://deepblue.lib.umich.edu/bitstreams/77dae0c5-7b6c-4255-8ce9-f33272ed0ebf/download",
+    "id": "examining-the-effect-of-historical-plann-ysmsglbcyi4c",
+    "publicationDate": "2021",
+    "scholarId": "ocdZFbwAAAAJ:YsMSGLbcyi4C",
+    "scholarUrl": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=ocdZFbwAAAAJ&pagesize=100&sortby=pubdate&citation_for_view=ocdZFbwAAAAJ:YsMSGLbcyi4C",
+    "title": "Examining the Effect of Historical Planning Records on People’s Planning and Execution of Subsequent Daily Physical Exercise",
+    "year": 2021
+  }
+]

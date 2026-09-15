@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vite/
+.vercel/
+tmp/
+.DS_Store
+.env
+.env.*
+*.log
+task.md
+
+
