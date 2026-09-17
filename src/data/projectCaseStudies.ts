@@ -35,6 +35,7 @@ export interface ProjectCaseStudy {
   studyHeading?: string;
   video?: ProjectVideo;
   figures?: ProjectFigure[];
+  figureLayout?: 'gallery' | 'editorial';
   figureSource?: ProjectFigureSource;
   placeholder?: { title: string; description: string };
   paper?: { label: string; url: string };
@@ -125,6 +126,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       { src: 'planneregy-strategy-overview.webp', alt: 'Study visualization mapping 16 participants’ weekly strategies, physical activity plans, keyword evaluations, and reported disruptions across six weeks.', caption: 'Across the deployment, 16 participants created 48 distinct strategies, 203 keyword instances, and 434 physical activity plans.' },
       { src: 'planneregy-interview-method.webp', alt: 'Diagram showing participant screen sharing and the researcher version of Planneregy used to tailor retrospective interview questions from app records.', caption: 'Data-driven retrospective interviews connected participants’ narratives to their planning, reporting, and reflection records.' },
     ],
+    figureLayout: 'editorial',
     figureSource: {
       label: 'Figures 1–4 · Xu et al., CHI 2024',
       url: 'https://doi.org/10.1145/3613904.3641937',
