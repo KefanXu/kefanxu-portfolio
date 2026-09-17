@@ -4,15 +4,15 @@ A personal website for a PhD student in Human-Centered Computing at Georgia Tech
 
 ## What is included
 
-- A side-by-side introduction with a restrained serif headline, academic affiliation, concise research statement, and a persistent ceramic still life. Ivory, teal, and sage forms are joined by a fine thread; the high-resolution WebP is shown immediately without a loading swap.
+- An image-free editorial introduction with a two-line serif headline, an inset italic accent, a fine green rule, and supporting columns for the research statement, affiliation, and profile links.
 - An introduction followed by biography and education, research perspective, selected projects, research practice, publications, and contact.
 - An abstract orbital illustration that changes from individual reflection to caregiving relationships to a wider ecology of care. Scroll position rotates its orbit layers and moves the sculptural forms. It stays beside the text above 760px and adapts to a compact sticky presentation on smaller screens.
 - Nine physical book covers featuring original raster ceramic illustrations, scroll-driven perspective, and an animated opening spread whose paper expands into the project reader. All nine lead into project readers; modified clicks retain normal browser link behavior. Reduced-motion preferences skip the opening animation.
-- Three abstract sculptural illustrations for design, development, and deployment, with scroll-driven assembly and layered movement.
+- An editorial research-practice sequence with numbered stages for design, development, and deployment, paired with methods and linked project evidence. Brief entrance reveals replace the earlier sculptural illustrations.
 - Nine project readers with context, design, study evidence, contributions, related papers, and previous/next navigation. Project links use shareable `#project/ID` URLs, so a static host can open them directly without server-side routing.
 - Pill-shaped outlined controls and primary actions, with underlined secondary links and active navigation. Publication search and year fields use simple bottom rules.
 - Searchable publication disclosures with author highlighting, abstracts or labeled abstract excerpts, related project links, and selectable/copyable BibTeX citations. Opening a paper reveals its details; collapsed panels remain outside keyboard focus.
-- Masked hero typography, gentle hero parallax, staggered biography and publication reveals, and a reading-progress line.
+- A brief typography entrance, staggered biography and publication reveals, and a reading-progress line. The introduction has no continuous scroll animation and honors reduced-motion preferences.
 
 ## Run locally
 
@@ -37,9 +37,9 @@ The default build uses `/`, suitable for Vercel and other hosts that serve the s
 ## Edit content and presentation
 
 - `src/App.tsx`: navigation, section order, and contact.
-- `src/components/academic/HeroIntro.tsx` and `HeroIntro.css`: side-by-side introduction, responsive headline, academic affiliation, research statement, and sculpture placement.
+- `src/components/academic/HeroIntro.tsx` and `HeroIntro.css`: image-free editorial introduction, responsive headline, academic affiliation, research statement, and profile links.
 - `src/components/academic/About.tsx`: biography and education.
-- `src/components/academic/HeroSculpture.tsx`: persistent hero artwork, intrinsic sizing, and accessible image description.
+- `src/components/academic/HeroSculpture.tsx`: retained artwork component from the previous introduction; the current homepage does not load it.
 - `src/components/academic/heroSculptureScene.ts`, `ceramicMaterials.ts`, and `sculptureGeometry.ts`: retained experimental Three.js implementation; the current homepage does not load it.
 - `src/components/academic/ResearchPerspective.tsx`: three research perspectives and the animated SVG illustration.
 - `src/components/academic/ResearchGallery.tsx`: nine-book collection, scroll response, and the book-opening transition.
@@ -47,7 +47,7 @@ The default build uses `/`, suitable for Vercel and other hosts that serve the s
 - `src/components/academic/ProjectDetail.tsx`: native dialog, project routes, focus restoration, and case-study layout.
 - `src/data/projectCaseStudies.ts`: detailed project copy, study evidence, figures, source credits, and related papers.
 - `src/data/portfolio.ts`: original project contributions, roles, collaborations, periods, and methods.
-- `src/components/academic/ResearchPractice.tsx`: research methods, capabilities, tools, and animated sculptural SVG illustrations.
+- `src/components/academic/ResearchPractice.tsx` and `ResearchPractice.css`: numbered research-practice stages, methods, tools, and related project evidence.
 - `src/components/academic/Publications.tsx`: publication search, year filtering, expandable records, abstracts, related projects, and citations.
 - `src/data/publications.ts` and `src/data/publications.generated.json`: publication data and local enrichments.
 - `src/index.css` and component stylesheets: typography, layout, responsiveness, and motion.
