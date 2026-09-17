@@ -115,8 +115,7 @@ function EcologyIllustration({ stage, reducedMotion, progress }: {
         <motion.g initial={false} animate={nucleus} transition={transition} style={{ transformOrigin: '0px 0px' }}>
           <circle r="58" fill={`url(#${uniqueId}-ivory)`} stroke="#d8e1d1" strokeWidth=".75" filter={`url(#${uniqueId}-shadow)`} />
           <ellipse cx="-16" cy="-32" rx="18" ry="9" fill="#fffef8" opacity=".24" transform="rotate(-22 -16 -32)" />
-          <path d="M0 1C-22-12-19-26-9-26C-4-26-1-23 0-20C2-23 5-26 10-26C21-26 23-11 0 1Z" fill="none" stroke="#658573" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-          <text className="rp-nucleus-label" x="0" y="24">the person</text>
+          <path d="M0 1C-22-12-19-26-9-26C-4-26-1-23 0-20C2-23 5-26 10-26C21-26 23-11 0 1Z" fill="none" stroke="#658573" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" transform="translate(0 12)" />
         </motion.g>
       </motion.g>
 
