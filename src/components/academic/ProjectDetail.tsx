@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Image, Play, X } from 'lucide-react';
 import { projects } from '../../data/portfolio';
 import { publications } from '../../data/publications';
-import { projectCaseStudies, type ProjectCaseStudy } from '../../data/projectCaseStudies';
+import { projectCaseStudies, type ProjectCaseStudy, type ProjectFigure } from '../../data/projectCaseStudies';
 import './ProjectDetail.css';
 
 function projectIdFromHash() {
@@ -62,6 +62,28 @@ function ProjectVideoPlayer({ study }: { study: ProjectCaseStudy }) {
   );
 }
 
+function ProjectFigureItem({ figure, index, className, eager = false }: { figure: ProjectFigure; index: number; className?: string; eager?: boolean }) {
+  return (
+    <figure className={className}>
+      <a className="project-figure-image" href={`${import.meta.env.BASE_URL}images/projects/${figure.src}`} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size image: ${figure.alt}`}>
+        <img src={`${import.meta.env.BASE_URL}images/projects/${figure.src}`} alt={figure.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+        <span className="project-figure-expand"><ArrowUpRight size={16} aria-hidden="true" /><span>View full size</span></span>
+      </a>
+      <figcaption><span>{String(index + 1).padStart(2, '0')}</span>{figure.caption}</figcaption>
+    </figure>
+  );
+}
+
+function ProjectFigureCredit({ study }: { study: ProjectCaseStudy }) {
+  if (!study.figureSource) return null;
+  return (
+    <p className="project-figure-credit">
+      <a href={study.figureSource.url} target="_blank" rel="noopener noreferrer">{study.figureSource.label}<ArrowUpRight size={13} aria-hidden="true" /></a>
+      <span>{study.figureSource.license && <><a href={study.figureSource.license.url} target="_blank" rel="noopener noreferrer">{study.figureSource.license.label}</a>. </>}{study.figureSource.credit}</span>
+    </p>
+  );
+}
+
 function ProjectMedia({ study }: { study: ProjectCaseStudy }) {
   const video = study.video ? <ProjectVideoPlayer key={study.id} study={study} /> : null;
 
@@ -69,16 +91,10 @@ function ProjectMedia({ study }: { study: ProjectCaseStudy }) {
     <div className={`project-media-documentation is-${study.id}`}>
       <div className={`project-figure-grid ${study.figures.length > 1 ? 'has-panels' : ''}`}>
         {study.figures.map((figure, index) => (
-          <figure key={figure.src}>
-            <a className="project-figure-image" href={`${import.meta.env.BASE_URL}images/projects/${figure.src}`} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size image: ${figure.alt}`}>
-              <img src={`${import.meta.env.BASE_URL}images/projects/${figure.src}`} alt={figure.alt} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
-              <span className="project-figure-expand"><ArrowUpRight size={16} aria-hidden="true" /><span>View full size</span></span>
-            </a>
-            <figcaption><span>{String(index + 1).padStart(2, '0')}</span>{figure.caption}</figcaption>
-          </figure>
+          <ProjectFigureItem key={figure.src} figure={figure} index={index} eager={index === 0} />
         ))}
       </div>
-      {study.figureSource && <p className="project-figure-credit"><a href={study.figureSource.url} target="_blank" rel="noopener noreferrer">{study.figureSource.label}<ArrowUpRight size={13} aria-hidden="true" /></a><span>{study.figureSource.license && <><a href={study.figureSource.license.url} target="_blank" rel="noopener noreferrer">{study.figureSource.license.label}</a>. </>}{study.figureSource.credit}</span></p>}
+      <ProjectFigureCredit study={study} />
     </div>
   ) : null;
 
@@ -113,6 +129,7 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
   const study = projectCaseStudies[activeIndex];
   const project = projects.find(item => item.id === activeId);
   const publication = study?.publicationId ? publications.find(item => item.id === study.publicationId) : undefined;
+  const editorialFigures = study?.figureLayout === 'editorial' ? study.figures ?? [] : [];
   const isBookHandoff = Boolean(activeId && activeId === handoffProjectId);
   const bookSessionRef = useRef(false);
   if (isBookHandoff) bookSessionRef.current = true;
@@ -228,24 +245,30 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
             </div>
           </div>
 
-          <ProjectMedia study={study} />
+          {study.figureLayout !== 'editorial' && <ProjectMedia study={study} />}
 
           <div className="project-detail-editorial">
             <section className="project-detail-section" aria-labelledby="project-context-heading">
               <p className="eyebrow">01 / Research context</p>
-              <div><h3 id="project-context-heading">{project.title}</h3><p>{study.context}</p></div>
+              <div><h3 id="project-context-heading">{project.title}</h3><p>{study.context}</p>
+                {editorialFigures[0] && <ProjectFigureItem figure={editorialFigures[0]} index={0} className="project-editorial-figure" eager />}
+              </div>
             </section>
             <section className="project-detail-section" aria-labelledby="project-design-heading">
               <p className="eyebrow">{study.designLabel ?? `02 / ${project.id === 'caregiving-reddit' ? 'Research approach' : 'Design & implementation'}`}</p>
               <div><h3 id="project-design-heading">{study.designHeading ?? (project.id === 'caregiving-reddit' ? 'Following caregiving over time' : 'Designing the research experience')}</h3>
                 <div className="project-design-grid">{study.design.map((item, index) => <div className="project-design-item" key={item.title}><span className="project-design-number">0{index + 1}</span><h4>{item.title}</h4><p>{item.description}</p></div>)}</div>
+                {editorialFigures[1] && <ProjectFigureItem figure={editorialFigures[1]} index={1} className="project-editorial-figure is-portrait" />}
               </div>
             </section>
             <section className="project-detail-section" aria-labelledby="project-study-heading">
               <p className="eyebrow">{study.studyLabel ?? '03 / Study & evidence'}</p>
               <div><h3 id="project-study-heading">{study.studyHeading ?? (project.id === 'ducss' ? 'Research in progress' : project.id === 'sedentary' ? 'A proposed study of situated activity data' : 'Studying the experience')}</h3>
                 <div className="project-evidence">{study.evidence.map(item => <div key={item.label}><span>{item.value}</span><p>{item.label}</p></div>)}</div>
+                {editorialFigures[2] && <ProjectFigureItem figure={editorialFigures[2]} index={2} className="project-editorial-figure is-study-overview" />}
                 <p>{study.study}</p>
+                {editorialFigures[3] && <ProjectFigureItem figure={editorialFigures[3]} index={3} className="project-editorial-figure is-method" />}
+                {editorialFigures.length > 0 && <ProjectFigureCredit study={study} />}
               </div>
             </section>
             <section className="project-detail-section" aria-labelledby="project-contributions-heading">

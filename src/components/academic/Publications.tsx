@@ -23,6 +23,14 @@ const projectByPublication = new Map(projectCaseStudies
   .filter((project) => project.publicationId)
   .map((project) => [project.publicationId, project]));
 
+function isSafariBrowser() {
+  if (typeof navigator === 'undefined') return false;
+
+  const { userAgent } = navigator;
+  return /Safari\//.test(userAgent)
+    && !/(?:Chrome|Chromium|CriOS|FxiOS|EdgiOS|OPiOS|Android)\//.test(userAgent);
+}
+
 function Authors({ authors }: { authors: string[] }) {
   return <>{authors.map((author, index) => (
     <Fragment key={`${author}-${index}`}>
@@ -94,8 +102,7 @@ function PublicationRow({ publication, expanded, onToggle, animate }: {
     : publication.abstract;
   const isExcerpt = abstract ? /(?:…|\.\.\.)\s*$/.test(abstract) : false;
 
-  return (
-    <motion.li className="pub-row" data-expanded={expanded} initial={animate ? { opacity: 0, y: 28 } : false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+  const content = <>
       <h3 className="pub-row-heading" aria-labelledby={titleId}>
         <button className="pub-trigger" type="button" aria-expanded={expanded} aria-controls={panelId} aria-labelledby={titleId} onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); onToggle(); }}>
           <span className="pub-index" aria-hidden="true">{String(publication.number).padStart(2, '0')}</span>
@@ -149,12 +156,29 @@ function PublicationRow({ publication, expanded, onToggle, animate }: {
           </div>
         </div>
       </div>
+    </>;
+
+  if (!animate) {
+    return <li className="pub-row" data-expanded={expanded}>{content}</li>;
+  }
+
+  return (
+    <motion.li
+      className="pub-row"
+      data-expanded={expanded}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {content}
     </motion.li>
   );
 }
 
 export function Publications() {
   const reducedMotion = useReducedMotion();
+  const safari = isSafariBrowser();
   const ease = [0.22, 1, 0.36, 1] as const;
   const [query, setQuery] = useState('');
   const [year, setYear] = useState('all');
@@ -177,7 +201,7 @@ export function Publications() {
 
 
   return (
-    <section className="pub-section" id="publications" aria-labelledby="publications-heading">
+    <section className="pub-section" id="publications" aria-labelledby="publications-heading" data-safari={safari || undefined}>
       <div className="section-shell">
         <motion.header className="pub-header" initial={reducedMotion ? false : { opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.9, ease }}>
           <div>
@@ -226,7 +250,7 @@ export function Publications() {
               publication={publication}
               expanded={expandedId === publication.id}
               onToggle={() => setExpandedId((current) => current === publication.id ? null : publication.id)}
-              animate={!reducedMotion && !query && year === 'all'}
+              animate={!reducedMotion && !safari && !query && year === 'all'}
             />
           ))}
         </ol>

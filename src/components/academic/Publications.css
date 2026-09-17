@@ -96,6 +96,13 @@
 .pub-panel[aria-hidden="false"] { grid-template-rows: 1fr; opacity: 1; }
 .pub-panel-clip { min-height: 0; overflow: hidden; }
 .pub-panel-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 225px); gap: 36px; margin-left: 98px; padding: 0 0 38px; }
+
+/* Safari repaints the full publication list while interpolating fractional
+   grid tracks. Let the row take its final height in one layout pass, then
+   animate only the panel contents on the compositor. */
+.pub-section[data-safari="true"] .pub-panel { transition: opacity 180ms ease; }
+.pub-section[data-safari="true"] .pub-panel-body { opacity: 0; transform: translate3d(0, -6px, 0); transition: opacity 180ms ease, transform 260ms cubic-bezier(.22, 1, .36, 1); }
+.pub-section[data-safari="true"] .pub-panel[aria-hidden="false"] .pub-panel-body { opacity: 1; transform: translate3d(0, 0, 0); }
 .pub-overview { min-width: 0; }
 .pub-detail-heading { margin: 0 0 12px; color: var(--teal, #1f6f66); font: 500 10px/1.8 var(--sans, 'DM Sans', Arial, sans-serif); letter-spacing: .09em; text-transform: uppercase; }
 .pub-abstract { max-width: 830px; margin: 0; color: var(--muted, #65716a); font: 400 14px/1.9 var(--sans, 'DM Sans', Arial, sans-serif); }
@@ -155,7 +162,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pub-title, .pub-toggle svg, .pub-panel { transition: none; }
+  .pub-title, .pub-toggle svg, .pub-panel, .pub-panel-body { transition: none; }
+  .pub-section[data-safari="true"] .pub-panel,
+  .pub-section[data-safari="true"] .pub-panel-body { transition: none; }
 }
 
 @media print {

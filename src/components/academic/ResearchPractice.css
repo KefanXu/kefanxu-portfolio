@@ -1,45 +1,66 @@
 .practice-section { padding-block: 88px 96px; }
-.practice-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 45px; }
-.practice-heading .eyebrow { color: var(--teal); margin-bottom: 18px; }
+.practice-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; }
+.practice-heading .eyebrow { color: var(--teal); margin-bottom: 23px; }
 .practice-heading > p { max-width: 295px; color: var(--muted); font-size: 14px; line-height: 1.8; padding-bottom: 6px; }
-.practice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(26px, 4vw, 58px); margin-top: 28px; }
-.practice-card { min-width: 0; }
-.practice-figure { position: relative; width: 100%; aspect-ratio: 1.2; max-height: 290px; margin-bottom: 25px; background: #fff; overflow: visible; isolation: isolate; }
-.practice-sculpture { display: block; width: 100%; height: 100%; overflow: visible; }
-.practice-sculpture-piece { transform-box: fill-box; transform-origin: center; }
-.practice-card-heading { display: flex; align-items: baseline; gap: 17px; }
-.practice-card-heading > span { font-size: 10px; color: var(--muted); }
-.practice-card-heading h3 { font: 400 31px/1.15 var(--serif); letter-spacing: -.02em; }
-.practice-description { min-height: 100px; margin-top: 17px; font-size: 14px; line-height: 1.85; color: var(--muted); }
-.practice-tools { min-height: 34px; margin-top: 17px; font-size: 10px; line-height: 1.8; color: #566e60; }
-.practice-evidence { padding-top: 20px; margin-top: 20px; border-top: 1px solid var(--line); }
-.practice-evidence .practice-project-link { font-size: 11px; line-height: 1.6; gap: 12px; }
-.practice-evidence .practice-project-link:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
-.practice-evidence > p { font-size: 12px; line-height: 1.8; color: var(--muted); margin-top: 14px; }
-@media (max-width: 1000px) {
-  .practice-grid { gap: 26px; }
-  .practice-card-heading h3 { font-size: 27px; }
-  .practice-description { min-height: 126px; font-size: 13px; }
-  .practice-tools { min-height: 40px; }
+.practice-sequence { margin-top: 52px; border-bottom: 1px solid var(--line); }
+.practice-row { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; column-gap: clamp(32px, 4.2vw, 60px); padding-block: 35px 39px; border-top: 1px solid var(--line); }
+.practice-stage { min-width: 0; }
+.practice-number { display: block; margin-bottom: 12px; color: var(--teal); font-size: 10px; line-height: 1.4; letter-spacing: .09em; font-variant-numeric: tabular-nums; }
+.practice-stage h3 { font: 400 clamp(30px, 3vw, 39px)/1.1 var(--serif); letter-spacing: -.025em; }
+.practice-methods { padding-top: 3px; }
+.practice-description { color: #556159; font-size: 14px; line-height: 1.85; }
+.practice-tools { display: flex; flex-wrap: wrap; gap: 3px 0; margin: 21px 0 0; padding: 0; list-style: none; color: #60766a; font-size: 10px; line-height: 1.8; }
+.practice-tools li:not(:last-child)::after { content: '·'; margin-inline: 8px; color: #93a498; }
+.practice-evidence { min-width: 0; padding-left: 25px; border-left: 1px solid #e4eae5; }
+.practice-evidence-label { color: var(--muted); font-size: 8px; letter-spacing: .13em; }
+.practice-project-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; margin-top: 1px; color: var(--teal); font: 400 24px/1.25 var(--serif); letter-spacing: -.015em; transition: color 180ms ease; }
+.practice-project-link svg { transition: transform 220ms ease; }
+.practice-project-link:hover { color: #123e38; }
+.practice-project-link:hover svg { transform: translate(2px, -2px); }
+.practice-project-link:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+.practice-evidence-description { max-width: 320px; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+@media (max-width: 1050px) {
+  .practice-row { column-gap: 30px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.15fr) minmax(0, 1fr); }
+  .practice-evidence { padding-left: 20px; }
+  .practice-description { font-size: 13px; }
 }
-@media (max-width: 760px) {
+@media (max-width: 850px) {
   .practice-section { padding-block: 64px 70px; }
+  .practice-heading { align-items: flex-end; gap: 32px; }
+  .practice-heading .section-heading { font-size: 46px; }
+  .practice-heading > p { max-width: 240px; font-size: 13px; }
+  .practice-sequence { margin-top: 40px; }
+  .practice-row { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 23px 40px; padding-block: 28px 32px; }
+  .practice-stage { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 16px; }
+  .practice-number { margin: 0; }
+  .practice-stage h3 { font-size: 33px; }
+  .practice-description { font-size: 14px; }
+  .practice-methods { padding: 0; }
+  .practice-tools { margin-top: 15px; }
+  .practice-evidence { padding-left: 25px; }
+}
+@media (max-width: 600px) {
+  .practice-section { padding-block: 52px 58px; }
   .practice-heading { display: block; }
-  .practice-heading > p { margin-top: 24px; max-width: 420px; }
-  .practice-grid { grid-template-columns: 1fr; gap: 36px; margin-top: 12px; }
-  .practice-figure { width: min(100%, 360px); max-height: 300px; margin: 0 auto 18px; }
-  .practice-description, .practice-tools { min-height: 0; }
-  .practice-card-heading h3 { font-size: 32px; }
-  .practice-description { font-size: 14px; max-width: 550px; }
-  .practice-evidence { margin-top: 19px; padding-top: 18px; }
+  .practice-heading .eyebrow { margin-bottom: 20px; }
+  .practice-heading .section-heading { font-size: clamp(39px, 9.5vw, 52px); }
+  .practice-heading > p { max-width: 350px; margin-top: 22px; padding: 0; font-size: 14px; }
+  .practice-sequence { margin-top: 32px; }
+  .practice-row { grid-template-columns: minmax(0, 1fr); gap: 21px; padding-block: 26px 30px; }
+  .practice-stage { gap: 15px; }
+  .practice-stage h3 { font-size: 32px; }
+  .practice-tools { margin-top: 12px; }
+  .practice-evidence { margin-top: 3px; padding-left: 18px; }
+  .practice-evidence-description { max-width: none; }
+  .practice-project-link { font-size: 23px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .practice-sculpture, .practice-sculpture-piece { transform: none !important; opacity: 1 !important; }
-  .practice-evidence .practice-project-link { transition: none; }
+  .practice-project-link, .practice-project-link svg { transition: none; }
 }
 @media print {
   .practice-section { padding-block: 20pt; }
-  .practice-card { break-inside: avoid; opacity: 1 !important; transform: none !important; }
-  .practice-figure { max-height: 150px; }
-  .practice-sculpture, .practice-sculpture-piece { opacity: 1 !important; transform: none !important; }
+  .practice-sequence { margin-top: 20pt; }
+  .practice-row { break-inside: avoid; opacity: 1 !important; transform: none !important; padding-block: 15pt; }
+  .practice-project-link { min-height: 0; margin-block: 6pt; }
 }
