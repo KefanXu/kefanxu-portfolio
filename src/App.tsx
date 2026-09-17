@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, BookOpen, Menu, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BookOpen } from 'lucide-react';
 import { motion, MotionConfig, useReducedMotion, useScroll } from 'framer-motion';
 import { HeroIntro } from './components/academic/HeroIntro';
 import { About } from './components/academic/About';
@@ -118,6 +118,11 @@ function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, [menuOpen]);
 
+  const closeMenuFromLink = () => {
+    setMenuOpen(false);
+    menuButton.current?.focus({ preventScroll: true });
+  };
+
   return <MotionConfig reducedMotion="user">
     <a className="skip-link" href="#main">Skip to content</a>
     <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
@@ -126,9 +131,22 @@ function App() {
         <a className="wordmark" href="#home" aria-label="Kefan Xu, home" onClick={() => { setMenuOpen(false); setActiveSection(''); }}><img src={clover} alt="" width="32" height="32" />Kefan Xu<span className="wordmark-dot">.</span></a>
         <nav className="desktop-nav" aria-label="Main navigation">{navigation.map(({ id, label }) => <a key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined}>{label}</a>)}</nav>
         <a className="cv-link" href={cvPdf} target="_blank" rel="noopener noreferrer">Curriculum vitae <ArrowUpRight size={16} /></a>
-        <button ref={menuButton} className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+        <button ref={menuButton} className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(open => !open)}>
+          <span className="menu-icon" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+        </button>
       </div>
-      <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>{navigation.map(({ id, label }) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRight size={18} /></a>)}<a href={cvPdf} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>Curriculum vitae<ArrowUpRight size={18} /></a></nav>
+      <div className={`mobile-nav-shell ${menuOpen ? 'is-open' : ''}`} aria-hidden={!menuOpen}>
+        <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
+          <div className="mobile-nav-list">
+            {navigation.map(({ id, label }) => <a key={id} href={`#${id}`} tabIndex={menuOpen ? undefined : -1} onClick={closeMenuFromLink}>{label}<ArrowUpRight size={18} /></a>)}
+            <a href={cvPdf} target="_blank" rel="noopener noreferrer" tabIndex={menuOpen ? undefined : -1} onClick={closeMenuFromLink}>Curriculum vitae<ArrowUpRight size={18} /></a>
+          </div>
+        </nav>
+      </div>
     </header>
     <main id="main">
       <HeroIntro />
