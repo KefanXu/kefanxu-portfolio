@@ -4,6 +4,10 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    // The designer mode and the mode switch ship their own plain CSS; keeping
+    // them out of the scan leaves the academic stylesheet exactly as it was.
+    "!./src/design/**",
+    "!./src/mode/**",
   ],
   theme: {
     extend: {

@@ -1,0 +1,71 @@
+/* ── Phone ─────────────────────────────────────────────────────────────── */
+.phone {
+  --phone-w: 280px;
+  position: relative;
+  width: var(--phone-w);
+  padding: calc(var(--phone-w) * 0.028);
+  border-radius: calc(var(--phone-w) * 0.16);
+  background: linear-gradient(145deg, #2b2b29 0%, #0d0d0c 46%, #1d1d1b 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 calc(var(--phone-w) * 0.02) calc(var(--phone-w) * 0.05) rgba(17, 17, 16, 0.14),
+    0 calc(var(--phone-w) * 0.12) calc(var(--phone-w) * 0.3) calc(var(--phone-w) * -0.08) rgba(17, 17, 16, 0.42);
+  flex: none;
+}
+.phone__screen {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 780 / 1688;
+  border-radius: calc(var(--phone-w) * 0.134);
+  background: #f4f4f2;
+  isolation: isolate;
+}
+.phone__screen > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+  user-select: none;
+}
+
+/* ── Browser ───────────────────────────────────────────────────────────── */
+.browser {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(10px, 1.1vw, 16px);
+  background: #fbfaf7;
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 16, 0.1),
+    0 2px 6px rgba(17, 17, 16, 0.06),
+    0 40px 80px -30px rgba(17, 17, 16, 0.4);
+}
+.browser__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: clamp(26px, 2.5vw, 38px);
+  padding-inline: clamp(10px, 1.1vw, 16px);
+  border-bottom: 1px solid rgba(17, 17, 16, 0.08);
+  background: #f1efea;
+}
+.browser__dots { display: inline-flex; gap: 6px; }
+.browser__dots i {
+  width: clamp(6px, 0.62vw, 10px);
+  height: clamp(6px, 0.62vw, 10px);
+  border-radius: 50%;
+  background: rgba(17, 17, 16, 0.16);
+}
+.browser__url {
+  margin-inline: auto;
+  padding: 3px 18px;
+  border-radius: 999px;
+  background: rgba(17, 17, 16, 0.05);
+  color: rgba(17, 17, 16, 0.5);
+  font: 500 clamp(8px, 0.68vw, 11px)/1.4 var(--mono);
+  letter-spacing: 0.03em;
+  transform: translateX(-24px);
+}
+.browser__view { position: relative; overflow: hidden; background: #fff; }
+.browser__view > img { width: 100%; height: auto; user-select: none; }

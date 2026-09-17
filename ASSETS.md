@@ -66,3 +66,27 @@ Original role, period, collaboration, tags, and contribution statements are read
 - [An Elegant Puzzle detail](https://press.stripe.com/an-elegant-puzzle): a prominent title, clear metadata, substantial supporting media, and editorial content beneath.
 
 No Stripe Press images, logos, or book content were copied.
+
+## Designer mode media (`public/images/design/`)
+
+Exported on 17 September 2026 from Kefan's Figma workspace for the designer mode at `/design/`. Frames were exported at 2× and encoded as WebP; embedded screenshots were taken from their original image fills and resized to 780 px (phones) or up to 2400 px (desktop). No interface content was redrawn.
+
+| Folder | Figma file | What was exported |
+| --- | --- | --- |
+| `trackya/` | [Trackya](https://www.figma.com/design/Cv85dyFjaTvhGMbbEChKxg/Trackya) | Final design frames (day, week, filters, planning, reporting, records, onboarding, milestones), six production screenshots from the Tutorial page (`app-*.webp`), the app icon, the component sheet and two recruitment flyers. |
+| `moodloop/` | [Moodloop (Official)](https://www.figma.com/design/4HrDos6m8q1sM7HXqmlWLT/Moodloop--Official-) and [Planneregy II/MoodLoop](https://www.figma.com/design/YSS98pCyUMnqWkUlUTtcnv/Planneregy-II-MoodLoop) | Production screenshots from the device mock-ups (`app-*.webp`), wireframes (`wf-*`), early visual explorations (`x-*`). `study.webp` is a WebP copy of the existing study-design figure. |
+| `carework/` | [CareWork — CHI System Figure](https://www.figma.com/design/g9GqMbhzt9ngp8Bm46siUN/CareWork) | Prototype screenshots, the HomeWork framework diagram, the study-procedure figure and the wireframe section. |
+| `planneregy/` | [Planneregy](https://www.figma.com/design/n1L5xiQwdzuFmVAh0NN25f/Planneregy) | Production and simulator screenshots (`app-*`), early concept and design frames (`wf-*`), coach marks, the logo (SVG) and two recruitment posters. |
+| `physicify/` | [Physicify](https://www.figma.com/design/F5hIMzRhYagDBnYZWBBh0z/Physicify) | Calendar, report and record frames, a production photo, the wireframe board and the method flow. `final-*.webp` are WebP copies of the three existing Physicify PNGs. |
+| `ecocare/` | [EcoCare](https://www.figma.com/design/KveX4LOZAazNSpqFFu2RTK/EcoCare) | The current prototype screenshot embedded in the poster. |
+| `about/` | [Portfolio](https://www.figma.com/design/KZPWKh1Rk9oqrOkUmQN8D4/Portfolio) | Four portrait frames cropped from the film-style contact sheet. |
+
+Edits made to exported images:
+
+- **Recruitment materials.** The QR codes on the Trackya flyers and Planneregy posters were replaced with a mosaic so a portfolio visitor cannot enrol in a study by accident. Nothing else on them was changed.
+- **CareWork window screenshots** (`shot-03`, `-04`, `-05`, `-09`) were cropped to the page content, removing the desktop browser chrome and its personal toolbar items. The site draws its own neutral browser frame.
+- **Left out on purpose:** Moodloop researcher-portal screens that show an individual participant's entries, and the Trackya academic poster, which lists collaborators' email addresses.
+
+The CareWork screens use fictional patients and synthesised data, and the EcoCare screen shows a simulated case, as described in their case studies. Planneregy and Physicify study figures are reused from `public/images/projects/` with their existing CC BY 4.0 attribution. The designer-mode demos (capsule grid, mood scale, weekly loop, care ecology) are code, use illustrative data, and say so where it matters.
+
+The archive list and its years were read from the project index in the Portfolio Figma file.

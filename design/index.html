@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3f1ec" />
+    <meta name="description" content="Kefan Xu is a product designer with a PhD-level research practice. He designs, builds and field-tests health and wellbeing products: Trackya, Moodloop, CareWork, Planneregy and more." />
+    <meta property="og:title" content="Kefan Xu — Product Designer" />
+    <meta property="og:description" content="Research-led product design for health, care and everyday wellbeing. Selected case studies, 2021–2026." />
+    <meta property="og:type" content="website" />
+    <title>Kefan Xu — Product Designer</title>
+    <!-- Keeps the hand-off from the researcher mode seamless: if we are arriving
+         through the mode switch, paint the curtain colour before anything else. -->
+    <script>
+      try {
+        var h = JSON.parse(sessionStorage.getItem('kx-mode-handoff') || 'null');
+        if (h && h.to === 'design' && Date.now() - h.at < 8000 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('kx-arriving');
+        }
+      } catch (e) {}
+    </script>
+    <style>
+      html { background: #f3f1ec; }
+      html.kx-arriving, html.kx-arriving body { background: #111110 !important; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript><p style="font: 16px/1.6 system-ui, sans-serif; padding: 32px; max-width: 60ch">Kefan Xu — product designer with a research practice in health and wellbeing. This portfolio needs JavaScript. Contact: <a href="mailto:kefanxu@gatech.edu">kefanxu@gatech.edu</a> · <a href="https://www.linkedin.com/in/kefan-xu-8a8b2b1b3/">LinkedIn</a>.</p></noscript>
+    <script type="module" src="/src/design/main.tsx"></script>
+  </body>
+</html>

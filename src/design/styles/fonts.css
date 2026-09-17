@@ -1,0 +1,33 @@
+/* Self-hosted Latin subsets (SIL Open Font License). Licenses sit beside the
+   files in src/design/assets/fonts. Relative URLs let Vite apply the deploy base. */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  src: url('../assets/fonts/instrument-sans-latin-var.woff2') format('woff2-variations'),
+       url('../assets/fonts/instrument-sans-latin-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/instrument-serif-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/fonts/geist-mono-latin-var.woff2') format('woff2-variations'),
+       url('../assets/fonts/geist-mono-latin-var.woff2') format('woff2');
+}
