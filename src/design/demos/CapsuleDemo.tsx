@@ -65,7 +65,9 @@ export function CapsuleDemo() {
             value={threshold}
             onChange={event => setThreshold(Number(event.target.value))}
             aria-label="Steps per hour that count as active"
+            style={{ '--cut': `${((threshold - 200) / 2200) * 100}%` } as CSSProperties}
           />
+          <span className="capsules__scale mono" aria-hidden="true"><span>Fewer steps · sedentary</span><span>More steps · active</span></span>
         </label>
 
         <ul className="capsules__legend mono">

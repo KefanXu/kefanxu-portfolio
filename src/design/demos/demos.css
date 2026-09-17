@@ -55,8 +55,9 @@
 .capsules__value small { font-size: 0.42em; letter-spacing: -0.02em; margin-left: 0.06em; }
 .capsules__slider { display: grid; gap: 4px; width: min(100%, 320px); }
 .capsules__slider strong { font: 500 clamp(1.2rem, 1.7vw, 1.6rem)/1.2 var(--sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.capsules__slider input::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, #47d5b3, #f078b5); }
-.capsules__slider input::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, #47d5b3, #f078b5); }
+.capsules__scale { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; opacity: 0.6; font-size: 10px; }
+.capsules__slider input::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, #f078b5 0, #f078b5 var(--cut, 50%), #47d5b3 var(--cut, 50%), #47d5b3 100%); }
+.capsules__slider input::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, #f078b5 0, #f078b5 var(--cut, 50%), #47d5b3 var(--cut, 50%), #47d5b3 100%); }
 .capsules__slider input::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 24px;
