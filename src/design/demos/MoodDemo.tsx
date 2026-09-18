@@ -34,7 +34,7 @@ const MOODS: Mood[] = [
     eyes: ['M68.4 97.3C72.8 78.1 95.4 72.2 106.5 90.5', 'M151.5 90.5C162.3 74.1 185.5 76.2 189.6 97.3'],
     mouth: 'M129 157C145.9 157 159.8 144.3 161.8 128C162 125.8 160.2 124 158 124H100C97.8 124 96 125.8 96.2 128C98.2 144.3 112.1 157 129 157Z' },
   { label: 'Glowing', bg: '#ffb3b4', body: '#ef6668', extra: 'sparkle',
-    eyes: ['', ''],
+    eyes: ['M68.4 97.3C72.8 78.1 95.4 72.2 106.5 90.5', 'M151.5 90.5C162.3 74.1 185.5 76.2 189.6 97.3'],
     mouth: 'M129 163C148.6 163 164.8 148.1 166.8 129C167 126.8 165.2 125 163 125H95C92.8 125 91 126.8 91.2 129C93.2 148.1 109.4 163 129 163Z' },
 ];
 const SPARKLE = 'M0 -17C2 -6 6 -2 17 0C6 2 2 6 0 17C-2 6 -6 2 -17 0C-6 -2 -2 -6 0 -17Z';
@@ -115,8 +115,8 @@ export function MoodDemo() {
               {item.extra === 'tear' ? <ellipse className="mood__tear" cx="205" cy="118" rx="8" ry="14" fill="#63b4ff" /> : null}
               {item.extra === 'sparkle' ? (
                 <>
-                  <path className="mood__sparkle" d={SPARKLE} transform="translate(92 96)" fill="#ffd27a" />
-                  <path className="mood__sparkle mood__sparkle--late" d={SPARKLE} transform="translate(166 96)" fill="#ffd27a" />
+                  <g transform="translate(40 62)"><path className="mood__sparkle" d={SPARKLE} fill="#ffd27a" /></g>
+                  <g transform="translate(222 48)"><path className="mood__sparkle mood__sparkle--late" d={SPARKLE} fill="#ffd27a" /></g>
                 </>
               ) : null}
             </g>

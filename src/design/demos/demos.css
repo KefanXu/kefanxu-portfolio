@@ -150,7 +150,7 @@
 .mood__copy { display: grid; gap: clamp(16px, 1.8vw, 26px); justify-items: start; align-content: center; height: 100%; padding: clamp(28px, 4.4vw, 72px); }
 .mood__question { font: 500 clamp(1.7rem, 3vw, 3rem)/1.04 var(--sans); font-stretch: 92%; letter-spacing: -0.035em; max-width: 12ch; }
 .mood__slider { position: relative; width: min(100%, 380px); height: 48px; border-radius: 999px; background: #fff; box-shadow: 0 10px 30px -14px rgba(21, 38, 62, 0.35); }
-.mood__slider input { position: absolute; z-index: 2; inset: 0; width: calc(100% - 24px); height: 100%; margin-inline: 12px; }
+.mood__slider input { position: absolute; z-index: 2; inset: 0; width: calc(100% - 24px); height: 100%; margin: 0 12px; padding: 0; background: transparent; -webkit-appearance: none; appearance: none; }
 .mood__slider input::-webkit-slider-runnable-track { height: 48px; background: transparent; }
 .mood__slider input::-moz-range-track { height: 48px; background: transparent; }
 .mood__slider input::-webkit-slider-thumb {
@@ -173,7 +173,7 @@
   box-shadow: 0 0 0 6px rgba(47, 82, 216, 0.16);
 }
 .mood__slider input:active::-webkit-slider-thumb { transform: scale(1.12); box-shadow: 0 0 0 10px rgba(47, 82, 216, 0.18); }
-.mood__ticks { position: absolute; inset: 0 25px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.mood__ticks { position: absolute; inset: 0 22px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
 .mood__ticks i { width: 6px; height: 6px; border-radius: 50%; background: #c9cfdd; transition: opacity 200ms ease; }
 .mood__ticks i.is-on { opacity: 0; }
 .mood__readout { display: flex; align-items: baseline; gap: 10px; font: 400 15px/1 var(--sans); }
@@ -200,9 +200,9 @@
 .mood__face.is-on { opacity: 1; transform: none; transition-delay: 90ms; }
 .mood__tear { animation: tear 2400ms ease-in infinite; transform-origin: 205px 104px; }
 @keyframes tear { 0%, 20% { transform: translateY(-6px) scale(0.2); opacity: 0; } 35% { transform: none; opacity: 1; } 80% { transform: translateY(26px); opacity: 1; } 100% { transform: translateY(40px); opacity: 0; } }
-.mood__sparkle { animation: sparkle 1600ms var(--ease-in-out) infinite; transform-box: fill-box; transform-origin: center; }
+.mood__sparkle { animation: sparkle 1600ms var(--ease-in-out) infinite; transform-origin: 0 0; }
 .mood__sparkle--late { animation-delay: 380ms; }
-@keyframes sparkle { 0%, 100% { scale: 1; rotate: 0deg; } 50% { scale: 0.72; rotate: 45deg; } }
+@keyframes sparkle { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(0.72) rotate(45deg); } }
 
 /* ── Planneregy · weekly loop ──────────────────────────────────────────── */
 .loop {
