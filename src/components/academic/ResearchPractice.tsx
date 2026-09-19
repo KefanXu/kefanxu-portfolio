@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { Reveal } from '../../design/components/Reveal';
+import { Words } from './Words';
 import './ResearchPractice.css';
 
 const practices = [
@@ -27,25 +28,22 @@ const practices = [
 ];
 
 export function ResearchPractice() {
-  const reducedMotion = useReducedMotion();
   return <section id="practice" className="practice-section section-shell" aria-labelledby="practice-title">
     <div className="practice-heading">
       <div>
-        <p className="eyebrow">04 / Research practice</p>
-        <h2 className="section-heading" id="practice-title">From insight<br />to <em>everyday use.</em></h2>
+        <Reveal as="p" kind="fade" className="eyebrow">04 / Research practice</Reveal>
+        <Words className="section-heading" id="practice-title" text="From insight | to *everyday use.*" />
       </div>
-      <p>I develop research tools and evaluate them in the settings where they are used.</p>
+      <Reveal as="p" delay={180}>I develop research tools and evaluate them in the settings where they are used.</Reveal>
     </div>
 
     <div className="practice-sequence">
-      {practices.map(({ name, description, tools, project, id, evidence }, index) => <motion.article
+      {practices.map(({ name, description, tools, project, id, evidence }, index) => <Reveal
+        as="article"
         key={name}
         className="practice-row"
         aria-labelledby={`practice-stage-${id}`}
-        initial={reducedMotion ? false : { opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: .15 }}
-        transition={{ duration: .5, ease: [.22, 1, .36, 1] }}
+        delay={index * 90}
       >
         <div className="practice-stage">
           <span className="practice-number" aria-hidden="true">0{index + 1}</span>
@@ -62,7 +60,7 @@ export function ResearchPractice() {
           <a href={`#project/${id}`} className="practice-project-link">{project}<ArrowUpRight size={18} aria-hidden="true" /></a>
           <p className="practice-evidence-description">{evidence}</p>
         </div>
-      </motion.article>)}
+      </Reveal>)}
     </div>
   </section>;
 }

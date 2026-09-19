@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { ArrowUpRight, Heart, Network, Users } from 'lucide-react';
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'framer-motion';
+import { Reveal } from '../../design/components/Reveal';
+import { scrollToY } from '../../design/lib/scroll';
+import { Words } from './Words';
 import './ResearchPerspective.css';
 
 const perspectives = [
@@ -180,14 +183,14 @@ export function ResearchPerspective() {
     selectedStage.current = { index, until: Date.now() + 1500 };
     setActive(index);
     const bounds = article.getBoundingClientRect();
-    window.scrollTo({ top: window.scrollY + bounds.top + bounds.height / 2 - readingAnchor(), behavior: reducedMotion ? 'auto' : 'smooth' });
+    scrollToY(window.scrollY + bounds.top + bounds.height / 2 - readingAnchor(), reducedMotion);
   }
 
   return <section className="rp-section section-shell" id="research" ref={section} aria-labelledby="perspective-title">
-    <div className="section-topline"><p className="eyebrow">02 / RESEARCH PERSPECTIVE</p><span className="section-note">An ecological approach</span></div>
+    <Reveal kind="fade" className="section-topline"><p className="eyebrow">02 / RESEARCH PERSPECTIVE</p><span className="section-note">An ecological approach</span></Reveal>
     <div className="rp-intro">
-      <h2 className="section-heading" id="perspective-title">Health, care,<br />and <em>everyday life.</em></h2>
-      <p>My research connects individual experience, caregiving relationships, and the contexts in which health technologies are used.</p>
+      <Words className="section-heading" id="perspective-title" text="Health, care, | and *everyday life.*" />
+      <Reveal as="p" delay={200}>My research connects individual experience, caregiving relationships, and the contexts in which health technologies are used.</Reveal>
     </div>
     <div className="rp-narrative">
       <div className="rp-visual" ref={illustration}>

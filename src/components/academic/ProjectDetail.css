@@ -220,18 +220,18 @@
 }
 
 
-/* During a book handoff the native dialog keeps focus and history while its
-   transparent surface lets the expanding paper remain visible underneath. */
-.project-dialog.from-book[open] { animation: none; }
-.project-dialog.is-book-handoff { background: transparent; }
-.project-dialog.is-book-handoff::backdrop { background: transparent; }
-.project-dialog.is-book-handoff .project-reader-header,
-.project-dialog.is-book-handoff .project-detail-content { animation: project-content-arrive 500ms cubic-bezier(.22, 1, .36, 1) 300ms both; }
+/* Behind a colour sweep the native dialog opens already covered by its own
+   veil (the reader lives in the top layer, above any page element); the
+   content settles in while the veil lifts. */
+.project-dialog.is-arriving[open] { animation: none; }
+.project-dialog.is-arriving .project-reader-header,
+.project-dialog.is-arriving .project-detail-content { animation: project-content-arrive 720ms cubic-bezier(.22, 1, .36, 1) 260ms both; }
+.project-dialog .reader-wipe { z-index: 30; }
 @keyframes project-content-arrive {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .project-dialog.is-book-handoff .project-reader-header,
-  .project-dialog.is-book-handoff .project-detail-content { animation: none; }
+  .project-dialog.is-arriving .project-reader-header,
+  .project-dialog.is-arriving .project-detail-content { animation: none; }
 }

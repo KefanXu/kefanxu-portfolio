@@ -3,7 +3,29 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Image, Play, X } from 'lucide-reac
 import { projects } from '../../data/portfolio';
 import { publications } from '../../data/publications';
 import { projectCaseStudies, type ProjectCaseStudy, type ProjectFigure } from '../../data/projectCaseStudies';
+import { pauseScroll, reducedMotion } from '../../design/lib/scroll';
+import { coloursFor, ReaderWipe, type WipeColours, type WipePhase } from './ReaderWipe';
 import './ProjectDetail.css';
+
+/** Set by the gallery when a reader opens behind its colour sweep. */
+export interface ReaderArrival extends WipeColours {
+  id: string;
+  opener: HTMLElement | null;
+  restoreFocus: boolean;
+}
+
+interface ProjectDetailProps {
+  arrival?: ReaderArrival | null;
+  /** The veil has lifted; the arrival can be forgotten. */
+  onArrivalComplete?: () => void;
+  /** The veil covers the reader; put the page panel up, then call `close`. */
+  onLeave?: (colours: WipeColours, close: () => void) => void;
+  /** The dialog has actually closed. */
+  onClosed?: () => void;
+}
+
+const VEIL_LIFT_MS = 900;
+const VEIL_COVER_MS = 560;
 
 function projectIdFromHash() {
   if (!window.location.hash.startsWith('#project/')) return null;
@@ -115,7 +137,7 @@ function ProjectMedia({ study }: { study: ProjectCaseStudy }) {
 }
 
 /** Self-contained project reader. Any #project/ID link on the page opens it. */
-export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoffComplete }: { handoffProjectId?: string; handoffRestoreFocus?: boolean; onHandoffComplete?: () => void } = {}) {
+export function ProjectDetail({ arrival, onArrivalComplete, onLeave, onClosed }: ProjectDetailProps = {}) {
   const [activeId, setActiveId] = useState<string | null>(projectIdFromHash);
   const activeIdRef = useRef(activeId);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -130,18 +152,32 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
   const project = projects.find(item => item.id === activeId);
   const publication = study?.publicationId ? publications.find(item => item.id === study.publicationId) : undefined;
   const editorialFigures = study?.figureLayout === 'editorial' ? study.figures ?? [] : [];
-  const isBookHandoff = Boolean(activeId && activeId === handoffProjectId);
-  const bookSessionRef = useRef(false);
-  if (isBookHandoff) bookSessionRef.current = true;
-  if (!activeId) bookSessionRef.current = false;
+
+  // The colour veil: it already covers the reader when it opens behind the
+  // page panel (`hold`, then `reveal`), and rises over the reader again before
+  // it closes (`idle`, then `cover`).
+  const isArriving = Boolean(activeId && arrival && arrival.id === activeId);
+  const arrivedRef = useRef(false);
+  if (isArriving) arrivedRef.current = true;
+  if (!activeId) arrivedRef.current = false;
+  const [veilPhase, setVeilPhase] = useState<WipePhase | null>(null);
+  const veilColours = useRef<WipeColours | null>(null);
+  const leavingRef = useRef(false);
+  const arrivalRef = useRef(arrival);
+  arrivalRef.current = arrival;
+  const onClosedRef = useRef(onClosed);
+  onClosedRef.current = onClosed;
+  const veil = veilPhase && veilColours.current
+    ? { ...veilColours.current, phase: veilPhase }
+    : isArriving && arrival ? { ink: arrival.ink, paper: arrival.paper, name: arrival.name, number: arrival.number, phase: 'hold' as WipePhase } : null;
 
   useEffect(() => {
-    if (!isBookHandoff || !onHandoffComplete) return;
-    // Keep the expanding paper beneath the transparent native dialog until
-    // both the surface movement and the reader content entrance have ended.
-    const timer = window.setTimeout(onHandoffComplete, 900);
-    return () => window.clearTimeout(timer);
-  }, [isBookHandoff, onHandoffComplete]);
+    if (!isArriving || !arrival) return;
+    veilColours.current = arrival;
+    let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => setVeilPhase('reveal')); });
+    const timer = window.setTimeout(() => { setVeilPhase(null); onArrivalComplete?.(); }, VEIL_LIFT_MS);
+    return () => { cancelAnimationFrame(frame); window.clearTimeout(timer); };
+  }, [isArriving, arrival, onArrivalComplete]);
 
   useEffect(() => {
     const syncHash = () => {
@@ -167,15 +203,18 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
     if (activeId) {
       lastProjectRef.current = activeId;
       if (!dialog.open) {
-        const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        // A sweep passes its initiating control and activation modality
+        // explicitly. Direct hash links use :focus-visible as the browser's
+        // own modality signal.
+        const arrived = arrivalRef.current?.id === activeId ? arrivalRef.current : null;
+        const opener = arrived ? arrived.opener : document.activeElement instanceof HTMLElement ? document.activeElement : null;
         openerRef.current = opener;
-        // The animated book passes its activation modality explicitly. Direct
-        // hash links use :focus-visible as the browser's own modality signal.
-        restoreFocusRef.current = isBookHandoff
-          ? handoffRestoreFocus === true
+        restoreFocusRef.current = arrived
+          ? arrived.restoreFocus
           : Boolean(opener && opener !== document.body && opener.matches(':focus-visible'));
         previousOverflowRef.current = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+        pauseScroll(true);
         dialog.showModal();
       }
       dialog.scrollTop = 0;
@@ -185,6 +224,10 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
       if (previousOverflowRef.current !== null) document.body.style.overflow = previousOverflowRef.current;
       previousOverflowRef.current = null;
       openedFromPageRef.current = false;
+      leavingRef.current = false;
+      setVeilPhase(null);
+      pauseScroll(false);
+      onClosedRef.current?.();
       frame = requestAnimationFrame(() => {
         const opener = openerRef.current;
         if (restoreFocusRef.current) {
@@ -201,7 +244,7 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
     return () => cancelAnimationFrame(frame);
   }, [activeId]);
 
-  function closeProject() {
+  function leaveReader() {
     if (openedFromPageRef.current) {
       window.history.back();
     } else {
@@ -212,6 +255,18 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
     }
   }
 
+  function closeProject() {
+    if (leavingRef.current) return;
+    const colours = activeId && onLeave && !reducedMotion() ? coloursFor(activeId) : null;
+    if (!colours || !onLeave) { leaveReader(); return; }
+    // Cover the reader with its colour first, then hand the panel to the page.
+    leavingRef.current = true;
+    veilColours.current = colours;
+    setVeilPhase('idle');
+    requestAnimationFrame(() => requestAnimationFrame(() => setVeilPhase('cover')));
+    window.setTimeout(() => onLeave(colours, leaveReader), VEIL_COVER_MS);
+  }
+
   function changeProject(id: string) {
     // Keep one browser-history entry for the reader, so Back returns to the page.
     window.history.replaceState(window.history.state, '', `#project/${id}`);
@@ -220,7 +275,8 @@ export function ProjectDetail({ handoffProjectId, handoffRestoreFocus, onHandoff
   }
 
   return (
-    <dialog className={`project-dialog${bookSessionRef.current ? ' from-book' : ''}${isBookHandoff ? ' is-book-handoff' : ''}`} ref={dialogRef} aria-labelledby="project-detail-title" onCancel={event => { event.preventDefault(); closeProject(); }}>
+    <dialog className={`project-dialog${arrivedRef.current ? ' is-arriving' : ''}`} ref={dialogRef} aria-labelledby="project-detail-title" data-lenis-prevent onCancel={event => { event.preventDefault(); closeProject(); }}>
+      {veil && <ReaderWipe {...veil} />}
       {study && project && <>
         <header className="project-reader-header">
           <button type="button" className="project-back-button" onClick={closeProject}><ArrowLeft size={17} aria-hidden="true" /><span>Back to page</span></button>

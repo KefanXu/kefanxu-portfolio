@@ -150,7 +150,7 @@
 .mood__copy { display: grid; gap: clamp(16px, 1.8vw, 26px); justify-items: start; align-content: center; height: 100%; padding: clamp(28px, 4.4vw, 72px); }
 .mood__question { font: 500 clamp(1.7rem, 3vw, 3rem)/1.04 var(--sans); font-stretch: 92%; letter-spacing: -0.035em; max-width: 12ch; }
 .mood__slider { position: relative; width: min(100%, 380px); height: 48px; border-radius: 999px; background: #fff; box-shadow: 0 10px 30px -14px rgba(21, 38, 62, 0.35); }
-.mood__slider input { position: absolute; z-index: 2; inset: 0; width: calc(100% - 24px); height: 100%; margin: 0 12px; padding: 0; background: transparent; -webkit-appearance: none; appearance: none; }
+.mood__slider input[type='range'] { position: absolute; z-index: 2; inset: 0; width: calc(100% - 24px); height: 100%; margin: 0 12px; padding: 0; background: transparent; -webkit-appearance: none; appearance: none; }
 .mood__slider input::-webkit-slider-runnable-track { height: 48px; background: transparent; }
 .mood__slider input::-moz-range-track { height: 48px; background: transparent; }
 .mood__slider input::-webkit-slider-thumb {

@@ -1,0 +1,118 @@
+/*
+ * Motion for the researcher site: smooth scrolling, entrances, the cursor
+ * label, magnetic links and the reader colour sweep. The primitives are shared
+ * with the designer mode (src/design/components); the measurements here are
+ * tuned to the quieter academic page. Every effect is off under reduced motion.
+ */
+:root {
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-in-out: cubic-bezier(.77, 0, .18, 1);
+}
+
+/* ── Smooth scrolling (Lenis) ──────────────────────────────────────────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+/* ── Section entrances ─────────────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity 800ms var(--ease-out) var(--d, 0ms), transform 1050ms var(--ease-out) var(--d, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal='fade'] { transform: none; }
+[data-reveal].is-in { opacity: 1; transform: none; will-change: auto; }
+
+/* Headings arrive one word at a time from behind a baseline mask. */
+.words { display: block; }
+.words__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.words__line { display: block; }
+.words__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: .1em .09em .19em .05em;
+  margin: -.1em -.09em -.19em -.05em;
+}
+.words__word > span {
+  display: inline-block;
+  transform: translate3d(0, 108%, 0) rotate(1.5deg);
+  transform-origin: 0 100%;
+  transition: transform 1000ms var(--ease-out) calc(var(--d, 0ms) + var(--i, 0) * 48ms);
+  will-change: transform;
+}
+.words.is-in .words__word > span { transform: none; will-change: auto; }
+
+/* ── Pointer details ───────────────────────────────────────────────────── */
+[data-magnetic] { transition: transform 600ms var(--ease-out), color 200ms ease, border-color 200ms ease, background-color 200ms ease; will-change: transform; }
+
+.cursor { position: fixed; z-index: 40; top: 0; left: 0; pointer-events: none; will-change: transform; }
+.cursor__bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font: 500 11.5px/1.2 var(--sans);
+  letter-spacing: .03em;
+  text-align: center;
+  box-shadow: 0 16px 30px -16px #1f6f66b3;
+  transform: scale(0);
+  transition: transform 460ms var(--ease-out);
+}
+.cursor__bubble span { max-width: 7ch; }
+.cursor.is-on .cursor__bubble { transform: scale(1); }
+.cursor.is-on.is-down .cursor__bubble { transform: scale(.86); }
+
+/* ── Reader colour sweep ───────────────────────────────────────────────── */
+/* One panel in the project's cover colours: it rises over the page, the
+   reader opens behind it, and it keeps rising to uncover the reader. The same
+   markup serves as the veil inside the reader dialog, which lives in the
+   browser's top layer above any page element. */
+.reader-wipe {
+  position: fixed;
+  z-index: 990;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--wipe-bg, var(--teal));
+  color: var(--wipe-ink, #fff);
+  clip-path: inset(100% 0 0 0);
+  pointer-events: none;
+}
+.reader-wipe--cover { pointer-events: auto; clip-path: inset(0 0 0 0); transition: clip-path 640ms var(--ease-in-out); }
+.reader-wipe--hold { pointer-events: auto; clip-path: inset(0 0 0 0); }
+.reader-wipe--reveal { clip-path: inset(0 0 100% 0); transition: clip-path 760ms var(--ease-in-out); }
+.reader-wipe__inner { display: grid; justify-items: center; gap: 18px; padding: 24px; text-align: center; }
+.reader-wipe__label {
+  font: 400 clamp(46px, 7.4vw, 104px)/1 var(--serif);
+  letter-spacing: -.045em;
+  opacity: 0;
+  transform: translateY(36%);
+}
+.reader-wipe__meta { font: 500 9px/1.6 var(--sans); letter-spacing: .14em; text-transform: uppercase; opacity: 0; }
+.reader-wipe--cover .reader-wipe__label { opacity: 1; transform: none; transition: opacity 420ms ease 200ms, transform 820ms var(--ease-out) 180ms; }
+.reader-wipe--cover .reader-wipe__meta { opacity: .74; transition: opacity 420ms ease 380ms; }
+.reader-wipe--hold .reader-wipe__label { opacity: 1; transform: none; }
+.reader-wipe--hold .reader-wipe__meta { opacity: .74; }
+.reader-wipe--reveal .reader-wipe__label { opacity: 1; transform: translateY(-30%); transition: transform 760ms var(--ease-in-out); }
+.reader-wipe--reveal .reader-wipe__meta { opacity: .74; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .words__word > span { transform: none !important; transition: none !important; }
+  [data-magnetic] { transition: none; }
+  .cursor { display: none; }
+}
+@media print {
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .words__word > span { transform: none !important; }
+  .cursor, .reader-wipe { display: none !important; }
+}

@@ -219,10 +219,12 @@
   white-space: nowrap;
   border: 0;
 }
+/* On hover the cover lifts, straightens, and leans toward the pointer
+   (--tx/--ty are set from JavaScript while the pointer is over the card). */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .research-folio:hover, .research-folio:focus-within { --hov: 1; --lift: -9px; }
   .research-folio:hover .folio-book,
   .research-folio:focus-within .folio-book {
-    transform: translateY(-9px) rotateY(0deg) rotateZ(0deg);
     box-shadow: 2px 2px 2px #23372d18, 17px 22px 27px -14px #263c3b42;
   }
   .research-folio:hover .folio-stage::after { opacity: 0.065; transform: scale(0.88); }
@@ -286,44 +288,19 @@
   .research-folio-grid > .research-folio:last-child:nth-child(3n + 1) { grid-column: 2; }
 }
 .folio-orientation { position: relative; width: 100%; max-width: 278px; transform-style: preserve-3d; }
-.folio-book { transform: rotateY(calc(var(--book-turn) * .35)) rotateZ(calc(var(--book-rotation) * .3)); }
+.folio-book {
+  transform:
+    translate3d(0, var(--lift, 0px), 0)
+    rotateX(calc(var(--ty, 0) * -9deg))
+    rotateY(calc(var(--book-turn) * .35 * (1 - var(--hov, 0)) + var(--tx, 0) * 15deg))
+    rotateZ(calc(var(--book-rotation) * .3 * (1 - var(--hov, 0))));
+  transition: transform 560ms cubic-bezier(.22, 1, .36, 1), box-shadow 800ms;
+}
 .folio-spine { position: absolute; top: 0; bottom: 0; width: 11px; left: -10px; transform: rotateY(-90deg); transform-origin: right; background: linear-gradient(90deg, #00000014, transparent 75%), var(--cover-color); border-radius: 3px 0 0 3px; }
-.folio-open-hint { position: absolute; bottom: 11px; left: 50%; transform: translate(-50%, 6px); display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 9px; color: var(--teal); opacity: 0; transition: opacity 300ms ease, transform 300ms ease; }
-.folio-stage:hover .folio-open-hint, .folio-stage:focus-visible .folio-open-hint { opacity: 1; transform: translate(-50%, 0); }
 .folio-project-link { display: inline-flex; min-height: 42px; padding: 5px 0; border: 0; border-bottom: 1px solid #b4c7ba; border-radius: 0; gap: 18px; line-height: 1.4; background: none; transition: color 220ms, border-color 220ms; }
 .folio-project-link:hover { color: var(--teal); background: none; border-color: var(--teal); }
 .folio-project-link svg { flex-shrink: 0; color: var(--teal); transition: transform 220ms ease; }
 .folio-project-link:hover svg { transform: translate(2px, -2px); }
-
-/* The clicked folio becomes an open book before its editorial reader appears. */
-.book-opening-scene { position: fixed; inset: 0; z-index: 1000; width: 100%; height: 100dvh; overflow: hidden; pointer-events: auto; }
-.book-opening-backdrop { position: absolute; inset: 0; background: #fafcf9f5; backdrop-filter: blur(10px); }
-.book-opening-position { position: absolute; perspective: 1350px; container-type: inline-size; }
-.book-opening-object { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
-.book-opening-pageblock { position: absolute; inset: 4px -8px -5px 5px; border: 1px solid #d4d7cd; border-radius: 0 4px 4px 0; background: repeating-linear-gradient(0deg, #fffefa 0 1px, #dcded3 1px 2px, #fafaf4 2px 4px); box-shadow: 12px 22px 30px -16px #233a3261; }
-.book-opening-paper { position: absolute; inset: 0; background: linear-gradient(90deg, #d9ddcf 0, #f4f4ea 3%, #fffef8 13%, #fffefa 95%, #eeeee4); padding: 10% 11% 8% 13%; display: flex; flex-direction: column; color: #314d3e; border: 1px solid #e0e2d7; border-radius: 1px 3px 3px 1px; }
-.book-paper-kicker { font-size: clamp(5px, 2.2cqw, 8px); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 17%; }
-.book-paper-title { font-family: var(--serif); font-size: clamp(22px, 13cqw, 47px); line-height: 1; letter-spacing: -.04em; }
-.book-paper-theme { font-family: var(--serif); font-size: clamp(11px, 5.5cqw, 19px); font-style: italic; line-height: 1.2; margin-top: 6%; }
-.book-paper-rule { height: 1px; width: 24%; margin: 12% 0 8%; background: #759880; }
-.book-opening-paper p { font-family: var(--sans); font-size: clamp(7px, 3.5cqw, 12px); line-height: 1.8; color: #697467; margin: 0; }
-.book-paper-author { margin-top: auto; font-size: clamp(6px, 2.3cqw, 8px); padding-top: 10%; letter-spacing: .12em; text-transform: uppercase; }
-.book-opening-hinge { position: absolute; inset: 0; transform-origin: left center; transform-style: preserve-3d; }
-.book-opening-front, .book-opening-inner { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.book-opening-front { transform: translateZ(1px); }
-.book-opening-front .folio-cover { padding: 8% 7% 6% 9%; }
-.book-opening-front .folio-cover-top { font-size: clamp(5px, 2.4cqw, 8px); margin-bottom: 10%; }
-.book-opening-front .folio-cover-title { font-size: clamp(23px, 13cqw, 44px); }
-.book-opening-front .folio-cover-theme { font-size: clamp(10px, 5.5cqw, 19px); }
-.book-opening-front .folio-cover-bottom { font-size: clamp(4px, 2cqw, 7px); }
-.book-opening-inner { transform: rotateY(180deg) translateZ(1px); background: linear-gradient(90deg, #f1f1e5 92%, #d5d9cd); color: #79907b; border: 1px solid #d5dbcd; display: flex; flex-direction: column; justify-content: space-between; padding: 12%; box-shadow: -6px 19px 27px -18px #20362a40; }
-.book-opening-inner > span { font-size: clamp(5px, 2.4cqw, 8px); line-height: 1.8; letter-spacing: .12em; }
-.book-endpaper-orbits { position: relative; height: 50%; width: 100%; display: grid; place-items: center; }
-.book-endpaper-orbits i { position: absolute; width: 75%; height: 75%; border: 1px solid #b4c1ae; border-radius: 50%; }
-.book-endpaper-orbits i:nth-child(2) { width: 35%; transform: rotate(30deg); }
-.book-endpaper-orbits i:nth-child(3) { height: 30%; transform: rotate(-25deg); }
-.book-opening-label { position: absolute; left: 0; right: 0; bottom: max(35px, 9vh); text-align: center; font-family: var(--serif); font-size: 25px; line-height: 1.2; color: var(--teal); margin: 0; }
-.book-opening-label span { display: block; margin-top: 10px; font: 9px var(--sans); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
 
 @media (max-width: 1000px) {
   .research-folio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 50px 58px; margin-top: 30px; }
@@ -357,22 +334,9 @@
   .folio-cover-theme { font-size: 16px; }
   .folio-overview { min-height: 0; }
   .folio-project-link { min-height: 44px; }
-  .book-opening-scene { max-width: none; }
-  .book-opening-label { font-size: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .folio-book, .folio-stage::after, .folio-open-hint, .folio-project-link, .folio-project-link svg { transition: none; }
+  .folio-book, .folio-stage::after, .folio-project-link, .folio-project-link svg { transition: none; }
+  .folio-book { transform: rotateY(calc(var(--book-turn) * .35)) rotateZ(calc(var(--book-rotation) * .3)); }
   .folio-project-link:hover svg { transform: none; }
-  .folio-stage:hover .folio-open-hint, .folio-stage:focus-visible .folio-open-hint { transform: translate(-50%, 0); }
-}
-
-/* The exposed paper grows into the reader's surface without a scene cut. */
-.book-paper-content { position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; }
-.book-opening-paper { overflow: hidden; transition: border-color 500ms ease, border-radius 500ms ease; }
-.book-opening-paper::after { content: ''; position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity 650ms ease; }
-.book-opening-scene.is-handoff .book-opening-paper { border-color: transparent; border-radius: 0; }
-.book-opening-scene.is-handoff .book-opening-paper::after { opacity: 1; }
-.book-opening-scene.is-handoff { pointer-events: none; }
-@media (prefers-reduced-motion: reduce) {
-  .book-opening-paper, .book-opening-paper::after { transition: none; }
 }

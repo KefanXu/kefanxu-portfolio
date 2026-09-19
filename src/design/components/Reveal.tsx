@@ -68,7 +68,7 @@ export function useRevealRef<T extends Element>(clipped = false) {
   return ref;
 }
 
-type Tag = 'div' | 'section' | 'article' | 'figure' | 'li' | 'p' | 'span' | 'header' | 'footer' | 'ul' | 'dl' | 'a';
+type Tag = 'div' | 'section' | 'article' | 'figure' | 'li' | 'p' | 'span' | 'header' | 'footer' | 'ul' | 'ol' | 'dl' | 'a' | 'h2' | 'h3' | 'h4';
 
 interface RevealProps {
   as?: Tag;

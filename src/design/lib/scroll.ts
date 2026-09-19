@@ -21,6 +21,7 @@ let lastW = 0;
 let lastH = 0;
 let direction: 1 | -1 = 1;
 let forced = true;
+let paused = false;
 const subscribers = new Set<Subscriber>();
 
 export const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,7 +51,12 @@ export function startScroll() {
       wheelMultiplier: 0.95,
       smoothWheel: true,
       anchors: false,
+      // Scrollable children (a reader dialog, a citation box) keep the wheel.
+      allowNestedScroll: true,
     });
+    // A modal that opened before the scroller existed (a direct reader URL)
+    // has already asked for it to wait.
+    if (paused) lenis.stop();
   }
   cancelAnimationFrame(rafId);
   rafId = requestAnimationFrame(loop);
@@ -96,6 +102,20 @@ export function scrollToElement(target: HTMLElement | string, offset = 0) {
     const top = element.getBoundingClientRect().top + window.scrollY + offset;
     window.scrollTo({ top, behavior: reducedMotion() ? 'auto' : 'smooth' });
   }
+}
+
+/** Scroll the page to an absolute position through the smooth scroller. */
+export function scrollToY(top: number, immediate = false) {
+  if (lenis) lenis.scrollTo(top, { immediate, duration: 1.3, easing: t => 1 - Math.pow(1 - t, 4), force: true });
+  else window.scrollTo({ top, behavior: immediate || reducedMotion() ? 'auto' : 'smooth' });
+  forced = true;
+}
+
+/** Pause or resume smooth scrolling while a modal owns the wheel; styles untouched. */
+export function pauseScroll(pause: boolean) {
+  paused = pause;
+  if (pause) lenis?.stop();
+  else lenis?.start();
 }
 
 export function lockScroll(locked: boolean) {

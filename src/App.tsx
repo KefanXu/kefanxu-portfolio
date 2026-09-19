@@ -1,12 +1,17 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, BookOpen } from 'lucide-react';
-import { motion, MotionConfig, useReducedMotion, useScroll } from 'framer-motion';
+import { motion, MotionConfig, useScroll } from 'framer-motion';
 import { HeroIntro } from './components/academic/HeroIntro';
 import { About } from './components/academic/About';
 import { ResearchPractice } from './components/academic/ResearchPractice';
 import { ResearchGallery } from './components/academic/ResearchGallery';
 import { Publications } from './components/academic/Publications';
 import { ResearchPerspective } from './components/academic/ResearchPerspective';
+import { Words } from './components/academic/Words';
+import { useMagnetic } from './components/academic/motion';
+import { Cursor } from './design/components/Cursor';
+import { Reveal, setRevealGate } from './design/components/Reveal';
+import { reducedMotion, scrollToElement, startScroll } from './design/lib/scroll';
 import { personalInfo } from './data/portfolio';
 import { projectCaseStudies } from './data/projectCaseStudies';
 import cvPdf from './assets/KefanXu_CV.pdf';
@@ -40,9 +45,9 @@ function App() {
   const [activeSection, setActiveSection] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
-  const reducedMotion = useReducedMotion();
+  const cvLink = useMagnetic<HTMLAnchorElement>(0.2);
+  const backToTop = useMagnetic<HTMLAnchorElement>(0.24);
   const { scrollYProgress: pageProgress } = useScroll();
-  const ease = [0.22, 1, 0.36, 1] as const;
 
   useLayoutEffect(() => {
     // A normal visit always starts at the introduction. Clear a section hash
@@ -89,6 +94,41 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // Smooth scrolling and the shared frame loop behind every scroll-linked
+    // piece. Entrances wait for the web fonts (briefly) so words are not
+    // revealed in a fallback face and then reflowed.
+    const stopScroll = startScroll();
+    let opened = false;
+    const openGate = () => { if (!opened) { opened = true; setRevealGate(true); } };
+    const timer = window.setTimeout(openGate, 700);
+    document.fonts?.ready.then(openGate);
+    return () => { window.clearTimeout(timer); stopScroll(); };
+  }, []);
+
+  useEffect(() => {
+    // In-page links glide to their section instead of jumping. Keyboard
+    // activation keeps the native anchor behaviour, which also moves the
+    // sequential-focus starting point; reader links are handled by the gallery.
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.detail === 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = (event.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+      if (!link || link.classList.contains('skip-link') || reducedMotion()) return;
+      const id = link.getAttribute('href')!.slice(1);
+      if (!id || id.includes('/')) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      event.preventDefault();
+      if (window.location.hash !== `#${id}`) history.pushState(null, '', `#${id}`);
+      // A link in the open phone menu closes it, and the collapsing menu pulls
+      // everything below up by its height; aim at where the section will land.
+      const menuHeight = document.querySelector('.mobile-nav')?.getBoundingClientRect().height ?? 0;
+      scrollToElement(target, -menuHeight);
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
+
+  useEffect(() => {
     document.documentElement.classList.remove('dark');
     let frame = 0;
     const updateReadingPosition = () => {
@@ -130,7 +170,7 @@ function App() {
       <div className="header-inner">
         <a className="wordmark" href="#home" aria-label="Kefan Xu, home" onClick={() => { setMenuOpen(false); setActiveSection(''); }}><img src={clover} alt="" width="32" height="32" />Kefan Xu<span className="wordmark-dot">.</span></a>
         <nav className="desktop-nav" aria-label="Main navigation">{navigation.map(({ id, label }) => <a key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined}>{label}</a>)}</nav>
-        <a className="cv-link" href={cvPdf} target="_blank" rel="noopener noreferrer">Curriculum vitae <ArrowUpRight size={16} /></a>
+        <a ref={cvLink} className="cv-link" href={cvPdf} target="_blank" rel="noopener noreferrer">Curriculum vitae <ArrowUpRight size={16} /></a>
         <button ref={menuButton} className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(open => !open)}>
           <span className="menu-icon" aria-hidden="true">
             <span />
@@ -156,10 +196,11 @@ function App() {
       <ResearchPractice />
       <Publications />
       <footer id="contact" className="contact-footer"><div className="section-shell">
-        <motion.div className="footer-main" initial={reducedMotion ? false : { opacity: 0, y: 45 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 1, ease }}><div><p className="eyebrow">CONTACT</p><h2>Research inquiries<br />&amp; <em>collaboration.</em></h2></div><div className="footer-contact"><a className="email-link" href="mailto:kefanxu@gatech.edu">kefanxu@gatech.edu <ArrowUpRight size={24} /></a><p>Human-Centered Computing · Georgia Tech</p><div className="social-links"><a href={personalInfo.social.scholar} target="_blank" rel="noopener noreferrer"><BookOpen size={16} />Google Scholar<ArrowUpRight size={14} /></a><a href={personalInfo.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<ArrowUpRight size={14} /></a><a href={personalInfo.social.github} target="_blank" rel="noopener noreferrer">GitHub<ArrowUpRight size={14} /></a></div></div></motion.div>
-        <div className="footer-bottom"><a className="wordmark" href="#home">Kefan Xu<span className="wordmark-dot">.</span></a><span>© {new Date().getFullYear()} Kefan Xu · Atlanta, GA</span><a href="#home">Back to top <ArrowRight className="back-top-icon" size={16} /></a></div>
+        <div className="footer-main"><div><Reveal as="p" kind="fade" className="eyebrow">CONTACT</Reveal><Words as="h2" text="Research inquiries | & *collaboration.*" /></div><Reveal className="footer-contact" delay={220}><a className="email-link" href="mailto:kefanxu@gatech.edu">kefanxu@gatech.edu <ArrowUpRight size={24} /></a><p>Human-Centered Computing · Georgia Tech</p><div className="social-links"><a href={personalInfo.social.scholar} target="_blank" rel="noopener noreferrer"><BookOpen size={16} />Google Scholar<ArrowUpRight size={14} /></a><a href={personalInfo.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<ArrowUpRight size={14} /></a><a href={personalInfo.social.github} target="_blank" rel="noopener noreferrer">GitHub<ArrowUpRight size={14} /></a></div></Reveal></div>
+        <div className="footer-bottom"><a className="wordmark" href="#home">Kefan Xu<span className="wordmark-dot">.</span></a><span>© {new Date().getFullYear()} Kefan Xu · Atlanta, GA</span><a ref={backToTop} href="#home">Back to top <ArrowRight className="back-top-icon" size={16} /></a></div>
       </div></footer>
     </main>
+    <Cursor />
   </MotionConfig>;
 }
 export default App;

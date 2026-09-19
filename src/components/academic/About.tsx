@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 import cvPdf from '../../assets/KefanXu_CV.pdf';
+import { Reveal } from '../../design/components/Reveal';
+import { Words } from './Words';
 import './About.css';
 
 const education = [
@@ -10,24 +11,22 @@ const education = [
 ];
 
 export function About() {
-  const reducedMotion = useReducedMotion();
-  const ease = [0.22, 1, 0.36, 1] as const;
   return (
     <section id="about" className="biography section-shell" aria-labelledby="about-title">
-      <motion.div className="biography-copy" initial={reducedMotion ? false : { opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.9, ease }}>
-        <p className="eyebrow">01 / ABOUT</p>
-        <h2 id="about-title">Kefan Xu</h2>
-        <p>I am a PhD student in Human-Centered Computing at Georgia Tech, advised by Dr. Rosa I. Arriaga. I design and study sensing systems and reflection tools for people with chronic conditions and their caregivers.</p>
-        <a className="text-link" href={cvPdf} target="_blank" rel="noopener noreferrer">Curriculum vitae <ArrowUpRight size={16} aria-hidden="true" /></a>
-      </motion.div>
+      <div className="biography-copy">
+        <Reveal as="p" kind="fade" className="eyebrow">01 / ABOUT</Reveal>
+        <Words as="h2" id="about-title" text="Kefan Xu" />
+        <Reveal as="p" delay={160}>I am a PhD student in Human-Centered Computing at Georgia Tech, advised by Dr. Rosa I. Arriaga. I design and study sensing systems and reflection tools for people with chronic conditions and their caregivers.</Reveal>
+        <Reveal as="a" kind="fade" delay={320} className="text-link" href={cvPdf} target="_blank" rel="noopener noreferrer">Curriculum vitae <ArrowUpRight size={16} aria-hidden="true" /></Reveal>
+      </div>
       <div className="biography-education">
-        <h3 className="eyebrow">EDUCATION</h3>
+        <Reveal as="h3" kind="fade" className="eyebrow" delay={120}>EDUCATION</Reveal>
         <ol>
           {education.map((item, index) => (
-            <motion.li key={item.period} initial={reducedMotion ? false : { opacity: 0, x: 25 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, delay: index * 0.1, ease }}>
+            <Reveal as="li" key={item.period} delay={200 + index * 110}>
               <span className="biography-period">{item.period}</span>
               <div><p className="biography-degree">{item.degree}</p><p className="biography-school">{item.school}</p></div>
-            </motion.li>
+            </Reveal>
           ))}
         </ol>
       </div>

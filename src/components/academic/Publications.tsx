@@ -1,10 +1,12 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, Check, ChevronDown, Copy, Search } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import { publications } from '../../data/publications';
 import { personalInfo } from '../../data/portfolio';
 import { projectCaseStudies } from '../../data/projectCaseStudies';
 import generatedPublications from '../../data/publications.generated.json';
+import { Reveal } from '../../design/components/Reveal';
+import { Words } from './Words';
 import './Publications.css';
 
 const orderedPublications = [...publications]
@@ -85,11 +87,12 @@ function Citation({ bibtex }: { bibtex: string }) {
   );
 }
 
-function PublicationRow({ publication, expanded, onToggle, animate }: {
+function PublicationRow({ publication, expanded, onToggle, animate, delay }: {
   publication: (typeof orderedPublications)[number];
   expanded: boolean;
   onToggle: () => void;
   animate: boolean;
+  delay: number;
 }) {
   const titleId = `pub-title-${publication.id}`;
   const panelId = `pub-panel-${publication.id}`;
@@ -163,23 +166,15 @@ function PublicationRow({ publication, expanded, onToggle, animate }: {
   }
 
   return (
-    <motion.li
-      className="pub-row"
-      data-expanded={expanded}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <Reveal as="li" className="pub-row" data-expanded={expanded} delay={delay}>
       {content}
-    </motion.li>
+    </Reveal>
   );
 }
 
 export function Publications() {
   const reducedMotion = useReducedMotion();
   const safari = isSafariBrowser();
-  const ease = [0.22, 1, 0.36, 1] as const;
   const [query, setQuery] = useState('');
   const [year, setYear] = useState('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -203,18 +198,18 @@ export function Publications() {
   return (
     <section className="pub-section" id="publications" aria-labelledby="publications-heading" data-safari={safari || undefined}>
       <div className="section-shell">
-        <motion.header className="pub-header" initial={reducedMotion ? false : { opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.9, ease }}>
+        <header className="pub-header">
           <div>
-            <p className="eyebrow">05 / PUBLICATIONS</p>
-            <h2 id="publications-heading" className="section-heading">Publications</h2>
+            <Reveal as="p" kind="fade" className="eyebrow">05 / PUBLICATIONS</Reveal>
+            <Words as="h2" id="publications-heading" className="section-heading" text="Publications" />
           </div>
-          <a className="text-link pub-scholar" href={personalInfo.social.scholar} target="_blank" rel="noopener noreferrer">
+          <Reveal as="a" kind="fade" delay={220} className="text-link pub-scholar" href={personalInfo.social.scholar} target="_blank" rel="noopener noreferrer">
             Google Scholar <ArrowUpRight size={17} aria-hidden="true" />
             <span className="pub-sr-only"> (opens in a new tab)</span>
-          </a>
-        </motion.header>
+          </Reveal>
+        </header>
 
-        <div className="pub-controls">
+        <Reveal className="pub-controls" delay={160}>
           <div className="pub-search-field">
             <label htmlFor="publication-search">Search publications</label>
             <div className="pub-search-input">
@@ -241,16 +236,17 @@ export function Publications() {
               ? `${orderedPublications.length} publications`
               : `${filteredPublications.length} of ${orderedPublications.length} publications`}
           </p>
-        </div>
+        </Reveal>
 
         <ol id="publication-list" className="pub-list">
-          {filteredPublications.map((publication) => (
+          {filteredPublications.map((publication, index) => (
             <PublicationRow
               key={publication.id}
               publication={publication}
               expanded={expandedId === publication.id}
               onToggle={() => setExpandedId((current) => current === publication.id ? null : publication.id)}
               animate={!reducedMotion && !safari && !query && year === 'all'}
+              delay={Math.min(index, 5) * 70}
             />
           ))}
         </ol>
