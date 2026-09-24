@@ -61,6 +61,12 @@ function ResearchFolio({ study, index }: { study: ResearchBookStudy; index: numb
 
 type Wipe = WipeColours & { phase: WipePhase };
 
+/* The opening follows the designer site's page wipe: the colour panel rises
+   over the page (COVER_MS), the reader opens behind it, and the panel keeps
+   rising off the reader (REVEAL_MS, timed in ProjectDetail). */
+const COVER_MS = 760;
+const REVEAL_MS = 900;
+
 export function ResearchGallery() {
   const [wipe, setWipe] = useState<Wipe | null>(null);
   const [arrival, setArrival] = useState<ReaderArrival | null>(null);
@@ -68,8 +74,12 @@ export function ResearchGallery() {
   wipeRef.current = wipe;
   const releaseRef = useRef<(() => void) | null>(null);
   const timers = useRef<number[]>([]);
+  const frames = useRef<number[]>([]);
   const later = useCallback((callback: () => void, delay: number) => { timers.current.push(window.setTimeout(callback, delay)); }, []);
-  const clearTimers = useCallback(() => { timers.current.forEach(timer => window.clearTimeout(timer)); timers.current = []; }, []);
+  const clearTimers = useCallback(() => {
+    timers.current.forEach(timer => window.clearTimeout(timer)); timers.current = [];
+    frames.current.forEach(frame => window.cancelAnimationFrame(frame)); frames.current = [];
+  }, []);
 
   useEffect(() => () => { clearTimers(); releaseRef.current?.(); }, [clearTimers]);
 
@@ -109,14 +119,21 @@ export function ResearchGallery() {
       };
 
       setArrival({ id, ...colours, opener: link, restoreFocus });
-      setWipe({ ...colours, phase: 'cover' });
+      // Mount the panel below the viewport first, so the switch to `cover`
+      // a frame later plays as a rise rather than appearing already in place.
+      setWipe({ ...colours, phase: 'idle' });
+      frames.current.push(requestAnimationFrame(() => {
+        frames.current.push(requestAnimationFrame(() => setWipe(current => current?.phase === 'idle' ? { ...current, phase: 'cover' } : current)));
+      }));
+      // Two frames of lead-in, then the full rise, before the reader opens
+      // behind the panel with its own veil already in place.
       later(() => {
         releaseRef.current?.();
         setWipe(current => current && { ...current, phase: 'hold' });
         window.location.hash = `project/${id}`;
-      }, 600);
+      }, COVER_MS + 30);
       // By now the reader and its own veil are on top; the page panel can go.
-      later(() => setWipe(current => current?.phase === 'hold' ? null : current), 1000);
+      later(() => setWipe(current => current?.phase === 'hold' ? null : current), COVER_MS + 360);
     };
     document.addEventListener('click', onClick);
     return () => document.removeEventListener('click', onClick);
@@ -159,7 +176,7 @@ export function ResearchGallery() {
   const onClosed = useCallback(() => {
     if (wipeRef.current?.phase !== 'hold') return;
     later(() => setWipe(current => current?.phase === 'hold' ? { ...current, phase: 'reveal' } : current), 60);
-    later(() => setWipe(current => current?.phase === 'reveal' ? null : current), 60 + 800);
+    later(() => setWipe(current => current?.phase === 'reveal' ? null : current), 60 + REVEAL_MS + 40);
   }, [later]);
 
   return <>

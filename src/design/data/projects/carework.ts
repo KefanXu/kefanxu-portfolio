@@ -85,8 +85,22 @@ export const carework: Project = {
       ],
     },
     {
+      type: 'live',
+      eyebrow: '04 — Try it',
+      title: 'Run the *prototype.*',
+      body: 'The build the clinicians evaluated, live in the page. It opens on a fictional patient ledger with a short built-in tour; skip the tour if you would rather explore on your own.',
+      url: 'https://care-work.vercel.app',
+      poster: { src: img('carework/shot-04.webp'), alt: 'CareWork dashboard: a patient ledger with the current homework packet, task cards and the stage bar.' },
+      guide: [
+        { title: 'Open a patient', body: 'The panel on the left holds three fictional patients. Each has one active homework packet and an iteration history along the top.' },
+        { title: 'Move through the stages', body: 'The bar at the bottom steps from Create to Review to Iterate. Every AI draft arrives as a proposal you can edit, retry or accept.' },
+        { title: 'Ask for help', body: 'The assistant can summarise a month of patient reports or draft an evaluation note, and its source stays beside the output.' },
+      ],
+      note: 'Every patient and every data point is fictional and AI-synthesised. AI features call a live model, so a draft can take a few seconds. Best explored on a laptop or larger screen.',
+    },
+    {
       type: 'gallery',
-      eyebrow: '04 — Details',
+      eyebrow: '05 — Details',
       title: 'Editorial calm for *clinical work.*',
       intro: 'Warm paper, a serif for the things clinicians write, a mono for the things the system says. The hierarchy makes authorship legible at a glance, which matters when some of the words come from a model.',
       kind: 'wide',
@@ -98,15 +112,51 @@ export const carework: Project = {
       ],
     },
     {
-      type: 'figure',
-      eyebrow: '05 — Process',
-      title: 'Wireframes first.',
-      shot: {
-        src: img('carework/wireframes.webp'),
-        alt: 'Low-fidelity wireframes of the CareWork workspace across the three stages.',
-        caption: 'Low-fidelity wireframes set the three-panel workspace before any visual design: patients, the assignment, the assistant. Scroll to pan through them.',
-      },
-      frame: 'pan',
+      type: 'wireframes',
+      eyebrow: '06 — Process',
+      title: 'Wireframes *first.*',
+      intro: 'Low-fidelity frames from the design file, grouped by flow. Patients sit on the left, the clinician works in the middle, and the phone on the right is what the patient will see.',
+      flows: [
+        {
+          title: 'Set up a homework in *five steps.*',
+          body: 'Creation began as a guided conversation: choose the patient, add what the record does not know, let the assistant draft, review the draft task by task, then start tracking. The patient’s phone stays in view the whole way, so the clinician always sees what the patient will receive.',
+          shots: [
+            { src: img('carework/wireframes/create-01.webp'), alt: 'Wireframe, step 1 of 5: a patient list on the left, the prompt “Describe or drag the patient you are treating”, and an empty patient phone on the right.', caption: '1/5 · Choose the patient' },
+            { src: img('carework/wireframes/create-02.webp'), alt: 'Wireframe, step 2 of 5: the prompt asks for information beyond the patient summary; the phone shows the summary and a suggestion to add a medication.', caption: '2/5 · Add what the record misses' },
+            { src: img('carework/wireframes/create-03.webp'), alt: 'Wireframe, step 3 of 5: “Would you like to generate the homework for the patient?” with a Generate Homework button.', caption: '3/5 · Generate a draft' },
+            { src: img('carework/wireframes/create-04.webp'), alt: 'Wireframe, step 4 of 5: “Anything we missed in the patient’s homework?” with tasks grouped under medication, exercise, lab test and diet, an Assign Homework button, and the created homework on the phone.', caption: '4/5 · Review by task type' },
+            { src: img('carework/wireframes/create-05.webp'), alt: 'Wireframe, step 5 of 5: “Completed! Start tracking”, a timeline from the creation date to the next check-in, and the homework on the phone.', caption: '5/5 · Start tracking' },
+          ],
+        },
+        {
+          title: 'Change it by *talking.*',
+          body: 'Modification was explored as chat before it became a diff: say what to add, react to the generated draft, ask how the homework is going. The shape of every exchange survived into the product: a proposal from the assistant, then a decision from the clinician.',
+          shots: [
+            { src: img('carework/wireframes/iterate-01.webp'), alt: 'Wireframe: a patient list, the prompt “What do you wish to add to the homework?” and an input field.', caption: 'Ask what to add' },
+            { src: img('carework/wireframes/iterate-02.webp'), alt: 'Wireframe: the same prompt with a large summary panel above it and a navigation rail on the left.', caption: 'Same prompt, summary in view' },
+            { src: img('carework/wireframes/iterate-03.webp'), alt: 'Wireframe: “Here’s the generated homework. How do you want to modify it?” beside a phone showing the homework as a flow of connected steps.', caption: 'Modify the generated draft' },
+            { src: img('carework/wireframes/iterate-04.webp'), alt: 'Wireframe: “Chat to me to see the progress of homework” with an input field and the patient’s homework flow on the right.', caption: 'Ask for progress' },
+          ],
+        },
+        {
+          title: 'Read the results *by task type.*',
+          body: 'The evaluation view scores each task type for the last cycle, keeps an AI summary underneath and offers one next action: check and evaluate. It is the seed of the assignment brief in the evaluate stage.',
+          shots: [
+            { src: img('carework/wireframes/evaluate-01.webp'), alt: 'Wireframe: Homework 1 for a patient, with medication rated good, exercise fair and diet poor, a summary area and a Check and Evaluate button.', caption: 'Scores for the cycle' },
+            { src: img('carework/wireframes/evaluate-02.webp'), alt: 'Wireframe: the same evaluation view with one medicine selected.', caption: 'One task selected' },
+          ],
+        },
+        {
+          title: 'One task, *all its evidence.*',
+          body: 'Detail sheets for a single medication or task: how it is checked in, whether it is a trial, an adherence calendar and a summary generated from the logs. The show-more pattern here grew into the task card that keeps instruction, history and data together.',
+          shots: [
+            { src: img('carework/wireframes/detail-01.webp'), alt: 'Wireframe with a hand-drawn annotation: a Medication A sheet with check-in method and trial selectors, an adherence calendar and an AI summary.', caption: 'Check-in method and adherence' },
+            { src: img('carework/wireframes/detail-02.webp'), alt: 'Wireframe: a medication detail sheet with placeholder text, opened from the create flow, and the patient’s task categories on the phone.', caption: 'A medication sheet' },
+            { src: img('carework/wireframes/detail-03.webp'), alt: 'Wireframe: a patient list and a homework column with tasks such as “Walk after dining”, expandable details and a Create New Task action.', caption: 'Tasks with details on demand' },
+          ],
+        },
+      ],
+      note: 'Frames from the CareWork Figma file, shown as drawn. Scroll to pan a strip, or select a frame to enlarge it.',
     },
     {
       type: 'figure',
@@ -120,7 +170,7 @@ export const carework: Project = {
     },
     {
       type: 'insights',
-      eyebrow: '06 — What clinicians said',
+      eyebrow: '07 — What clinicians said',
       title: 'Useful, *with conditions.*',
       items: [
         { title: 'The connection is the feature', body: 'Participants valued seeing goal, tasks, evidence and revision in one continuous workflow more than any single screen.' },
@@ -131,7 +181,7 @@ export const carework: Project = {
     },
     {
       type: 'outcome',
-      eyebrow: '07 — Outcome',
+      eyebrow: '08 — Outcome',
       title: 'A pattern library for *accountable AI.*',
       body: [
         'Two studies with fourteen healthcare professionals in total: six formative interviews that produced the framework, and eleven hour-long prototype sessions that tested it.',

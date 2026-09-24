@@ -87,9 +87,9 @@ html.lenis, html.lenis body { height: auto; }
   clip-path: inset(100% 0 0 0);
   pointer-events: none;
 }
-.reader-wipe--cover { pointer-events: auto; clip-path: inset(0 0 0 0); transition: clip-path 640ms var(--ease-in-out); }
+.reader-wipe--cover { pointer-events: auto; clip-path: inset(0 0 0 0); transition: clip-path 760ms var(--ease-in-out); }
 .reader-wipe--hold { pointer-events: auto; clip-path: inset(0 0 0 0); }
-.reader-wipe--reveal { clip-path: inset(0 0 100% 0); transition: clip-path 760ms var(--ease-in-out); }
+.reader-wipe--reveal { clip-path: inset(0 0 100% 0); transition: clip-path 900ms var(--ease-in-out); }
 .reader-wipe__inner { display: grid; justify-items: center; gap: 18px; padding: 24px; text-align: center; }
 .reader-wipe__label {
   font: 400 clamp(46px, 7.4vw, 104px)/1 var(--serif);
@@ -98,11 +98,13 @@ html.lenis, html.lenis body { height: auto; }
   transform: translateY(36%);
 }
 .reader-wipe__meta { font: 500 9px/1.6 var(--sans); letter-spacing: .14em; text-transform: uppercase; opacity: 0; }
-.reader-wipe--cover .reader-wipe__label { opacity: 1; transform: none; transition: opacity 420ms ease 200ms, transform 820ms var(--ease-out) 180ms; }
-.reader-wipe--cover .reader-wipe__meta { opacity: .74; transition: opacity 420ms ease 380ms; }
+/* The name settles within the rise: the reader's own veil takes over from
+   the page panel at that point, already showing the settled name. */
+.reader-wipe--cover .reader-wipe__label { opacity: 1; transform: none; transition: opacity 400ms ease 140ms, transform 620ms var(--ease-out) 120ms; }
+.reader-wipe--cover .reader-wipe__meta { opacity: .74; transition: opacity 400ms ease 300ms; }
 .reader-wipe--hold .reader-wipe__label { opacity: 1; transform: none; }
 .reader-wipe--hold .reader-wipe__meta { opacity: .74; }
-.reader-wipe--reveal .reader-wipe__label { opacity: 1; transform: translateY(-30%); transition: transform 760ms var(--ease-in-out); }
+.reader-wipe--reveal .reader-wipe__label { opacity: 1; transform: translateY(-30%); transition: transform 900ms var(--ease-in-out); }
 .reader-wipe--reveal .reader-wipe__meta { opacity: .74; }
 
 @media (prefers-reduced-motion: reduce) {

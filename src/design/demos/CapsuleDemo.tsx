@@ -1,9 +1,10 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import './demos.css';
 
 /*
  * Trackya's core idea, rebuilt live: every hour is a capsule coloured by a
- * personal activity threshold. The data below is illustrative.
+ * personal activity threshold. The data below is illustrative; the slider
+ * scales it, so walking more turns more of the week mint.
  */
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const HOURS = [9, 10, 11, 12, 13, 14, 15, 16, 17];
@@ -13,30 +14,41 @@ const STEPS: number[][] = [
   [2945, 1231, 388, 601, 175, 1480, 920, 260, 1710],
   [760, 1840, 320, 1150, 140, 410, 2210, 1090, 280],
   [1180, 240, 190, 1620, 330, 1240, 360, 1980, 450],
-  [253, 3285, 167, 1574, 5545, 820, 310, 1260, 190],
+  [253, 3285, 167, 1574, 3545, 820, 310, 1260, 190],
   [1630, 2080, 940, 380, 2760, 1410, 520, 330, 1120],
 ];
 const CONTEXT = ['Sunny · Home', 'Cloudy · Lab', 'Rainy · Lab', 'Sunny · Campus', 'Windy · Lab', 'Sunny · Downtown', 'Cloudy · Home'];
 
 const formatHour = (hour: number) => `${hour > 12 ? hour - 12 : hour}:00 ${hour >= 12 ? 'pm' : 'am'}`;
 
+/** Steps in an hour that count as active. */
+const ACTIVE_AT = 1000;
+/** The sample week is recorded at this pace; the slider scales it up or down. */
+const BASE_PACE = 1000;
+
 export function CapsuleDemo() {
-  const [threshold, setThreshold] = useState(1000);
+  const [pace, setPace] = useState(BASE_PACE);
   const [view, setView] = useState<'week' | 'day'>('week');
   const [day, setDay] = useState(4);
   const [hover, setHover] = useState<{ day: number; hour: number } | null>(null);
 
-  const sedentaryShare = useMemo(() => {
-    const cells = view === 'day' ? STEPS[day] : STEPS.flat();
-    return Math.round((cells.filter(steps => steps < threshold).length / cells.length) * 100);
-  }, [threshold, view, day]);
+  // Walking more lifts every hour: proportionally, plus a share of the extra
+  // steps, so the top of the slider turns the whole week mint.
+  const stepsAt = (dayIndex: number, hourIndex: number) =>
+    Math.max(0, Math.round(((STEPS[dayIndex][hourIndex] * pace) / BASE_PACE + (pace - BASE_PACE) * 0.5) / 10) * 10);
+  const isActive = (dayIndex: number, hourIndex: number) => stepsAt(dayIndex, hourIndex) >= ACTIVE_AT;
+
+  // 63 cells at most: cheaper to recount than to memoise.
+  const shownDays = view === 'day' ? [day] : DAYS.map((_, index) => index);
+  const shownCells = shownDays.flatMap(dayIndex => HOURS.map((_, hourIndex) => isActive(dayIndex, hourIndex)));
+  const sedentaryShare = Math.round((shownCells.filter(active => !active).length / shownCells.length) * 100);
 
   const focus = hover ?? null;
   const readout = focus
-    ? `${DAYS[focus.day]} · ${formatHour(HOURS[focus.hour])} — ${STEPS[focus.day][focus.hour].toLocaleString()} steps · ${CONTEXT[focus.day]}`
+    ? `${DAYS[focus.day]} · ${formatHour(HOURS[focus.hour])} — ${stepsAt(focus.day, focus.hour).toLocaleString()} steps · ${CONTEXT[focus.day]}`
     : view === 'day'
       ? `${DAYS[day]} · ${CONTEXT[day]}`
-      : 'One column per day, one capsule per hour';
+      : `One column per day, one capsule per hour · active from ${ACTIVE_AT.toLocaleString()} steps`;
 
   return (
     <div className="demo capsules" style={{ '--demo-accent': '#5d5fee' } as CSSProperties}>
@@ -55,17 +67,17 @@ export function CapsuleDemo() {
         </div>
 
         <label className="capsules__slider">
-          <span className="mono">An hour counts as active at</span>
-          <strong>{threshold.toLocaleString()} steps</strong>
+          <span className="mono">Steps in a typical hour</span>
+          <strong>{pace.toLocaleString()} steps</strong>
           <input
             type="range"
             min={200}
             max={2400}
             step={100}
-            value={threshold}
-            onChange={event => setThreshold(Number(event.target.value))}
-            aria-label="Steps per hour that count as active"
-            style={{ '--cut': `${((threshold - 200) / 2200) * 100}%` } as CSSProperties}
+            value={pace}
+            onChange={event => setPace(Number(event.target.value))}
+            aria-label="Steps walked in a typical hour"
+            style={{ '--cut': `${((pace - 200) / 2200) * 100}%` } as CSSProperties}
           />
           <span className="capsules__scale mono" aria-hidden="true"><span>Fewer steps · sedentary</span><span>More steps · active</span></span>
         </label>
@@ -78,7 +90,7 @@ export function CapsuleDemo() {
 
       <div className={`capsules__stage capsules__stage--${view}`}>
         {view === 'week' ? (
-          <div className="capsules__grid" role="img" aria-label={`Week grid of hourly activity. ${sedentaryShare}% of hours are below the threshold.`}>
+          <div className="capsules__grid" role="img" aria-label={`Week grid of hourly activity. ${sedentaryShare}% of hours are below ${ACTIVE_AT.toLocaleString()} steps.`}>
             {DAYS.map((label, dayIndex) => (
               <button
                 key={label}
@@ -88,18 +100,15 @@ export function CapsuleDemo() {
                 aria-label={`Open ${label}`}
               >
                 <span className="mono">{label}</span>
-                {HOURS.map((hour, hourIndex) => {
-                  const steps = STEPS[dayIndex][hourIndex];
-                  return (
+                {HOURS.map((hour, hourIndex) => (
                     <i
                       key={hour}
-                      className={steps >= threshold ? 'is-active' : ''}
+                      className={isActive(dayIndex, hourIndex) ? 'is-active' : ''}
                       style={{ '--n': dayIndex + hourIndex } as CSSProperties}
                       onPointerEnter={() => setHover({ day: dayIndex, hour: hourIndex })}
                       onPointerLeave={() => setHover(null)}
                     />
-                  );
-                })}
+                ))}
               </button>
             ))}
           </div>
@@ -114,11 +123,11 @@ export function CapsuleDemo() {
             </div>
             <ol>
               {HOURS.map((hour, hourIndex) => {
-                const steps = STEPS[day][hourIndex];
+                const steps = stepsAt(day, hourIndex);
                 return (
                   <li
                     key={hour}
-                    className={steps >= threshold ? 'is-active' : ''}
+                    className={isActive(day, hourIndex) ? 'is-active' : ''}
                     style={{ '--n': hourIndex } as CSSProperties}
                     onPointerEnter={() => setHover({ day, hour: hourIndex })}
                     onPointerLeave={() => setHover(null)}

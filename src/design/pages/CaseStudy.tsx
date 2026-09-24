@@ -122,7 +122,7 @@ export function CaseStudy({ slug }: { slug: string }) {
       <div ref={progress} className="case-progress" aria-hidden="true"><i /></div>
       <CaseHero project={project} index={index} />
       {project.blocks.map((block, blockIndex) => (
-        <CaseBlock key={`${project.slug}-${blockIndex}`} block={block} soft={project.theme.dark ? '#ecefe8' : project.theme.soft} />
+        <CaseBlock key={`${project.slug}-${blockIndex}`} block={block} soft={project.theme.dark ? '#ecefe8' : project.theme.soft} name={project.name} />
       ))}
       <NextProject project={projects[nextIndex]} index={nextIndex} />
       <Contact />

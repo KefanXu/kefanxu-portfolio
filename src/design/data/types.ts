@@ -28,6 +28,10 @@ export type Block =
   | { type: 'identity'; eyebrow: string; title: string; body: string; swatches: { name: string; hex: string; role: string }[]; marks: Shot[] }
   | { type: 'demo'; eyebrow: string; title: string; body: string; demo: DemoId; hint?: string }
   | { type: 'video'; eyebrow: string; title: string; youtubeId: string; poster: string; caption: string }
+  /** A deployed prototype embedded live, behind a poster until the reader starts it. */
+  | { type: 'live'; eyebrow: string; title: string; body: string; url: string; poster: Shot; guide: { title: string; body: string }[]; note?: string }
+  /** Wireframes from the design file as storyboards: one strip of frames per flow, read left to right. */
+  | { type: 'wireframes'; eyebrow: string; title: string; intro?: string; flows: { title: string; body: string; shots: Shot[] }[]; note?: string }
   | { type: 'outcome'; eyebrow: string; title: string; body: string[]; links: { label: string; href: string }[] };
 
 export interface Project {

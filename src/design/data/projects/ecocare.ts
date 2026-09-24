@@ -65,8 +65,22 @@ export const ecocare: Project = {
       wide: true,
     },
     {
+      type: 'live',
+      eyebrow: '04 — Try it',
+      title: 'Explore the *ecology.*',
+      body: 'The working prototype, live in the page, around one simulated case: Jane, who lives with type 2 diabetes and a diabetic foot ulcer.',
+      url: 'https://eco-care-bice.vercel.app',
+      poster: { src: img('ecocare/ui-latest.webp'), alt: 'EcoCare prototype: the concentric care-ecology map beside the AI sense-making assistant.' },
+      guide: [
+        { title: 'Choose an event', body: 'The tabs along the top switch between the baseline and three life-changing events. Watch which connections strain or break.' },
+        { title: 'Inspect the map', body: 'Hover or click any entity or flow. Selected items appear in the inspector and become context for the assistant.' },
+        { title: 'Ask the assistant', body: 'Start from a sample question or write your own. Answers are grounded in the case, clinical guidance and prior interviews.' },
+      ],
+      note: 'A simulated case, not a real patient. The assistant calls a live model and can take a moment to answer. Best explored on a laptop or larger screen.',
+    },
+    {
       type: 'insights',
-      eyebrow: '04 — Design decisions',
+      eyebrow: '05 — Design decisions',
       title: 'Three ideas *hold it together.*',
       items: [
         { title: 'Relationships are the data', body: 'Stakeholders, components, practices and information sit on ecological layers, with distinct flows for data, guidance, feedback, communication, and breaks in those connections.' },
@@ -76,7 +90,7 @@ export const ecocare: Project = {
     },
     {
       type: 'text',
-      eyebrow: '05 — What happens next',
+      eyebrow: '06 — What happens next',
       title: 'A study designed to *measure a decision.*',
       body: [
         'The planned evaluation runs individual sessions with five patients, five caregivers and five clinicians. Each participant makes a baseline decision for a simulated case, works with EcoCare through another life-changing event, makes a second decision and reflects on the experience.',
@@ -85,7 +99,7 @@ export const ecocare: Project = {
     },
     {
       type: 'outcome',
-      eyebrow: '06 — Status',
+      eyebrow: '07 — Status',
       title: 'Proposed, prototyped, *honest about it.*',
       body: [
         'EcoCare is part of my dissertation proposal. I include it here because it shows how I think about complex systems and AI: start from field evidence, make the structure visible, and give people a way to question it.',

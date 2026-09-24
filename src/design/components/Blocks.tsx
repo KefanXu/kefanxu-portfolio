@@ -8,6 +8,7 @@ import { LoopDemo } from '../demos/LoopDemo';
 import { MoodDemo } from '../demos/MoodDemo';
 import { onScrollFrame } from '../lib/scroll';
 import { Browser, Phone } from './Device';
+import { LiveDemo } from './LiveDemo';
 import { Zoom } from './Lightbox';
 import { Reveal, SplitText, useRevealRef } from './Reveal';
 
@@ -123,7 +124,7 @@ function Sequence({ block }: { block: Extract<Block, { type: 'sequence' }> }) {
 }
 
 /* ── Gallery strip: the page scroll pans it from its first item to its last ── */
-function Strip({ shots, kind }: { shots: Shot[]; kind: 'phones' | 'posters' }) {
+function Strip({ shots, kind }: { shots: Shot[]; kind: 'phones' | 'posters' | 'frames' }) {
   // The strip reveals as one piece (items stagger in CSS), so items that start
   // off-screen to the right are already there when someone swipes to them.
   const root = useRevealRef<HTMLDivElement>();
@@ -147,7 +148,13 @@ function Strip({ shots, kind }: { shots: Shot[]; kind: 'phones' | 'posters' }) {
         {shots.map((shot, index) => (
           <li key={shot.src} className="strip__item" style={{ '--i': Math.min(index, 6) } as CSSProperties}>
             <figure>
-              {kind === 'phones' ? <Phone shot={shot} /> : <img className="strip__poster" src={shot.src} alt={shot.alt} {...sizeOf(shot.src)} loading="lazy" decoding="async" />}
+              {kind === 'phones' ? <Phone shot={shot} /> : null}
+              {kind === 'posters' ? <img className="strip__poster" src={shot.src} alt={shot.alt} {...sizeOf(shot.src)} loading="lazy" decoding="async" /> : null}
+              {kind === 'frames' ? (
+                <Zoom shot={shot} className="strip__sheet">
+                  <img src={shot.src} alt={shot.alt} {...sizeOf(shot.src)} loading="lazy" decoding="async" draggable={false} />
+                </Zoom>
+              ) : null}
               {shot.caption ? <figcaption className="mono">{shot.caption}</figcaption> : null}
             </figure>
           </li>
@@ -194,7 +201,7 @@ function Video({ block }: { block: Extract<Block, { type: 'video' }> }) {
   );
 }
 
-export function CaseBlock({ block, soft }: { block: Block; soft: string }) {
+export function CaseBlock({ block, soft, name }: { block: Block; soft: string; name: string }) {
   switch (block.type) {
     case 'text':
       return (
@@ -246,7 +253,7 @@ export function CaseBlock({ block, soft }: { block: Block; soft: string }) {
           ) : (
             <Strip shots={block.shots} kind={block.kind} />
           )}
-          {block.note ? <p className="shell block__note muted">{block.note}</p> : null}
+          {block.note ? <div className="shell"><p className="block__note muted">{block.note}</p></div> : null}
         </section>
       );
 
@@ -332,6 +339,44 @@ export function CaseBlock({ block, soft }: { block: Block; soft: string }) {
         </section>
       );
     }
+
+    case 'live':
+      return (
+        <section className="block block--live shell">
+          <div className="block__columns block__columns--demo">
+            <BlockHead eyebrow={block.eyebrow} title={block.title} />
+            <Reveal delay={140}><p className="body-l muted">{block.body}</p></Reveal>
+          </div>
+          <LiveDemo block={block} name={name} />
+        </section>
+      );
+
+    case 'wireframes':
+      return (
+        <section className="block block--wireframes">
+          <div className="shell"><BlockHead eyebrow={block.eyebrow} title={block.title} intro={block.intro} /></div>
+          <ol className="flows">
+            {block.flows.map((flow, index) => (
+              <li key={flow.title} className="flow">
+                <div className="shell flow__head">
+                  <Reveal kind="fade" className="mono flow__index">
+                    {String(index + 1).padStart(2, '0')}<i aria-hidden="true">/</i>{String(block.flows.length).padStart(2, '0')}
+                  </Reveal>
+                  <div className="flow__text">
+                    <SplitText as="h3" className="h3" text={flow.title} />
+                    <Reveal delay={110}><p className="body-l muted">{flow.body}</p></Reveal>
+                  </div>
+                  <Reveal kind="fade" delay={200} className="mono muted flow__count">
+                    {flow.shots.length} frames
+                  </Reveal>
+                </div>
+                <Strip shots={flow.shots} kind="frames" />
+              </li>
+            ))}
+          </ol>
+          {block.note ? <div className="shell"><p className="block__note muted">{block.note}</p></div> : null}
+        </section>
+      );
 
     case 'video':
       return (

@@ -24,8 +24,11 @@ interface ProjectDetailProps {
   onClosed?: () => void;
 }
 
-const VEIL_LIFT_MS = 900;
-const VEIL_COVER_MS = 560;
+/* Matches the panel's transitions in src/styles/motion.css (the designer
+   site's page wipe: a 760ms rise, a 900ms lift). */
+const VEIL_LIFT_MS = 980;
+const VEIL_COVER_MS = 780;
+const VEIL_PAUSE_MS = 40;
 
 function projectIdFromHash() {
   if (!window.location.hash.startsWith('#project/')) return null;
@@ -174,9 +177,12 @@ export function ProjectDetail({ arrival, onArrivalComplete, onLeave, onClosed }:
   useEffect(() => {
     if (!isArriving || !arrival) return;
     veilColours.current = arrival;
-    let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => setVeilPhase('reveal')); });
-    const timer = window.setTimeout(() => { setVeilPhase(null); onArrivalComplete?.(); }, VEIL_LIFT_MS);
-    return () => { cancelAnimationFrame(frame); window.clearTimeout(timer); };
+    // Paint the veil in place first, rest on the colour for a beat as the
+    // designer site's wipe does, then lift it.
+    let pause = 0;
+    let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => { pause = window.setTimeout(() => setVeilPhase('reveal'), VEIL_PAUSE_MS); }); });
+    const timer = window.setTimeout(() => { setVeilPhase(null); onArrivalComplete?.(); }, VEIL_PAUSE_MS + VEIL_LIFT_MS);
+    return () => { cancelAnimationFrame(frame); window.clearTimeout(pause); window.clearTimeout(timer); };
   }, [isArriving, arrival, onArrivalComplete]);
 
   useEffect(() => {

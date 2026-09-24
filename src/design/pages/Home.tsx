@@ -178,9 +178,17 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
         onPointerLeave={onPointerLeave}
         data-cursor="View case"
         data-cover-host
-        style={{ '--panel': project.theme.panel, '--panel-ink': project.theme.ink, '--accent': project.theme.accent } as CSSProperties}
+        style={{ '--panel': project.theme.panel, '--panel-ink': project.theme.ink, '--accent': project.theme.accent, '--soft': project.theme.soft } as CSSProperties}
         aria-label={`${project.name}: ${project.summary} View the case study.`}
       >
+        {/* Liquid glass: colour drifting under a frosted surface; the pointer light reads --px/--py. */}
+        <span className="work-card__liquid" aria-hidden="true">
+          <i className="work-card__blob work-card__blob--a" />
+          <i className="work-card__blob work-card__blob--b" />
+          <i className="work-card__blob work-card__blob--c" />
+          <i className="work-card__blob work-card__blob--light" />
+        </span>
+        <span className="work-card__glass" aria-hidden="true" />
         <div className="work-card__text">
           <div className="work-card__top mono">
             <span>{String(index + 1).padStart(2, '0')}</span>
@@ -217,6 +225,8 @@ function Work() {
       const card = item.firstElementChild as HTMLElement;
       const through = clamp((vh - bounds.top) / (vh + bounds.height));
       card.style.setProperty('--sp', through.toFixed(4));
+      // The liquid only moves while its card is near the viewport.
+      item.classList.toggle('is-live', bounds.bottom > -vh * 0.25 && bounds.top < vh * 1.25);
       const next = tops[index + 1];
       const covered = stacked && next ? clamp(1 - (next.top - bounds.top) / bounds.height) : 0;
       card.style.setProperty('--covered', covered.toFixed(4));
