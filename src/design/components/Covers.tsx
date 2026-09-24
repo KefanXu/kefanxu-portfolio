@@ -89,7 +89,7 @@ function EcocareCover() {
         ))}
         <circle cx="200" cy="200" r="32" fill="currentColor" fillOpacity=".14" stroke="currentColor" strokeWidth="1.5" />
       </svg>
-      <Browser className="cover__browser" url="ecocare" shot={shot('ecocare/ui-latest.webp')} decorative />
+      <Browser className="cover__browser" url="ecocare" shot={shot('ecocare/ui-event.webp')} decorative />
     </div>
   );
 }

@@ -394,7 +394,8 @@
 /* How to explore: three short steps under the window. */
 .live__guide {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* One column per step: three steps or four share the row equally. */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: clamp(20px, 3vw, 48px);
   margin-top: clamp(24px, 3vw, 40px);
 }
