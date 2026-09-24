@@ -240,6 +240,7 @@
   transform: scale(calc(1 - var(--covered) * 0.055)) translateY(calc(var(--covered) * -1.5%));
   transform-origin: 50% 0;
   will-change: transform;
+  isolation: isolate;
 }
 /* Liquid glass. Pools of the project's own colours drift slowly beneath a
    frosted surface; the surface blurs the pools and whatever lies under the
@@ -261,6 +262,11 @@
 }
 .work-card__glass {
   position: absolute; z-index: 1; inset: 0; border-radius: inherit; pointer-events: none;
+  /* Its own compositor layer: WebKit otherwise re-snapshots the backdrop on
+     every scroll frame of the stack and the surface flickers. */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-backdrop-filter: blur(28px) saturate(1.35);
   backdrop-filter: blur(28px) saturate(1.35);
   background: linear-gradient(158deg, rgba(255, 255, 255, .36) 0%, rgba(255, 255, 255, .14) 26%, rgba(255, 255, 255, .04) 50%, rgba(255, 255, 255, .08) 78%, rgba(255, 255, 255, .2) 100%);
@@ -276,8 +282,15 @@
   background: linear-gradient(158deg, rgba(255, 255, 255, .14) 0%, rgba(255, 255, 255, .05) 26%, rgba(255, 255, 255, .01) 50%, rgba(255, 255, 255, .04) 100%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1), inset 0 34px 50px -36px rgba(255, 255, 255, .26);
 }
-.work__item:not(.is-live) .work-card__glass { -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* Off-screen cards only pause their pools; the frosted surface stays as it is,
+   because switching a backdrop filter on and off rebuilds its layer. */
 .work__item:not(.is-live) .work-card__blob { animation-play-state: paused; }
+/* Buried under the next card (only the top edge still shows): drop the layers
+   that cost GPU memory, keep the tinted panel and its haze. */
+.work__item.is-buried .work-card__liquid,
+.work__item.is-buried .work-card__glass,
+.work__item.is-buried .work-card__visual,
+.work__item.is-buried .work-card__text { visibility: hidden; }
 @keyframes work-liquid-a { 0% { transform: translate3d(0, 0, 0) scale(4); } 50% { transform: translate3d(18cqw, 15cqh, 0) scale(4.7); } 100% { transform: translate3d(5cqw, 28cqh, 0) scale(3.8); } }
 @keyframes work-liquid-b { 0% { transform: translate3d(0, 0, 0) scale(4); } 50% { transform: translate3d(-14cqw, 12cqh, 0) scale(4.4); } 100% { transform: translate3d(-26cqw, -6cqh, 0) scale(4.15); } }
 @keyframes work-liquid-c { 0% { transform: translate3d(0, 0, 0) scale(4); } 50% { transform: translate3d(12cqw, -16cqh, 0) scale(4.5); } 100% { transform: translate3d(-12cqw, -5cqh, 0) scale(3.7); } }
@@ -307,7 +320,9 @@
 .work-card:hover .work-card__go i, .work-card:focus-visible .work-card__go i { transform: rotate(45deg) scale(1.08); background: var(--accent); color: #fff; }
 .work-card__year { text-align: right; opacity: 0.66; }
 .work-card__visual { position: relative; z-index: 2; min-height: 0; border-radius: inherit; }
-.work-card__shade { position: absolute; z-index: 5; inset: 0; background: var(--paper); opacity: calc(var(--covered) * 0.5); pointer-events: none; border-radius: inherit; }
+/* will-change: the haze fades every scroll frame; on its own layer that is a
+   compositor opacity change instead of a repaint of the whole card. */
+.work-card__shade { position: absolute; z-index: 5; inset: 0; background: var(--paper); opacity: calc(var(--covered) * 0.5); pointer-events: none; border-radius: inherit; will-change: opacity; }
 .work-card:focus-visible { outline-offset: 6px; }
 
 /* ── Approach ──────────────────────────────────────────────────────────── */

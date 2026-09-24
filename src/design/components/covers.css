@@ -127,17 +127,20 @@
 
 /* ── Planneregy ────────────────────────────────────────────────────────── */
 .cover--planneregy { color: #f2f5ec; }
+/* The ring spins as one composited layer: a transform keyframe on the SVG
+   root (not `rotate` on its contents), so nothing repaints while it turns. */
 .cover--planneregy .cover__ringtext {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 118cqh;
   max-width: none;
-  translate: -50% -46%;
-  animation: cover-spin 48s linear infinite;
+  transform: translate(-50%, -46%) rotate(0deg);
+  will-change: transform;
+  animation: cover-ring-spin 48s linear infinite;
 }
 .cover--planneregy .cover__ringtext text { fill: currentColor; font: 500 13.4px/1 var(--mono); letter-spacing: 0.34em; opacity: 0.62; }
-@keyframes cover-spin { to { rotate: 360deg; } }
+@keyframes cover-ring-spin { to { transform: translate(-50%, -46%) rotate(360deg); } }
 .cover--planneregy .cover__phone--front { --tx: -66%; --rot: -4deg; --shift: 1.2; z-index: 2; }
 .cover--planneregy .cover__phone--back { --tx: 2%; --ty: 9cqh; --rot: 7deg; --shift: 0.6; --phone-w: clamp(110px, 29cqw, 300px); }
 .cover--planneregy .phone { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 40px 90px -30px rgba(46, 209, 15, 0.35); }
@@ -149,14 +152,16 @@
   top: -14cqh;
   right: -12cqw;
   width: 90cqh;
-  max-width: none;
-  overflow: visible;
+  aspect-ratio: 1;
   transform: translate3d(calc(var(--px) * -1.4cqw), calc((0.5 - var(--sp)) * -10cqh), 0);
   transition: transform 1400ms var(--ease-out);
 }
-.cover__orbit { transform-origin: 200px 200px; animation: cover-spin 36s linear infinite; }
+/* Each orbit is its own SVG spinning as a whole layer (see Covers.tsx). */
+.cover__orbit { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; will-change: transform; animation: cover-spin 36s linear infinite; }
 .cover__orbit--2 { animation-duration: 54s; animation-direction: reverse; }
 .cover__orbit--3 { animation-duration: 80s; }
+.cover__orbit--core { animation: none; will-change: auto; }
+@keyframes cover-spin { to { transform: rotate(360deg); } }
 .cover--ecocare .cover__browser { top: 20cqh; }
 
 /* ── Physicify ─────────────────────────────────────────────────────────── */
@@ -178,4 +183,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cover__phone, .cover__float, .cover__browser { transition: none; }
+  .cover__ringtext, .cover__orbit, .cover__mascot, .cover--trackya .cover__capsules i, .cover--physicify .cover__blocks i { animation: none; }
 }

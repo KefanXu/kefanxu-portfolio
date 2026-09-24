@@ -79,16 +79,20 @@ function PlanneregyCover() {
 function EcocareCover() {
   return (
     <div className="cover cover--ecocare">
-      <svg className="cover__orbits" viewBox="0 0 400 400" aria-hidden="true">
+      {/* One SVG per orbit: each spins as a whole layer on the compositor, so the
+          rotation never repaints (an animated <g> inside one SVG would). */}
+      <div className="cover__orbits" aria-hidden="true">
         {[70, 120, 170].map((radius, index) => (
-          <g key={radius} className={`cover__orbit cover__orbit--${index + 1}`}>
+          <svg key={radius} className={`cover__orbit cover__orbit--${index + 1}`} viewBox="0 0 400 400">
             <circle cx="200" cy="200" r={radius} fill="none" stroke="currentColor" strokeOpacity=".28" strokeDasharray={index === 2 ? '3 7' : undefined} />
             <circle cx={200 + radius} cy="200" r={index === 0 ? 5 : 7} fill="currentColor" />
             <circle cx={200 - radius * 0.62} cy={200 - radius * 0.785} r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          </g>
+          </svg>
         ))}
-        <circle cx="200" cy="200" r="32" fill="currentColor" fillOpacity=".14" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
+        <svg className="cover__orbit cover__orbit--core" viewBox="0 0 400 400">
+          <circle cx="200" cy="200" r="32" fill="currentColor" fillOpacity=".14" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      </div>
       <Browser className="cover__browser" url="ecocare" shot={shot('ecocare/ui-event.webp')} decorative />
     </div>
   );

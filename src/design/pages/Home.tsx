@@ -230,6 +230,12 @@ function Work() {
       const next = tops[index + 1];
       const covered = stacked && next ? clamp(1 - (next.top - bounds.top) / bounds.height) : 0;
       card.style.setProperty('--covered', covered.toFixed(4));
+      // Once only its top edge shows above the next card (the stack rests at a
+      // 10px offset), the card sheds its expensive layers: frosted surface,
+      // pools, cover. With six cards stuck in one place the GPU otherwise holds
+      // six full-size blurred surfaces, which is what made Chrome drop tiles
+      // and flicker.
+      item.classList.toggle('is-buried', stacked && !!next && next.top - bounds.top < 16);
     });
   }), []);
 
