@@ -1,5 +1,11 @@
 /* ── Case study hero ───────────────────────────────────────────────────── */
 .case { --accent: var(--signal); --soft: var(--paper-deep); }
+/* Pictures fade in as they finish loading (lib/images.ts sets data-loaded), so
+   a figure never pops into a frame that has already revealed. :where() keeps
+   the specificity low, so pictures with their own transitions keep them. */
+.case :where(img) { transition: opacity 640ms var(--ease-out); }
+.case img:not([data-loaded]) { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .case :where(img) { transition: none; } }
 .case-progress { position: fixed; z-index: 810; top: 0; right: 0; left: 0; height: 3px; pointer-events: none; }
 .case-progress i { display: block; height: 100%; background: var(--accent); transform: scaleX(var(--p, 0)); transform-origin: 0 50%; will-change: transform; }
 .case-hero { padding-top: calc(var(--header-h) + clamp(18px, 3vw, 44px)); }

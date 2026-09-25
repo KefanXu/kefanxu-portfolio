@@ -10,9 +10,27 @@ let gateOpen = false;
 const waiting = new Set<Element>();
 let observer: IntersectionObserver | null = null;
 
+/*
+ * An entrance should carry its picture with it. Lazy images inside a reveal
+ * may still be loading when the element scrolls into view, so the reveal waits
+ * for them to decode (asking for the bytes now if the browser has not started),
+ * up to a short cap; after that it plays anyway and the image fades in on load.
+ */
+const IMAGE_WAIT_MS = 2400;
+function imagesReady(element: Element): Promise<void> | null {
+  const pending = Array.from(element.querySelectorAll('img')).filter(img => !(img.complete && img.naturalWidth > 0));
+  if (!pending.length) return null;
+  pending.forEach(img => { if (img.loading === 'lazy') img.loading = 'eager'; });
+  const decoded = Promise.all(pending.map(img => img.decode().catch(() => undefined))).then(() => undefined);
+  const cap = new Promise<void>(resolve => window.setTimeout(resolve, IMAGE_WAIT_MS));
+  return Promise.race([decoded, cap]);
+}
+
 function show(element: Element) {
-  if (gateOpen) element.classList.add('is-in');
-  else waiting.add(element);
+  if (!gateOpen) { waiting.add(element); return; }
+  const ready = imagesReady(element);
+  if (ready) void ready.then(() => element.classList.add('is-in'));
+  else element.classList.add('is-in');
 }
 function getObserver() {
   if (observer) return observer;
@@ -31,8 +49,9 @@ function getObserver() {
 export function setRevealGate(open: boolean) {
   gateOpen = open;
   if (!open) return;
-  waiting.forEach(element => element.classList.add('is-in'));
+  const queued = Array.from(waiting);
   waiting.clear();
+  queued.forEach(show);
 }
 
 /** Marks the element `.is-in` once it scrolls into view; style the entrance in CSS. */

@@ -1,4 +1,4 @@
-import { img, sharedImg } from '../img';
+import { img } from '../img';
 import type { Project } from '../types';
 
 export const planneregy: Project = {
@@ -126,40 +126,49 @@ export const planneregy: Project = {
       ],
     },
     {
-      type: 'figure',
+      type: 'research',
       eyebrow: '06 — The study',
-      title: 'Six weeks, *in the wild.*',
-      shot: {
-        src: sharedImg('planneregy-strategy-overview.webp'),
-        alt: 'Visualisation of 16 participants’ weekly strategies, plans, keyword evaluations and reported disruptions across six weeks.',
-        caption: 'Sixteen participants, 48 distinct strategies, 203 keyword instances and 434 activity plans. Figure from Xu et al., CHI 2024 (CC BY 4.0).',
-      },
-      frame: 'card',
-      wide: true,
-    },
-    {
-      type: 'figure',
-      shot: {
-        src: sharedImg('planneregy-interview-method.webp'),
-        alt: 'Participant screen sharing and the researcher version of Planneregy used to tailor interview questions.',
-        caption: 'A researcher build of the app let interviews start from each participant’s own records. Figure from Xu et al., CHI 2024 (CC BY 4.0).',
-      },
-      frame: 'card',
-      wide: true,
-    },
-    {
-      type: 'insights',
-      eyebrow: '07 — Findings',
-      title: 'What *six weeks* showed.',
-      items: [
-        { title: 'Life got in the way, as expected', body: 'Ten of sixteen participants met a life change or temporary disruption during the deployment. The loop gave them a way to respond instead of dropping out.' },
-        { title: 'People did iterate', body: 'Eleven participants changed strategy after their first week, and forty-eight distinct strategies were created across the study.' },
-        { title: 'Names create distance', body: 'Named strategies and keyword-level reflection helped people unpack routines, update what they knew about themselves, and revise plans without self-blame.' },
+      title: 'Six weeks *in the wild.*',
+      intro: 'Sixteen students ran the loop for 42 days: a named strategy each week, a report each day, a reflection each seventh day. Every plan, keyword and rating they made is drawn below.',
+      numbers: [
+        { value: '434', label: 'plans under 48 strategies' },
+        { value: '155 min', label: 'of activity in an average week' },
+        { value: '72%', label: 'of reported plans completed' },
+        { value: '9 / 16', label: 'more active by the end than before' },
       ],
+      timeline: {
+        kind: 'days',
+        days: 42,
+        phases: [{ from: 1, to: 42, label: 'Plan, report daily, reflect on day seven', tone: 'a' }],
+        marks: [{ day: 0, label: 'Interview I' }, { day: 21, label: 'Check-in' }, { day: 42, label: 'Exit interview' }],
+        ticks: { every: 7, label: 'Weekly reflection and questionnaire' },
+      },
+      record: {
+        kind: 'strategies',
+        title: 'Sixteen people, *week by week.*',
+        body: 'Each block is one week under one strategy. Hover a week for its plans, keywords and minutes; use the filters to see who met a disruption, who ended up more active, and who held a strategy for five weeks.',
+        caption: 'Redrawn from Figure 3 of the CHI 2024 paper. Weeks beyond the sixth are participants who kept going past the study window.',
+      },
+      insights: [
+        { title: 'People changed course, and kept going', body: 'Ten of sixteen met a life change or a disruption, from exams to being sick. Instead of dropping out they switched strategy; eleven had already changed after week one.', evidence: { kind: 'quote', text: 'The first two weeks everything was morning routine because it worked out for me. But then I changed to afternoon walks, mostly because I had some health issues.', who: 'P7, exit interview' } },
+        { title: 'Repeating a strategy taught something', body: 'Fourteen ran the same strategy more than once, changing one aspect at a time. P6 and P7 held one for five weeks and could say exactly why it worked.', evidence: { kind: 'share', n: 14, of: 16, label: 'repeated a strategy' } },
+        { title: 'The keyword rating was the decision point', body: 'Rating each keyword before the whole week reinforced what had been learned, and the satisfaction score decided what the next week would look like.', evidence: { kind: 'quote', text: 'I would go into the next week and try and maintain the ones that did work and try and change the ones that didn’t.', who: 'P10, on the weekly reflection' } },
+        { title: 'Half started from what they already did', body: 'Eight began by experimenting with something new, eight by naming their current routine. Both routes led to iteration; the second was gentler on failure.', evidence: { kind: 'share', n: 8, of: 16, label: 'started by experimenting' } },
+      ],
+      method: [
+        { label: 'Who', value: '17 students at Georgia Tech enrolled, 16 completed: 13 women, 3 men, aged 18–55, unsatisfied with their activity level.' },
+        { label: 'Design', value: 'Single-arm, 42 days. One strategy a week, kept, revised or replaced every seventh day.' },
+        { label: 'Data', value: 'App logs, six weekly questionnaires, two recorded interviews and a mid-study check-in.' },
+        { label: 'Interviews', value: 'Data-driven retrospective: researchers reviewed each person’s records in a researcher build and asked about them.' },
+        { label: 'Analysis', value: 'Thematic analysis with in vivo coding, checked against the records; participant types from usage.' },
+        { label: 'Ethics', value: 'Exempt IRB review; compensation tied to interviews and questionnaires, never to app use.' },
+      ],
+      note: 'No control condition: the rise in activity is descriptive, not causal.',
+      source: { label: 'Read the CHI 2024 paper', href: 'https://doi.org/10.1145/3613904.3641937' },
     },
     {
       type: 'outcome',
-      eyebrow: '08 — Outcome',
+      eyebrow: '07 — Outcome',
       title: 'Published at *CHI 2024.*',
       body: [
         'Planneregy was designed, built, distributed through TestFlight and studied end to end. The paper reports the reflective-iteration framework and what it takes for planning tools to support change over time.',

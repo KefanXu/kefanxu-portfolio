@@ -9,6 +9,7 @@ import { MoodDemo } from '../demos/MoodDemo';
 import { onScrollFrame } from '../lib/scroll';
 import { Browser, Phone } from './Device';
 import { LiveDemo } from './LiveDemo';
+import { Research } from './Research';
 import { Zoom } from './Lightbox';
 import { Reveal, SplitText, useRevealRef } from './Reveal';
 
@@ -26,39 +27,7 @@ function BlockHead({ eyebrow, title, intro }: { eyebrow?: string; title?: string
   );
 }
 
-/* ── Count-up number ───────────────────────────────────────────────────── */
-export function CountUp({ value }: { value: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const match = value.match(/^([^\d]*)(\d+(?:\.\d+)?)(.*)$/);
-  const [text, setText] = useState(match ? `${match[1]}0${match[3]}` : value);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || !match) return;
-    const target = Number(match[2]);
-    const decimals = (match[2].split('.')[1] ?? '').length;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setText(value); return; }
-    let raf = 0;
-    const io = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      io.disconnect();
-      const start = performance.now();
-      const duration = 1500;
-      const tick = (now: number) => {
-        const t = clamp((now - start) / duration);
-        const eased = 1 - Math.pow(2, -10 * t);
-        setText(`${match[1]}${(target * (t === 1 ? 1 : eased)).toFixed(decimals)}${match[3]}`);
-        if (t < 1) raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-    }, { threshold: 0.6 });
-    io.observe(element);
-    return () => { io.disconnect(); cancelAnimationFrame(raf); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
-  return <span ref={ref} aria-label={value}><span aria-hidden="true">{text}</span></span>;
-}
+export { CountUp } from './CountUp';
 
 /* ── Sequence: a pinned device whose screen follows the steps ──────────── */
 function Sequence({ block }: { block: Extract<Block, { type: 'sequence' }> }) {
@@ -377,6 +346,9 @@ export function CaseBlock({ block, soft, name }: { block: Block; soft: string; n
           {block.note ? <div className="shell"><p className="block__note muted">{block.note}</p></div> : null}
         </section>
       );
+
+    case 'research':
+      return <Research block={block} soft={soft} />;
 
     case 'video':
       return (

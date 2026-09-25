@@ -1,4 +1,4 @@
-import { img, sharedImg } from '../img';
+import { img } from '../img';
 import type { Project } from '../types';
 
 export const physicify: Project = {
@@ -102,30 +102,53 @@ export const physicify: Project = {
       ],
     },
     {
-      type: 'figure',
+      type: 'research',
       eyebrow: '04 — The study',
-      title: 'Two phases, *one comparison.*',
-      shot: {
-        src: sharedImg('physicify-study-phases.png'),
-        alt: 'Study phases: fourteen days planning without historical reference, fourteen days with it, and three interviews.',
-        caption: 'Participants used Physicify 1 for fourteen days without history, then Physicify 2 with their own records, with an interview at baseline and after each phase.',
-      },
-      frame: 'card',
-    },
-    {
-      type: 'insights',
-      eyebrow: '05 — Findings',
-      title: 'What history *was good for.*',
-      items: [
-        { title: 'Likelihoods, not events', body: 'Rather than spotting one disruptive event, participants noticed when they were likely to be disrupted, such as a weekday where plans kept failing.' },
-        { title: 'Fit beats willpower', body: 'Records showed how neighbouring events affected plans, so people moved exercise to parts of the day that were less exposed.' },
-        { title: 'Preferred conditions emerge', body: 'People unsure of their capacity tried different conditions and used the records to find the ones where activity came easily.' },
+      title: 'Twenty-eight days, *two phases.*',
+      intro: 'Seventeen people planned exercise every day for four weeks. For the first two they saw nothing of their past; for the second, their own history sat beside every plan. Three interviews asked what changed.',
+      numbers: [
+        { value: '248', label: 'plans made, 136 then 112' },
+        { value: '183', label: 'carried out as planned' },
+        { value: '70.4%', label: 'average completion, 75.3% then 65.0%' },
+        { value: '51', label: 'interviews, three per person' },
       ],
-      note: 'The study was exploratory. It does not establish that access to history improved adherence.',
+      timeline: {
+        kind: 'days',
+        days: 28,
+        phases: [{ from: 1, to: 14, label: 'Physicify 1: plans without history', tone: 'a' }, { from: 15, to: 28, label: 'Physicify 2: plans beside the record', tone: 'b' }],
+        marks: [{ day: 0, label: 'Interview I' }, { day: 14, label: 'Interview II' }, { day: 28, label: 'Interview III' }],
+      },
+      record: {
+        kind: 'planning',
+        title: 'What a plan *has to survive.*',
+        body: 'The interviews produced a small model of everyday exercise planning: what people weigh when they make a plan, what breaks it, and what their own records taught them once they could see them. Each bar counts the seventeen participants.',
+        columns: [
+          { label: 'Making the plan', items: [{ title: 'Fitting it around routines', n: 9, of: 17 }, { title: 'The energy they expected to have', n: 5, of: 17 }, { title: 'How a similar session went before', n: 8, of: 17 }] },
+          { label: 'Why it broke', items: [{ title: 'Unexpected events', n: 7, of: 17 }, { title: 'Events just before or after', n: 6, of: 17 }, { title: 'Physical or mental exhaustion', n: 11, of: 17 }] },
+          { label: 'What history taught', items: [{ title: 'When a slot is likely to be disrupted', n: 11, of: 17 }, { title: 'Where to move exercise to', n: 6, of: 17 }, { title: 'The conditions that make it easy', n: 6, of: 17 }] },
+        ],
+        caption: 'Counts are participants who raised each point in Interview II (planning, barriers) or Interview III (history).',
+      },
+      insights: [
+        { title: 'Failures drew the eye first', body: 'Given their history, people went straight to the plans that had not happened, to extreme values, and to clusters of records with something in common.', evidence: { kind: 'shot', shot: { src: img('physicify/study-p7-weekday.webp'), alt: 'P7’s planning history in Physicify 2: a bar chart by weekday shows every Tuesday and Wednesday plan uncompleted.', caption: 'P7: every Tuesday and Wednesday plan had failed' } } },
+        { title: 'Records became likelihoods', body: 'Over half read from their records how likely a given day or time was to be disrupted, and planned around it instead of hoping.', evidence: { kind: 'share', n: 11, of: 17, label: 'identified likely disruptions' } },
+        { title: 'Some saw a pattern in their absences', body: 'The calendar made gaps visible. P3 noticed she rarely planned anything on weekends; others moved sessions away from events that kept getting in the way.', evidence: { kind: 'shot', shot: { src: img('physicify/study-p3-calendar.webp'), alt: 'P3’s calendar view in Physicify 2: plans cluster on weekdays and the weekend columns are almost empty.', caption: 'P3: weekends stayed empty' } } },
+        { title: 'The record spoke to what people already valued', body: 'The most persuasive chart was the one that matched a person’s own question, whether that was activity type, weekday or time of day.', evidence: { kind: 'quote', text: 'The bar chart that is showing activities by types is more important and influential on my decisions.', who: 'P2, Interview III' } },
+      ],
+      method: [
+        { label: 'Who', value: '20 students and alumni at the University of Michigan enrolled, 17 completed: 16 women, 1 man, aged 18–55.' },
+        { label: 'Design', value: 'Within-subject, 28 days: Physicify 1 (no history) then Physicify 2 (calendar and history views) on the same records.' },
+        { label: 'Eligibility', value: 'Unsatisfied with their activity level (3 or lower of 5), able to do moderate exercise, iPhone.' },
+        { label: 'Interviews', value: 'Start, day 14 and day 28; think-aloud plans for the next day and walkthroughs of critical incidents.' },
+        { label: 'Analysis', value: 'In vivo coding grouped by research question, then by emergent themes such as reflecting on records.' },
+        { label: 'Ethics', value: 'IRB approved; three participants left for scheduling or installation reasons and were excluded.' },
+      ],
+      note: 'Exploratory: completion fell in the second phase, and the study does not claim that history improves adherence.',
+      source: { label: 'Read the CHI 2022 paper', href: 'https://doi.org/10.1145/3491102.3501997' },
     },
     {
       type: 'outcome',
-      eyebrow: '06 — Outcome',
+      eyebrow: '05 — Outcome',
       title: 'Published at *CHI 2022.*',
       body: [
         'Twenty people enrolled and seventeen completed the 28-day study, making and reporting 248 plans, 183 of them followed as planned. Physicify set up the questions that Planneregy went on to answer.',
