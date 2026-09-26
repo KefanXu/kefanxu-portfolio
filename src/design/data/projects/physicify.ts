@@ -78,15 +78,19 @@ export const physicify: Project = {
       ],
     },
     {
-      type: 'gallery',
+      type: 'demo',
       eyebrow: '03 — Process',
       title: 'Flows before *pixels.*',
-      intro: 'Study logic and app logic were designed together: what each version reveals, when, and what that lets us compare.',
-      kind: 'wide',
-      shots: [
-        { src: img('physicify/method-flow.webp'), alt: 'Flow diagram comparing experiment methods for the two app versions.', caption: 'Mapping the two experimental conditions onto app behaviour.' },
-        { src: img('physicify/wireboard.webp'), alt: 'Board of wireframes and interaction notes for planning, reporting and history views.', caption: 'Wireframe board: planning, reporting and history.' },
-      ],
+      body:
+        'Study logic and app logic were designed together: what each build reveals, when, and what that lets us compare. Two designs were on the table for the same 28 days. The one that ran gives every participant both builds in turn, so each person is their own control.',
+      demo: 'methods',
+      hint: 'Compare the two designs.',
+    },
+    {
+      type: 'figure',
+      shot: { src: img('physicify/wireboard.webp'), alt: 'Board of wireframes and interaction notes for planning, reporting and history views.', caption: 'The wireframe board: planning, reporting and the history views, with the interaction notes that went with them.' },
+      frame: 'plain',
+      wide: true,
     },
     {
       type: 'gallery',
@@ -102,8 +106,80 @@ export const physicify: Project = {
       ],
     },
     {
+      type: 'build',
+      eyebrow: '04 — Under the hood',
+      title: 'Two builds, *one database.*',
+      intro: 'Physicify is an iOS app shipped in two builds through TestFlight: the first only plans and reports, the second adds the history. Both write to the same Firebase project, so phase two meant a new build for each participant, not a migration.',
+      specs: [
+        { label: 'Client', value: 'iOS · two builds · TestFlight' },
+        { label: 'Backend', value: 'Google Firebase' },
+        { label: 'Context', value: 'Weather, temperature, Google Calendar' },
+        { label: 'Reminders', value: '1 h before a plan · 8 pm every day' },
+      ],
+      screen: {
+        label: 'Annotated · the calendar in Physicify 2',
+        device: 'phone',
+        shot: { src: img('physicify/final-calendar-planning.webp'), alt: 'Physicify 2 calendar for June 2021 with weather icons, grey calendar events and colour-coded exercise records.' },
+        callouts: [
+          { x: 37, y: 21.5, title: 'Calendar events, without the words', body: 'Google Calendar events arrive as untitled grey blocks. Titles, descriptions and locations are dropped before anything is stored.' },
+          { x: 63, y: 21, title: 'Records straight from Firebase', body: 'Each plan is a document with its type, time and outcome; the chips are colour-coded from it. A deleted plan is flagged, never removed.' },
+          { x: 13, y: 45, title: 'Weather on every date', body: 'Condition and temperature are fetched for the forecast and kept on every past record, so history can be grouped by them.' },
+          { x: 50, y: 57, title: 'Same weekday, highlighted', body: 'Choosing a date lights the whole column, so a Wednesday plan is made against previous Wednesdays.' },
+          { x: 48, y: 92.5, side: 'right', title: 'One plan, two side effects', body: 'A new plan is written to Firebase and a reminder scheduled an hour before it; the 8 pm notification asks for the day’s report.' },
+        ],
+      },
+      scene: {
+        title: 'Structure · two builds around one project',
+        hint: 'Two iOS builds writing to the same Firebase project, with the calendar, the weather and the 8 pm reminder around them.',
+        items: [
+          { id: 'gcal', type: 'calendar', x: 50, y: 56, scale: 0.86, label: 'Google Calendar', kicker: 'events, titles stripped', body: 'is drawn as untitled grey blocks; titles, descriptions and locations never leave Google.' },
+          { id: 'weather', type: 'sun', x: 70, y: 214, scale: 0.8, label: 'Weather + temperature', kicker: 'per date', body: 'is attached to every record, so history can be grouped by it.' },
+          { id: 'reminder', type: 'toast', x: 24, y: 452, app: 'Physicify', title: 'How did today’s plan go?', text: 'Daily report · 8:00 pm', body: 'an hour before each plan, and every evening at 8 pm for the report, whether or not anything was planned.' },
+          { id: 'p2', type: 'phone', x: 330, y: 110, w: 200, tilt: -14, shot: { src: img('physicify/final-calendar-planning.webp'), alt: 'Physicify 2 calendar with weather, calendar events and colour-coded records.' }, label: 'Physicify 2', kicker: 'build 2 · days 15–28', body: 'is the same app with the record switched on: summary charts, the calendar and a detail view per plan.' },
+          { id: 'p1', type: 'phone', x: 1030, y: 110, w: 150, tilt: 12, shot: { src: img('physicify/week-plan.webp'), alt: 'Physicify 1 planning screen.' }, label: 'Physicify 1', kicker: 'build 1 · days 1–14', body: 'plans and reports, nothing else; the first two weeks of every participant.' },
+          { id: 'firebase', type: 'slab', x: 660, y: 276, w: 230, d: 150, label: 'Google Firebase' },
+          { id: 'db', type: 'database', x: 756, y: 262, label: 'Plans · reports · deletions', kicker: 'collections', body: 'is one project for both builds; a plan deleted before its date stays, flagged.' },
+          { id: 'me', type: 'role', x: 740, y: 536, title: 'My part', role: 'Both builds, the history views, the two-phase study', tool: 'iOS · Firebase · TestFlight' },
+          { id: 'stat1', type: 'stat', x: 1034, y: 504, value: '17', unit: 'participants · 28 days' },
+          { id: 'stat2', type: 'stat', x: 1034, y: 572, value: '248', unit: 'plans reported' },
+        ],
+        flows: [
+          { id: 'events', from: 'gcal', to: 'p2', label: 'events', toAt: 0.34 },
+          { id: 'weather', from: 'weather', to: 'p2', label: 'weather', toAt: 0.5 },
+          { id: 'remind', from: 'reminder', to: 'p2', label: '8 pm · 1 h before', fromSide: 'top', toSide: 'left', toAt: 0.7, labelAt: 0.3 },
+          { id: 'write2', from: 'p2', to: 'db', label: 'plans · reports', fromAt: 0.4, toAt: 0.4 },
+          { id: 'write1', from: 'p1', to: 'db', label: 'plans · reports', fromSide: 'left', toSide: 'right' },
+          { id: 'history', from: 'db', to: 'p2', label: 'history', fromSide: 'left', fromAt: 0.66, toSide: 'right', toAt: 0.64, quiet: true },
+        ],
+        path: ['events', 'weather', 'write2', 'remind', 'history'],
+      },
+      record: {
+        title: 'Data · a plan and its record',
+        rows: [
+          { key: 'plan', value: '{ type, date, start }', note: 'made from the calendar, one tap per field' },
+          { key: 'reminder', value: 'start − 60 min', note: 'scheduled with the plan' },
+          { key: 'report', value: 'done · other exercise · not done → reason', note: 'asked at 8 pm; days without a plan are reported too' },
+          { key: 'context', value: 'weather · temperature · weekday · time of day', note: 'attached to every record, so history can be grouped by it' },
+          { key: 'calendar', value: 'Google events, titles stripped', note: 'drawn as grey blocks, never stored with their text' },
+          { key: 'deleted', value: 'true · false', note: 'a removed plan leaves the phone and stays in the database, flagged' },
+          { key: 'build', value: '1 → days 1–14 · 2 → days 15–28', note: 'same project, a second binary with the history switched on', nested: true },
+        ],
+      },
+      trace: {
+        title: 'Trace · the life of one plan',
+        steps: [
+          { lane: 'Phone', text: 'A date is chosen. Its column lights up with every earlier record on that weekday, and the forecast shows the weather and temperature for the day.', detail: 'calendar view · same-weekday highlight' },
+          { lane: 'Phone → Firebase', text: 'The plan is saved with its type, date and start time, and a reminder is scheduled for an hour before it.', detail: 'plan → Firebase' },
+          { lane: 'Phone', text: 'At 8 pm a notification asks for the day’s report, whether or not anything was planned.', detail: 'notification · 20:00' },
+          { lane: 'Phone → Firebase', text: 'The report records what happened: the plan was followed, another exercise was done instead, or nothing, with a reason.', detail: 'report → Firebase' },
+          { lane: 'Firebase → Phone', text: 'In Physicify 2 the same records come back aggregated: bar charts by weather, activity type, weekday and time of day, and a colour-coded calendar with a detail sheet per record.', detail: 'build 2 · history views' },
+          { lane: 'Firebase', text: 'A plan that is deleted before its date disappears from the phone and is flagged in the database, so a change of mind is still visible in the analysis.', detail: 'deleted: true' },
+        ],
+      },
+    },
+    {
       type: 'research',
-      eyebrow: '04 — The study',
+      eyebrow: '05 — The study',
       title: 'Twenty-eight days, *two phases.*',
       intro: 'Seventeen people planned exercise every day for four weeks. For the first two they saw nothing of their past; for the second, their own history sat beside every plan. Three interviews asked what changed.',
       numbers: [
@@ -148,7 +224,7 @@ export const physicify: Project = {
     },
     {
       type: 'outcome',
-      eyebrow: '05 — Outcome',
+      eyebrow: '06 — Outcome',
       title: 'Published at *CHI 2022.*',
       body: [
         'Twenty people enrolled and seventeen completed the 28-day study, making and reporting 248 plans, 183 of them followed as planned. Physicify set up the questions that Planneregy went on to answer.',

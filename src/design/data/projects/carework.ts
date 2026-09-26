@@ -44,16 +44,13 @@ export const carework: Project = {
       ],
     },
     {
-      type: 'figure',
+      type: 'demo',
       eyebrow: '02 — The framework',
       title: 'Create, evaluate, *iterate.*',
-      shot: {
-        src: img('carework/framework.webp'),
-        alt: 'HomeWork framework diagram: clinical goals become an assignment of tasks, tasks are evaluated with notes, and the assignment is modified for the next session cycle.',
-        caption: 'The HomeWork framework structures between-session care as a recurring cycle. It came out of six formative interviews and became the information architecture of the product.',
-      },
-      frame: 'plain',
-      wide: true,
+      body:
+        'The HomeWork framework treats between-session care as one recurring cycle. An assignment is created in the clinic, lived with at home, evaluated at the next visit and revised for the one after: one object, four moments. It came out of six formative interviews and became the information architecture of the product.',
+      demo: 'homework',
+      hint: 'Step through one cycle.',
     },
     {
       type: 'sequence',
@@ -159,8 +156,80 @@ export const carework: Project = {
       note: 'Frames from the CareWork Figma file, shown as drawn. Scroll to pan a strip, or select a frame to enlarge it.',
     },
     {
+      type: 'build',
+      eyebrow: '07 — Under the hood',
+      title: 'A proxy between *the clinic and the model.*',
+      intro: 'CareWork is a React and TypeScript web app. The browser never talks to the model: a server-side proxy holds the key, calls DeepSeek at temperature 0.3 and streams the reply into an interface where everything generated stays editable.',
+      specs: [
+        { label: 'Client', value: 'React 18 + TypeScript · Vite' },
+        { label: 'Model', value: 'deepseek-chat · temperature 0.3' },
+        { label: 'Proxy', value: 'Server-side · streaming · key never in the browser' },
+        { label: 'State', value: 'zustand · local archive · study export' },
+      ],
+      screen: {
+        label: 'Annotated · the Evaluate stage',
+        device: 'browser',
+        url: 'care-work.vercel.app',
+        shot: { src: img('carework/shot-08.webp'), alt: 'CareWork evaluation view: task cards with completion meters, a patient response with an AI summary, clinician notes with an AI draft, and a 31-day adherence log.' },
+        callouts: [
+          { x: 8, y: 27, title: 'Meters from synthesised data', body: 'For the study the model generated three months of patient-generated data per fictional case; the per-task meters and charts (Recharts) are computed from it.' },
+          { x: 45, y: 39, title: 'One button, four-part prompt', body: 'Role, stage instruction, stage context and a JSON output contract, posted through the proxy to deepseek-chat. The reply streams back.' },
+          { x: 25, y: 64, title: 'The raw log stays underneath', body: 'Every summary sits above the records it was made from, so the model’s reading can be checked against the dots.' },
+          { x: 93, y: 59, title: 'Nothing is saved until Accept', body: 'Drafts come back under the JSON contract as editable objects. Retry, edit or reject; only Accept writes the note.' },
+          { x: 92, y: 80, title: 'Where the state lives', body: 'Assignment, tasks and notes in a zustand store; sessions archive locally and export through a study endpoint.' },
+        ],
+      },
+      scene: {
+        title: 'Structure · the browser, the proxy and the model',
+        hint: 'The browser never talks to the model: a proxy holds the key and streams the reply. Select a part, or follow one request.',
+        items: [
+          { id: 'app', type: 'browser', x: 40, y: 116, w: 440, tilt: 10, url: 'care-work.vercel.app', shot: { src: img('carework/shot-04.webp'), alt: 'CareWork in the browser: an assignment under evaluation.' }, label: 'CareWork app', kicker: 'React 18 + TypeScript · Vite · zustand · Recharts', body: 'renders Create, Evaluate and Iterate over one assignment; every generated thing arrives as an editable object.' },
+          { id: 'me', type: 'role', x: 40, y: 536, title: 'My part', role: 'Framework, interface, AI patterns, two studies', tool: 'React · TypeScript · Cursor' },
+          { id: 'vercel', type: 'slab', x: 546, y: 250, w: 260, d: 170 },
+          { id: 'proxy', type: 'server', x: 620, y: 196, label: 'AI proxy on Vercel', kicker: '/api/chat · /api/followups', body: 'builds the four-part system prompt, holds the API key and streams the model’s reply back to the page.' },
+          { id: 'archive', type: 'server', x: 770, y: 316, scale: 0.72, label: 'Archive + export', kicker: 'local-archive · study-export', body: 'keeps sessions and packages them for the study.' },
+          { id: 'deepseek', type: 'chip', x: 972, y: 120, label: 'DeepSeek', kicker: 'deepseek-chat · temperature 0.3', body: 'answers through an OpenAI-compatible Chat Completions API, under a JSON output contract with required fields and valid identifiers.' },
+          { id: 'pgd', type: 'database', x: 972, y: 372, scale: 0.9, label: 'Synthesised PGD', kicker: '3 months per fictional case', body: 'was generated by the same model from the tasks a clinician created, so Evaluate had records to read.' },
+          { id: 'stat1', type: 'stat', x: 560, y: 560, value: '4', unit: 'parts in every prompt' },
+          { id: 'stat2', type: 'stat', x: 720, y: 560, value: '0.3', unit: 'temperature' },
+        ],
+        flows: [
+          { id: 'prompt', from: 'app', to: 'proxy', label: 'prompt', fromAt: 0.36, toAt: 0.36 },
+          { id: 'context', from: 'pgd', to: 'proxy', label: 'context', fromSide: 'top', fromAt: 0.5, toSide: 'right', toAt: 0.7, labelAt: 0.7 },
+          { id: 'model', from: 'proxy', to: 'deepseek', label: 'system + user', fromAt: 0.3, toAt: 0.42, labelAt: 0.35 },
+          { id: 'stream', from: 'deepseek', to: 'proxy', label: 'stream', fromSide: 'left', fromAt: 0.7, toSide: 'right', toAt: 0.5, labelAt: 0.8, quiet: true },
+          { id: 'tokens', from: 'proxy', to: 'app', label: 'tokens', fromSide: 'left', fromAt: 0.7, toSide: 'right', toAt: 0.66, quiet: true },
+          { id: 'session', from: 'app', to: 'archive', label: 'session', fromSide: 'right', fromAt: 0.96, toSide: 'left', toAt: 0.9, labelAt: 0.3, quiet: true },
+        ],
+        path: ['prompt', 'context', 'model', 'stream', 'tokens', 'session'],
+      },
+      record: {
+        title: 'Data · an AI request, part by part',
+        rows: [
+          { key: 'system · role', value: '“a non-diagnostic, suggestion-only assistant”', note: 'shared by every request, in every stage' },
+          { key: 'system · stage', value: 'create · evaluate · iterate', note: 'the goal of this stage, and nothing about the others' },
+          { key: 'system · context', value: 'patient · care goal · assignment · tasks · synthesised PGD · notes', note: 'only what the stage is allowed to see' },
+          { key: 'system · contract', value: 'JSON · required fields · valid identifiers', note: 'so a draft lands in the right task rather than in a text box' },
+          { key: 'user', value: 'a short message fixed per button', note: 'summarise, draft the note, iterate the assignment' },
+          { key: 'model', value: 'deepseek-chat · temperature 0.3', note: 'OpenAI-compatible Chat Completions' },
+          { key: 'transport', value: 'server-side proxy · streamed', note: 'the key never reaches the browser', nested: true },
+        ],
+      },
+      trace: {
+        title: 'Trace · what happens when Summarize is pressed',
+        steps: [
+          { lane: 'Browser', text: 'The clinician selects a task in Evaluate and presses Summarize. The page attaches the fixed user message for that button and the stage.', detail: 'POST /api/chat · stage: evaluate' },
+          { lane: 'Proxy', text: 'The server assembles the four-part system prompt: the shared role, the Evaluate instruction, this patient’s assignment, task and synthesised records, and the JSON output contract. It adds the API key.', detail: 'system = role + stage + context + contract' },
+          { lane: 'Model', text: 'deepseek-chat answers at temperature 0.3, constrained to the contract’s fields and identifiers.', detail: 'deepseek-chat · 0.3' },
+          { lane: 'Proxy → Browser', text: 'The reply streams back token by token and appears in the panel as it is written.', detail: 'text/event-stream' },
+          { lane: 'Browser', text: 'The summary arrives as data: it lands on the selected task above its own 31-day log, where the clinician can check it, retry it or close it.', detail: 'contract → task fields' },
+          { lane: 'Store', text: 'Accepted drafts update the zustand store; the session is archived locally and can be exported for the study.', detail: 'zustand · /api/local-archive · /api/study-export-payload' },
+        ],
+      },
+    },
+    {
       type: 'research',
-      eyebrow: '07 — The studies',
+      eyebrow: '08 — The studies',
       title: 'Two studies, *fourteen clinicians.*',
       intro: 'Six formative interviews shaped the framework; eleven prototype sessions tested it. Each clinician worked from a fictional patient drawn from their own practice, and no real patient data was ever shown.',
       numbers: [
@@ -225,7 +294,7 @@ export const carework: Project = {
     },
     {
       type: 'outcome',
-      eyebrow: '08 — Outcome',
+      eyebrow: '09 — Outcome',
       title: 'A pattern library for *accountable AI.*',
       body: [
         'Two studies with fourteen healthcare professionals in total: six formative interviews that produced the framework, and eleven hour-long prototype sessions that tested it.',

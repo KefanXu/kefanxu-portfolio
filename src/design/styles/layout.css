@@ -297,8 +297,9 @@
 @media (prefers-reduced-motion: reduce) {
   .work-card__blob { animation: none; }
   .work-card__blob--light { transition: none; }
+  .work-card__text { transform: none; transition: none; }
 }
-.work-card__text { position: relative; z-index: 2; display: grid; grid-template-rows: auto 1fr auto; gap: 24px; padding: clamp(24px, 3vw, 48px); }
+.work-card__text { position: relative; z-index: 2; display: grid; grid-template-rows: auto 1fr auto; gap: 24px; padding: clamp(24px, 3vw, 48px); transform: translate3d(calc(var(--px) * -8px), calc(var(--py) * -6px), 0); transition: transform 1100ms var(--ease-out); }
 .work-card__top { display: flex; justify-content: space-between; gap: 16px; opacity: 0.72; }
 .work-card__body { display: grid; align-content: center; gap: clamp(14px, 1.6vw, 22px); }
 .work-card__name { font: 500 clamp(3rem, 6.4vw, 7rem)/0.9 var(--sans); font-stretch: 84%; letter-spacing: -0.055em; }

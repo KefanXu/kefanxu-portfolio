@@ -9,9 +9,6 @@
   overflow: hidden;
   border-radius: inherit;
   container-type: size;
-  --px: 0;
-  --py: 0;
-  --sp: 0.5;
 }
 .cover { position: absolute; inset: 0; }
 .cover__phone {
@@ -25,14 +22,15 @@
   top: 13cqh;
   left: 50%;
   transform:
-    translate3d(calc(var(--tx) + var(--px) * var(--shift) * 2.2cqw), calc(var(--ty) + var(--lift) + var(--py) * var(--shift) * 1.6cqh + (0.5 - var(--sp)) * var(--shift) * 9cqh), 0)
-    rotate(var(--rot));
+    translate3d(calc(var(--tx) + var(--px, 0) * var(--shift) * 3.6cqw), calc(var(--ty) + var(--lift) + var(--py, 0) * var(--shift) * 2.6cqh + (0.5 - var(--sp, 0.5)) * var(--shift) * 9cqh), 0)
+    rotate(calc(var(--rot) + var(--px, 0) * var(--shift) * 1.4deg));
   transition: transform 1100ms var(--ease-out);
   will-change: transform;
 }
 .cover__float {
   position: absolute;
-  transform: translate3d(calc(var(--px) * -2.6cqw), calc(var(--py) * -2cqh + (0.5 - var(--sp)) * 14cqh), 0) rotate(var(--rot, 0deg));
+  --depth: 1;
+  transform: translate3d(calc(var(--px, 0) * -4.2cqw * var(--depth)), calc(var(--py, 0) * -3.2cqh * var(--depth) + (0.5 - var(--sp, 0.5)) * 14cqh), 0) rotate(var(--rot, 0deg));
   transition: transform 1300ms var(--ease-out);
   will-change: transform;
 }
@@ -43,8 +41,8 @@
   width: 108cqw;
   transform-origin: 0 0;
   transform:
-    translate3d(calc(var(--px) * 1.6cqw), calc(var(--py) * 1.2cqh + (0.5 - var(--sp)) * 8cqh + var(--lift, 0cqh)), 0)
-    perspective(1600px) rotateY(calc(-9deg + var(--px) * 2deg)) rotateX(calc(4deg - var(--py) * 1.5deg));
+    translate3d(calc(var(--px, 0) * 2.8cqw), calc(var(--py, 0) * 2.2cqh + (0.5 - var(--sp, 0.5)) * 8cqh + var(--lift, 0cqh)), 0)
+    perspective(1600px) rotateY(calc(-9deg + var(--px, 0) * 4deg)) rotateX(calc(4deg - var(--py, 0) * 3deg));
   transition: transform 1100ms var(--ease-out);
   will-change: transform;
 }
@@ -58,7 +56,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1.8cqh 1.6cqw;
-  transform: rotate(-16deg) scale(1.22) translate3d(calc(var(--px) * -1.2cqw), calc((0.5 - var(--sp)) * -6cqh), 0);
+  transform: rotate(-16deg) scale(1.22) translate3d(calc(var(--px, 0) * -2.6cqw), calc(var(--py, 0) * -1.6cqh + (0.5 - var(--sp, 0.5)) * -6cqh), 0);
   transition: transform 1400ms var(--ease-out);
   opacity: 0.5;
 }
@@ -76,6 +74,7 @@
 .cover--trackya .cover__phone--back { --tx: 6%; --ty: 9cqh; --rot: 8deg; --shift: 0.6; --phone-w: clamp(110px, 29cqw, 300px); }
 .cover--trackya .cover__icon {
   --rot: -9deg;
+  --depth: 1.4;
   left: 8cqw;
   bottom: 8cqh;
   width: clamp(54px, 15cqw, 128px);
@@ -88,6 +87,7 @@
 .cover--moodloop .cover__phone--left { --tx: -132%; --ty: 10cqh; --rot: -9deg; --shift: 0.6; --phone-w: clamp(104px, 28cqw, 290px); }
 .cover--moodloop .cover__phone--right { --tx: 32%; --ty: 10cqh; --rot: 9deg; --shift: 0.6; --phone-w: clamp(104px, 28cqw, 290px); }
 .cover--moodloop .cover__mascot {
+  --depth: 1.2;
   z-index: 3;
   right: 5cqw;
   bottom: -1px;
@@ -120,7 +120,8 @@
   text-transform: uppercase;
 }
 .cover--carework .cover__chip--ai div i.is-solid { border-color: #1f3a8a; background: #1f3a8a; color: #fff; }
-.cover--carework .cover__chip--log { left: 4cqw; top: 7cqh; --rot: -3deg; }
+.cover--carework .cover__chip--ai { --depth: 1.15; }
+.cover--carework .cover__chip--log { left: 4cqw; top: 7cqh; --rot: -3deg; --depth: 0.7; }
 .cover__dots { display: grid; grid-template-columns: repeat(16, 1fr); gap: 3px; width: clamp(120px, 27cqw, 230px); }
 .cover__dots i { aspect-ratio: 1; border-radius: 50%; background: #1f3a8a; }
 .cover__dots i.is-off { background: #d9d3c6; }
@@ -153,7 +154,7 @@
   right: -12cqw;
   width: 90cqh;
   aspect-ratio: 1;
-  transform: translate3d(calc(var(--px) * -1.4cqw), calc((0.5 - var(--sp)) * -10cqh), 0);
+  transform: translate3d(calc(var(--px, 0) * -2.8cqw), calc(var(--py, 0) * -2cqh + (0.5 - var(--sp, 0.5)) * -10cqh), 0);
   transition: transform 1400ms var(--ease-out);
 }
 /* Each orbit is its own SVG spinning as a whole layer (see Covers.tsx). */
@@ -171,7 +172,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1.2cqh 1cqw;
-  transform: translate3d(calc(var(--px) * -1cqw), calc((0.5 - var(--sp)) * -7cqh), 0);
+  transform: translate3d(calc(var(--px, 0) * -2.2cqw), calc(var(--py, 0) * -1.6cqh + (0.5 - var(--sp, 0.5)) * -7cqh), 0);
   transition: transform 1400ms var(--ease-out);
 }
 .cover--physicify .cover__blocks i { height: 9.5cqh; border-radius: 0.9cqw; background: rgba(20, 23, 19, 0.1); animation: cover-block 6400ms var(--ease-in-out) calc(var(--k) * -700ms) infinite; }
@@ -182,6 +183,7 @@
 .cover--physicify .cover__phone--back { --tx: 4%; --ty: 9cqh; --rot: 7deg; --shift: 0.6; --phone-w: clamp(110px, 29cqw, 300px); }
 
 @media (prefers-reduced-motion: reduce) {
+  .cover-box { --px: 0; --py: 0; --sp: 0.5; }
   .cover__phone, .cover__float, .cover__browser { transition: none; }
   .cover__ringtext, .cover__orbit, .cover__mascot, .cover--trackya .cover__capsules i, .cover--physicify .cover__blocks i { animation: none; }
 }

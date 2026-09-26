@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useCallback, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowDownRight, ArrowUpRight, Ear, GraduationCap, HeartHandshake, Smile, Stethoscope, Utensils } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, ClipboardList, Ear, GraduationCap, HeartHandshake, MessagesSquare, Mic, MousePointerClick, Smile, Stethoscope, Utensils } from 'lucide-react';
 import { sizeOf } from '../data/img';
 import { moodloopRecord } from '../data/studies/moodloop';
 import { planneregyRecord } from '../data/studies/planneregy';
 import type { Scale } from '../data/studies/types';
-import type { Block, Evidence, RecordSpec, Timeline } from '../data/types';
+import type { Block, Evidence, RecordSpec, StudyMap, Timeline } from '../data/types';
 import { CountUp } from './CountUp';
 import { Zoom } from './Lightbox';
 import { Reveal, SplitText } from './Reveal';
@@ -400,13 +400,72 @@ function DecisionsRecord({ spec }: { spec: Extract<RecordSpec, { kind: 'decision
             </Reveal>
           ))}
         </ul>
-        {spec.figure ? (
-          <Reveal kind="clip" className="decide__figure">
-            <Zoom shot={spec.figure}><img src={spec.figure.src} alt={spec.figure.alt} {...sizeOf(spec.figure.src)} loading="lazy" decoding="async" /></Zoom>
-          </Reveal>
-        ) : null}
+        {spec.map ? <StudyScore spec={spec.map} /> : null}
       </div>
     </div>
+  );
+}
+
+/* ── The session as a score: one line per instrument, into the analysis it feeds ── */
+const SCORE_ICONS = { dcs: ClipboardList, log: MousePointerClick, interview: Mic, chat: MessagesSquare } as const;
+
+function StudyScore({ spec }: { spec: StudyMap }) {
+  const cols = spec.stages.length;
+  const lanes = spec.lanes.map(lane => {
+    const rows = spec.rows.map((row, i) => (row.lane === lane.id ? i : -1)).filter(i => i >= 0);
+    return { ...lane, from: rows[0], to: rows[rows.length - 1] };
+  });
+  const band = spec.stages.findIndex(stage => stage.tone === 'b');
+  return (
+    <Reveal kind="fade" className="score-wrap rec__scroll">
+      <div
+        className="score"
+        role="figure"
+        aria-label="Which instrument is used at which stage of the session, and which analysis it feeds"
+        style={{ '--cols': cols, gridTemplateRows: `auto repeat(${spec.rows.length}, var(--row))` } as CSSProperties}
+      >
+        {band >= 0 ? <i className="score__band" style={{ gridColumn: band + 2 }} aria-hidden="true" /> : null}
+        <span className="mono score__corner">Each session</span>
+        {spec.stages.map((stage, c) => (
+          <div key={stage.label} className="score__stage" style={{ gridColumn: c + 2 }}>
+            <span className="mono">{pad(c + 1)}</span>
+            <b>{stage.label}</b>
+            <span className="score__sub">{stage.sub}</span>
+          </div>
+        ))}
+        <span className="mono score__after" style={{ gridColumn: cols + 3 }}>Afterwards</span>
+        {spec.rows.map((row, r) => {
+          const Icon = SCORE_ICONS[row.icon];
+          const first = row.uses.findIndex(Boolean);
+          const vars = { '--r': r } as CSSProperties;
+          return (
+            <Fragment key={row.label}>
+              <div className="score__what" style={{ gridRow: r + 2, ...vars }}>
+                <span className="score__glyph"><Icon size={15} strokeWidth={1.75} aria-hidden="true" /></span>
+                <b>{row.label}</b>
+                <span className="mono">{row.note}</span>
+              </div>
+              <i className="score__rail" style={{ gridColumn: `${first + 2} / ${cols + 3}`, gridRow: r + 2, ...vars }} aria-hidden="true" />
+              {row.uses.map((use, c) => (use ? (
+                <div key={c} className="score__use" style={{ gridColumn: c + 2, gridRow: r + 2, '--c': c, ...vars } as CSSProperties}>
+                  <b>{use.label}</b>
+                  <span className="mono">{use.sub}</span>
+                </div>
+              ) : null))}
+            </Fragment>
+          );
+        })}
+        {lanes.map(lane => (
+          <div key={lane.id} className="score__lane" style={{ gridColumn: cols + 3, gridRow: `${lane.from + 2} / ${lane.to + 3}` }}>
+            <div className="score__card">
+              <span className="mono">{lane.label}</span>
+              <p>{lane.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="mono score__swipe">Swipe across the session →</p>
+    </Reveal>
   );
 }
 

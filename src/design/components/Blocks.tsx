@@ -4,9 +4,12 @@ import { sizeOf } from '../data/img';
 import type { Block, DemoId, Shot } from '../data/types';
 import { CapsuleDemo } from '../demos/CapsuleDemo';
 import { EcologyDemo } from '../demos/EcologyDemo';
+import { HomeWorkDemo } from '../demos/HomeWorkDemo';
 import { LoopDemo } from '../demos/LoopDemo';
+import { MethodsDemo } from '../demos/MethodsDemo';
 import { MoodDemo } from '../demos/MoodDemo';
 import { onScrollFrame } from '../lib/scroll';
+import { Build } from './Build';
 import { Browser, Phone } from './Device';
 import { LiveDemo } from './LiveDemo';
 import { Research } from './Research';
@@ -14,7 +17,7 @@ import { Zoom } from './Lightbox';
 import { Reveal, SplitText, useRevealRef } from './Reveal';
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
-const DEMOS: Record<DemoId, () => JSX.Element> = { capsules: CapsuleDemo, mood: MoodDemo, loop: LoopDemo, ecology: EcologyDemo };
+const DEMOS: Record<DemoId, () => JSX.Element> = { capsules: CapsuleDemo, mood: MoodDemo, loop: LoopDemo, ecology: EcologyDemo, homework: HomeWorkDemo, methods: MethodsDemo };
 
 function BlockHead({ eyebrow, title, intro }: { eyebrow?: string; title?: string; intro?: string }) {
   if (!eyebrow && !title) return null;
@@ -349,6 +352,9 @@ export function CaseBlock({ block, soft, name }: { block: Block; soft: string; n
 
     case 'research':
       return <Research block={block} soft={soft} />;
+
+    case 'build':
+      return <Build block={block} />;
 
     case 'video':
       return (
