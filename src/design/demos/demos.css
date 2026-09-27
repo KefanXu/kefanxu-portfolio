@@ -331,6 +331,10 @@
 .eco__fine { color: rgba(14, 39, 48, 0.6); font: 400 12.5px/1.45 var(--sans); }
 
 /* ── CareWork · the HomeWork cycle ─────────────────────────────────────── */
+/* The panel holds still while the page travels 40vh per moment; a phone has
+   no room for that, so there the moments pass as the panel scrolls by. */
+.hw-track { --tall: 660px; height: calc(max(var(--panel-h, 560px), var(--tall)) + (var(--n, 4) - 1) * 40vh); }
+.hw-stick { position: sticky; top: max(calc(var(--header-h) + 16px), calc((100vh - var(--tall)) / 2)); }
 .hw {
   --acc: #8a3b2a; --hw-ink: #2a1b16; --hw-line: rgba(42, 27, 22, 0.14); --hw-mute: rgba(42, 27, 22, 0.58); --hw-bg: #f3ebdf;
   grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1.22fr);
@@ -358,9 +362,10 @@
 .hw__seg .mono { overflow: hidden; font-size: 10px; white-space: nowrap; text-overflow: ellipsis; }
 .hw__seg.is-done { box-shadow: inset 0 0 0 1px var(--acc); color: var(--acc); }
 .hw__seg.is-on { background: var(--acc); color: #fff; box-shadow: none; }
-.hw__return { position: relative; height: 16px; margin: 0 18px; border: 1px solid var(--hw-line); border-top: 0; border-radius: 0 0 12px 12px; transition: border-color 400ms; }
+/* the way back: from the middle of the last setting to the middle of the first */
+.hw__return { position: relative; height: 18px; margin: 0 calc((100% - 12px) / 6.2); border: 1px solid var(--hw-line); border-top: 0; border-radius: 0 0 12px 12px; transition: border-color 400ms; }
 .hw__return::before { content: ''; position: absolute; left: -4px; top: -2px; width: 7px; height: 7px; border-left: 1px solid var(--hw-line); border-top: 1px solid var(--hw-line); transform: rotate(45deg); transition: border-color 400ms; }
-.hw__return span { position: absolute; left: 50%; top: 9px; display: inline-flex; align-items: center; gap: 5px; padding: 0 8px; background: var(--hw-bg); color: var(--hw-mute); font-size: 9.5px; transform: translateX(-50%); transition: color 400ms; }
+.hw__return span { position: absolute; left: 50%; top: 11px; display: inline-flex; align-items: center; gap: 5px; padding: 0 8px; background: var(--hw-bg); color: var(--hw-mute); font-size: 9.5px; transform: translateX(-50%); transition: color 400ms; }
 .hw.is-iterate .hw__return, .hw.is-iterate .hw__return::before { border-color: var(--acc); }
 .hw.is-iterate .hw__return span { color: var(--acc); }
 
@@ -466,6 +471,8 @@
 
 @media (max-width: 860px) {
   .capsules, .mood, .loop, .eco, .hw, .mt { grid-template-columns: 1fr; }
+  .hw-track { height: auto; }
+  .hw-stick { position: static; }
   .hw__stage { order: -1; }
   .hw__task, .hw__task-inner { grid-template-columns: 62px minmax(0, 1fr); row-gap: 6px; }
   .hw__side { grid-column: 2; justify-items: start; padding-top: 0; text-align: left; }

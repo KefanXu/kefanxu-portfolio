@@ -50,7 +50,6 @@ export const carework: Project = {
       body:
         'The HomeWork framework treats between-session care as one recurring cycle. An assignment is created in the clinic, lived with at home, evaluated at the next visit and revised for the one after: one object, four moments. It came out of six formative interviews and became the information architecture of the product.',
       demo: 'homework',
-      hint: 'Step through one cycle.',
     },
     {
       type: 'sequence',

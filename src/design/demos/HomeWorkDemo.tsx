@@ -1,18 +1,23 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Home, Paperclip, RotateCcw, Stethoscope, Target } from 'lucide-react';
+import { onScrollFrame, scrollToY } from '../lib/scroll';
 import './demos.css';
 
 /*
  * The HomeWork framework as one assignment going round one between-session
  * cycle: created in the clinic, lived with at home, evaluated and revised at
- * the next visit. The card is the same object throughout; only its state moves.
+ * the next visit. The card is the same object throughout; only its state
+ * moves, and the reader moves it by scrolling: the panel holds still while
+ * the page travels through the four moments, and a click on a moment scrolls
+ * the page to it.
  */
 const MOMENTS = [
-  { key: 'create', title: 'Create', where: 'Clinical encounter', body: 'Clinical goals become an assignment: a small bundle of management tasks, each with a cadence, assessed and assigned with the patient in the room.', ms: 3400 },
-  { key: 'live', title: 'Live with it', where: 'Everyday life · two weeks', body: 'The patient completes the tasks and logs them in the app. Every entry is patient-generated data, attached to the task it came from.', ms: 4200 },
-  { key: 'evaluate', title: 'Evaluate', where: 'Next encounter', body: 'Completion and the log are reviewed task by task, and the clinician attaches a note to each, with the patient.', ms: 3800 },
-  { key: 'iterate', title: 'Iterate', where: 'Same encounter', body: 'Tasks are kept, revised, dropped or added. The revised assignment is assigned again, and the next between-session cycle begins.', ms: 4200 },
+  { key: 'create', title: 'Create', where: 'Clinical encounter', body: 'Clinical goals become an assignment: a small bundle of management tasks, each with a cadence, assessed and assigned with the patient in the room.' },
+  { key: 'live', title: 'Live with it', where: 'Everyday life · two weeks', body: 'The patient completes the tasks and logs them in the app. Every entry is patient-generated data, attached to the task it came from.' },
+  { key: 'evaluate', title: 'Evaluate', where: 'Next encounter', body: 'Completion and the log are reviewed task by task, and the clinician attaches a note to each, with the patient.' },
+  { key: 'iterate', title: 'Iterate', where: 'Same encounter', body: 'Tasks are kept, revised, dropped or added. The revised assignment is assigned again, and the next between-session cycle begins.' },
 ] as const;
+const clamp = (value: number) => Math.min(1, Math.max(0, value));
 type Moment = (typeof MOMENTS)[number]['key'];
 
 /* 14 days: 1 done, 0 missed, -1 not scheduled */
@@ -29,45 +34,64 @@ const PILL: Record<Moment, string> = { create: 'New', live: 'In progress · day 
 const FOOT: Record<Moment, string> = { create: 'Assessed · bundled · assigned →', live: 'Tasks completed and logged in the app', evaluate: 'Reviewed together · a note on each task', iterate: 'Assigned again → next cycle' };
 const SEGMENT: Record<Moment, number> = { create: 0, live: 1, evaluate: 2, iterate: 2 };
 
+/** The height the track reserves for the panel (see .hw-track in demos.css). */
+const TALL = 660;
+
+/** Where the page is inside the track, 0…1, and where it would be for a given moment. */
+function progress(track: HTMLElement, panel: HTMLElement, vh: number) {
+  const bounds = track.getBoundingClientRect();
+  const reserved = Math.max(TALL, parseFloat(track.style.getPropertyValue('--panel-h')) || 0);
+  const stuck = getComputedStyle(panel).position === 'sticky' && bounds.height > reserved + 1;
+  if (stuck) {
+    const top = parseFloat(getComputedStyle(panel).top) || 0;
+    const range = bounds.height - reserved;
+    return { t: clamp((top - bounds.top) / range), at: (i: number, n: number) => window.scrollY + bounds.top - top + (i / (n - 1)) * range };
+  }
+  // No room to hold the panel still (a phone): the moments pass as the panel crosses the viewport.
+  return { t: clamp((vh * 0.7 - bounds.top) / (bounds.height + vh * 0.3)), at: null };
+}
+
 export function HomeWorkDemo() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
-  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const track = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const n = MOMENTS.length;
 
   useEffect(() => {
-    const element = root.current;
-    if (!element) return;
-    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.35 });
-    io.observe(element);
-    return () => io.disconnect();
-  }, []);
+    const trackEl = track.current;
+    const panelEl = panel.current;
+    if (!trackEl || !panelEl) return;
+    // The card grows and shrinks with its state; the track keeps the tallest height seen so the page below never shifts back.
+    let tallest = 0;
+    const size = () => { tallest = Math.max(tallest, panelEl.offsetHeight); trackEl.style.setProperty('--panel-h', `${tallest}px`); };
+    size();
+    const resize = new ResizeObserver(size);
+    resize.observe(panelEl);
+    const off = onScrollFrame(({ vh }) => setIndex(Math.round(progress(trackEl, panelEl, vh).t * (n - 1))));
+    return () => { resize.disconnect(); off(); };
+  }, [n]);
 
-  useEffect(() => {
-    if (paused || !visible || reduced) return;
-    const id = window.setTimeout(() => setIndex(current => (current + 1) % MOMENTS.length), MOMENTS[index].ms);
-    return () => window.clearTimeout(id);
-  }, [index, paused, visible, reduced]);
+  const go = (i: number) => {
+    const trackEl = track.current;
+    const panelEl = panel.current;
+    const target = trackEl && panelEl ? progress(trackEl, panelEl, window.innerHeight).at : null;
+    if (target) scrollToY(target(i, n));
+    else setIndex(i);
+  };
 
   const moment = MOMENTS[index];
   const state = moment.key;
   const segment = SEGMENT[state];
 
   return (
-    <div
-      ref={root}
-      className={`demo hw is-${state}`}
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-    >
+    <div ref={track} className="hw-track" style={{ '--n': n } as CSSProperties}>
+    <div ref={panel} className="hw-stick">
+    <div className={`demo hw is-${state}`}>
       <div className="hw__copy">
         <ol>
           {MOMENTS.map((item, itemIndex) => (
             <li key={item.key} className={itemIndex === index ? 'is-on' : ''}>
-              <button type="button" onClick={() => setIndex(itemIndex)} aria-pressed={itemIndex === index}>
+              <button type="button" onClick={() => go(itemIndex)} aria-pressed={itemIndex === index}>
                 <span className="mono">{String(itemIndex + 1).padStart(2, '0')}</span>
                 <b>{item.title}</b>
                 <em className="mono">{item.where}</em>
@@ -139,6 +163,9 @@ export function HomeWorkDemo() {
           <footer className="hw__foot mono" key={`foot-${state}`}>{FOOT[state]}</footer>
         </div>
       </div>
+    </div>
+    <span className="demo-hint mono" aria-hidden="true"><i />Live · Scroll through one cycle.</span>
+    </div>
     </div>
   );
 }
