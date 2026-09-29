@@ -22,7 +22,7 @@ type Moment = (typeof MOMENTS)[number]['key'];
 
 /* 14 days: 1 done, 0 missed, -1 not scheduled */
 const TASKS = [
-  { cat: 'Exercise', title: 'Gentle movement or stretching', cadence: '3× a week', log: [1, -1, 1, -1, 0, -1, -1, 1, -1, 0, -1, 1, -1, -1], count: '4 of 6', note: 'Crashed after the third session', fate: 'revised', after: '2× a week, shorter' },
+  { cat: 'Exercise', title: 'Gentle movement or stretching', cadence: '3× a week', log: [1, -1, 1, -1, 0, -1, -1, 1, -1, 0, -1, 1, -1, -1], count: '4 of 6', note: 'Crashed after the third session', fate: 'revised', after: '2× a week' },
   { cat: 'Lifestyle', title: 'Log sleep and wake times', cadence: 'Daily', log: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], count: '14 of 14', note: 'Drifts later on work days', fate: 'dropped', after: 'Pattern is clear' },
   { cat: 'Self-report', title: 'Rate daily fatigue', cadence: 'Daily', log: [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1], count: '12 of 14', note: 'Average 5.3, worst after shifts', fate: 'kept', after: 'Daily' },
 ] as const;
@@ -34,20 +34,22 @@ const PILL: Record<Moment, string> = { create: 'New', live: 'In progress · day 
 const FOOT: Record<Moment, string> = { create: 'Assessed · bundled · assigned →', live: 'Tasks completed and logged in the app', evaluate: 'Reviewed together · a note on each task', iterate: 'Assigned again → next cycle' };
 const SEGMENT: Record<Moment, number> = { create: 0, live: 1, evaluate: 2, iterate: 2 };
 
-/** The height the track reserves for the panel (see .hw-track in demos.css). */
-const TALL = 660;
-
 /** Where the page is inside the track, 0…1, and where it would be for a given moment. */
 function progress(track: HTMLElement, panel: HTMLElement, vh: number) {
   const bounds = track.getBoundingClientRect();
-  const reserved = Math.max(TALL, parseFloat(track.style.getPropertyValue('--panel-h')) || 0);
+  const trackStyle = getComputedStyle(track);
+  // The height the track reserves for the panel (--tall in demos.css), or the tallest state seen if that is more.
+  const reserved = Math.max(parseFloat(trackStyle.getPropertyValue('--tall')) || 660, parseFloat(track.style.getPropertyValue('--panel-h')) || 0);
+  const top = parseFloat(getComputedStyle(panel).top) || 0;
+  // The panel can only hold still if the whole of it, at its tallest, fits under the header; decided from the
+  // reserved height so a state that grows mid-way never releases it.
+  track.classList.toggle('is-loose', Math.max(reserved, panel.offsetHeight) > vh - top - 8);
   const stuck = getComputedStyle(panel).position === 'sticky' && bounds.height > reserved + 1;
   if (stuck) {
-    const top = parseFloat(getComputedStyle(panel).top) || 0;
     const range = bounds.height - reserved;
     return { t: clamp((top - bounds.top) / range), at: (i: number, n: number) => window.scrollY + bounds.top - top + (i / (n - 1)) * range };
   }
-  // No room to hold the panel still (a phone): the moments pass as the panel crosses the viewport.
+  // No room to hold the panel still: the moments pass as the panel crosses the viewport.
   return { t: clamp((vh * 0.7 - bounds.top) / (bounds.height + vh * 0.3)), at: null };
 }
 
@@ -100,6 +102,7 @@ export function HomeWorkDemo() {
             </li>
           ))}
         </ol>
+        <p className="hw__lead" key={state}>{moment.body}</p>
       </div>
 
       <div className="hw__stage">

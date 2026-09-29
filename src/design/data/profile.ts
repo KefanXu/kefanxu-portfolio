@@ -11,6 +11,8 @@ export const profile = {
     linkedin: 'https://www.linkedin.com/in/kefan-xu-8a8b2b1b3/',
     github: 'https://github.com/kefanxu',
     scholar: 'https://scholar.google.com/citations?user=ocdZFbwAAAAJ&hl=en',
+    /** The site before this one, kept online. */
+    previous: 'https://kefanxu.github.io/KefanXu_Web/index.html',
   },
   portraits: [
     { src: img('about/portrait-1.webp'), alt: 'Portrait of Kefan Xu, film-style frame.' },

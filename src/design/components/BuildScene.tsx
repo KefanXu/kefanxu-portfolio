@@ -396,7 +396,6 @@ export function Scene({ scene }: { scene: SceneView }) {
           <svg key={live ? 'live' : 'idle'} className="scene__flows" width={SCENE_W} height={SCENE_H} aria-hidden="true">
             {ribbons.map((rb, i) => (
               <g key={rb.id} className={`flow${rb.quiet ? ' flow--quiet' : ''}${isHotFlow(rb) ? ' is-hot' : ''}${anyHot && !isHotFlow(rb) ? ' is-dim' : ''}`} style={{ '--i': i } as CSSProperties}>
-                <path className="flow__band" d={rb.d} pathLength={1} />
                 <path className="flow__core" d={rb.d} pathLength={1} />
                 <path className="flow__head" d={rb.head} />
                 {live && motion && !rb.quiet ? (

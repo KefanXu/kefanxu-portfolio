@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Copy } from 'lucide-react';
-import { Cover } from '../components/Covers';
-import { Phone } from '../components/Device';
+import { ArrowUpRight, Check, Copy } from 'lucide-react';
+import { Cover as ProjectCover } from '../components/Covers';
+import { Cover } from '../components/Cover';
 import { Magnetic } from '../components/Magnetic';
+import { ToTop } from '../components/ToTop';
 import { Reveal, Rule, SplitText } from '../components/Reveal';
-import { img, researchHref } from '../data/img';
+import { researchHref } from '../data/img';
 import { archive, experience, heroWords, principles, profile, recognition, toolkit } from '../data/profile';
 import { projects } from '../data/projects';
 import type { Project } from '../data/types';
@@ -14,65 +15,6 @@ import { goToMode } from '../../mode/modeSwitch';
 import cvPdf from '../../assets/KefanXu_CV.pdf';
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
-
-/* ── Hero ──────────────────────────────────────────────────────────────── */
-const fan = [
-  { src: img('physicify/final-calendar-planning.webp'), alt: '' },
-  { src: img('moodloop/app-10.webp'), alt: '' },
-  { src: img('trackya/app-1.webp'), alt: '' },
-  { src: img('moodloop/app-08.webp'), alt: '' },
-  { src: img('planneregy/app-mock-1.webp'), alt: '' },
-];
-
-function Hero() {
-  const root = useRef<HTMLElement>(null);
-  const { link } = useRouter();
-
-  useEffect(() => onScrollFrame(({ y, vh }) => {
-    const element = root.current;
-    if (!element) return;
-    element.style.setProperty('--hp', clamp(y / (vh * 0.9)).toFixed(4));
-  }), []);
-
-  return (
-    <section ref={root} className="hero" id="top" aria-labelledby="hero-title">
-      <div className="shell hero__inner">
-        <Reveal kind="fade" delay={120} className="hero__meta">
-          <span className="pill"><i className="dot" aria-hidden="true" />{profile.availability}</span>
-          <span className="mono hero__meta-right">Product designer · PhD researcher, Georgia Tech</span>
-        </Reveal>
-
-        <SplitText as="h1" id="hero-title" className="display hero__title" delay={180} text="I design health products that *hold up* in real life." />
-
-        <div className="hero__row">
-          <Reveal delay={700} className="hero__lede">
-            <p className="lede">
-              I take ideas from first interview to Figma to shipped app, then live with the result: multi-week field studies with the people who use it, not five-minute tests.
-            </p>
-          </Reveal>
-          <Reveal delay={820} className="hero__cta">
-            <Magnetic>
-              <a className="btn" href={workHref(projects[0].slug)} onClick={link(workHref(projects[0].slug))}>
-                Start with {projects[0].name} <ArrowRight size={18} aria-hidden="true" />
-              </a>
-            </Magnetic>
-            <a className="hero__scroll mono" href="#/" onClick={link('#/', { section: 'work' })}>
-              Selected work ({String(projects.length).padStart(2, '0')}) <ArrowDown size={14} aria-hidden="true" />
-            </a>
-          </Reveal>
-        </div>
-      </div>
-
-      <Reveal kind="fade" delay={300} className="hero__fan" aria-hidden="true">
-        {fan.map((shot, index) => (
-          <div key={shot.src} className={`hero__phone hero__phone--${index}`} style={{ '--d': `${480 + Math.abs(index - 2) * 120}ms` } as CSSProperties}>
-            <Phone shot={shot} eager decorative />
-          </div>
-        ))}
-      </Reveal>
-    </section>
-  );
-}
 
 /* ── Marquee ───────────────────────────────────────────────────────────── */
 function Marquee() {
@@ -204,7 +146,7 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
             <span className="mono work-card__year">{project.year}<br />{project.status}</span>
           </div>
         </div>
-        <div className="work-card__visual"><Cover id={project.cover} /></div>
+        <div className="work-card__visual"><ProjectCover id={project.cover} /></div>
         <span className="work-card__shade" aria-hidden="true" />
       </a>
     </li>
@@ -456,6 +398,10 @@ function Contact() {
           <span>{profile.location} · Designed & built with care</span>
           <a href="#top" onClick={event => { event.preventDefault(); scrollToTop(false); }}>Back to top ↑</a>
         </div>
+        <div className="contact__colophon mono">
+          <span>This site · 2026</span>
+          <a href={profile.links.previous} target="_blank" rel="noopener noreferrer">Previous site <ArrowUpRight size={12} aria-hidden="true" /></a>
+        </div>
       </div>
     </footer>
   );
@@ -464,7 +410,7 @@ function Contact() {
 export function Home() {
   return (
     <>
-      <Hero />
+      <Cover />
       <Marquee />
       <Statement />
       <Work />
@@ -472,6 +418,7 @@ export function Home() {
       <About />
       <Archive />
       <Contact />
+      <ToTop />
     </>
   );
 }

@@ -45,7 +45,7 @@ const LINKS: [string, string][] = [
   ['employer', 'work'], ['work', 'foot'], ['work', 'visits'],
 ];
 
-interface Scenario {
+export interface Scenario {
   id: string;
   label: string;
   source?: string;
@@ -55,7 +55,7 @@ interface Scenario {
   note: string;
 }
 const key = (a: string, b: string) => [a, b].sort().join('|');
-const SCENARIOS: Scenario[] = [
+export const SCENARIOS: Scenario[] = [
   { id: 'baseline', label: 'Baseline', strained: [], broken: [], rerouted: [],
     note: 'A steady state. Practices sit closest to Jordan, the people who help come next, and systems such as insurance and work form the outer layer.' },
   { id: 'insurance', label: 'Insurance drops insulin coverage', source: 'insurance',
@@ -80,12 +80,65 @@ const curve = (a: { x: number; y: number }, b: { x: number; y: number }) => {
   return `M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${(mx + (C - mx) * 0.32).toFixed(1)} ${(my + (C - my) * 0.32).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
 };
 
+/** The map itself: rings, links and nodes for one scenario. Shared with the home-page hero. */
+export function EcoMap({ scenario, hovered, onHover, viewBox = '-86 0 812 640' }: { scenario: Scenario; hovered: string | null; onHover: (id: string | null) => void; viewBox?: string }) {
+  const points = useMemo(() => Object.fromEntries(NODES.map(node => [node.id, position(node)])), []);
+  const active = scenario.id !== 'baseline';
+  const touched = new Set<string>([...(scenario.source ? [scenario.source] : []), ...scenario.strained, ...scenario.rerouted.flat()]);
+  return (
+    <svg viewBox={viewBox} role="img" aria-label={`Care ecology map. Scenario: ${scenario.label}. ${scenario.note}`}>
+      <circle cx={C} cy={C} r={RADII[3] + 26} className="eco__layer eco__layer--3" />
+      <circle cx={C} cy={C} r={RADII[2] + 30} className="eco__layer eco__layer--2" />
+      <circle cx={C} cy={C} r={RADII[1] + 34} className="eco__layer eco__layer--1" />
+      {[1, 2, 3].map(ring => <circle key={ring} cx={C} cy={C} r={RADII[ring as Ring]} className="eco__orbit" />)}
+
+      <g className="eco__links">
+        {LINKS.map(([a, b]) => {
+          const id = key(a, b);
+          const broken = scenario.broken.includes(id);
+          const lit = hovered ? a === hovered || b === hovered : false;
+          return <path key={id} d={curve(points[a], points[b])} className={`eco__link${broken ? ' is-broken' : ''}${lit ? ' is-lit' : ''}`} />;
+        })}
+        {scenario.rerouted.map(([a, b]) => <path key={`r-${a}-${b}`} d={curve(points[a], points[b])} className="eco__link is-rerouted" />)}
+      </g>
+
+      <g className="eco__patient">
+        <circle cx={C} cy={C} r="30" />
+        <text x={C} y={C + 4} textAnchor="middle">Jordan</text>
+      </g>
+
+      {NODES.map(node => {
+        const point = points[node.id];
+        const isSource = scenario.source === node.id;
+        const isStrained = scenario.strained.includes(node.id);
+        const isRerouted = scenario.rerouted.some(pair => pair.includes(node.id)) && !isSource;
+        const dim = active && !touched.has(node.id);
+        const right = Math.cos((node.angle * Math.PI) / 180) >= -0.2;
+        return (
+          <g
+            key={node.id}
+            className={`eco__node eco__node--r${node.ring}${isSource ? ' is-source' : ''}${isStrained ? ' is-strained' : ''}${isRerouted ? ' is-rerouted' : ''}${dim ? ' is-dim' : ''}`}
+            transform={`translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})`}
+            onPointerEnter={() => onHover(node.id)}
+            onPointerLeave={() => onHover(null)}
+          >
+            {isSource ? <circle className="eco__ripple" r="9" /> : null}
+            {isSource ? <circle className="eco__ripple eco__ripple--late" r="9" /> : null}
+            <circle className="eco__hit" r="18" />
+            <circle className="eco__dot" r={node.ring === 1 ? 6 : 7} />
+            <text x={right ? 13 : -13} y="4" textAnchor={right ? 'start' : 'end'}>{node.label}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export function EcologyDemo() {
   const [scenarioId, setScenarioId] = useState('baseline');
   const [hovered, setHovered] = useState<string | null>(null);
   const [typed, setTyped] = useState('');
   const scenario = SCENARIOS.find(item => item.id === scenarioId)!;
-  const points = useMemo(() => Object.fromEntries(NODES.map(node => [node.id, position(node)])), []);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -101,56 +154,11 @@ export function EcologyDemo() {
   }, [scenario]);
 
   const active = scenario.id !== 'baseline';
-  const touched = new Set<string>([...(scenario.source ? [scenario.source] : []), ...scenario.strained, ...scenario.rerouted.flat()]);
 
   return (
     <div className={`demo eco${active ? ' is-event' : ''}`}>
       <div className="eco__map">
-        <svg viewBox="-86 0 812 640" role="img" aria-label={`Care ecology map. Scenario: ${scenario.label}. ${scenario.note}`}>
-          <circle cx={C} cy={C} r={RADII[3] + 26} className="eco__layer eco__layer--3" />
-          <circle cx={C} cy={C} r={RADII[2] + 30} className="eco__layer eco__layer--2" />
-          <circle cx={C} cy={C} r={RADII[1] + 34} className="eco__layer eco__layer--1" />
-          {[1, 2, 3].map(ring => <circle key={ring} cx={C} cy={C} r={RADII[ring as Ring]} className="eco__orbit" />)}
-
-          <g className="eco__links">
-            {LINKS.map(([a, b]) => {
-              const id = key(a, b);
-              const broken = scenario.broken.includes(id);
-              const lit = hovered ? a === hovered || b === hovered : false;
-              return <path key={id} d={curve(points[a], points[b])} className={`eco__link${broken ? ' is-broken' : ''}${lit ? ' is-lit' : ''}`} />;
-            })}
-            {scenario.rerouted.map(([a, b]) => <path key={`r-${a}-${b}`} d={curve(points[a], points[b])} className="eco__link is-rerouted" />)}
-          </g>
-
-          <g className="eco__patient">
-            <circle cx={C} cy={C} r="30" />
-            <text x={C} y={C + 4} textAnchor="middle">Jordan</text>
-          </g>
-
-          {NODES.map(node => {
-            const point = points[node.id];
-            const isSource = scenario.source === node.id;
-            const isStrained = scenario.strained.includes(node.id);
-            const isRerouted = scenario.rerouted.some(pair => pair.includes(node.id)) && !isSource;
-            const dim = active && !touched.has(node.id);
-            const right = Math.cos((node.angle * Math.PI) / 180) >= -0.2;
-            return (
-              <g
-                key={node.id}
-                className={`eco__node eco__node--r${node.ring}${isSource ? ' is-source' : ''}${isStrained ? ' is-strained' : ''}${isRerouted ? ' is-rerouted' : ''}${dim ? ' is-dim' : ''}`}
-                transform={`translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})`}
-                onPointerEnter={() => setHovered(node.id)}
-                onPointerLeave={() => setHovered(null)}
-              >
-                {isSource ? <circle className="eco__ripple" r="9" /> : null}
-                {isSource ? <circle className="eco__ripple eco__ripple--late" r="9" /> : null}
-                <circle className="eco__hit" r="18" />
-                <circle className="eco__dot" r={node.ring === 1 ? 6 : 7} />
-                <text x={right ? 13 : -13} y="4" textAnchor={right ? 'start' : 'end'}>{node.label}</text>
-              </g>
-            );
-          })}
-        </svg>
+        <EcoMap scenario={scenario} hovered={hovered} onHover={setHovered} />
         <ul className="eco__layers mono" aria-label="Ecological layers, from the centre outwards">
           <li><i className="eco__swatch--1" />Practices & tools</li>
           <li><i className="eco__swatch--2" />People & care</li>

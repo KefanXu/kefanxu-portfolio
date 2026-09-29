@@ -72,6 +72,7 @@
   background: var(--soft);
   overflow: hidden;
 }
+.sequence__reveal { display: grid; justify-items: center; width: 100%; }
 .sequence--phone .sequence__device { --phone-w: min(300px, calc((100svh - var(--header-h) - 6vh - 150px) * 0.462)); }
 .sequence--browser .sequence__device { width: 88%; }
 .sequence--browser .sequence__device .browser__view { aspect-ratio: 1926 / 1203; }

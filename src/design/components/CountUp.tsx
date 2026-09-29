@@ -5,14 +5,17 @@ const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, v
 /* A number that counts up from zero the first time it scrolls into view. */
 export function CountUp({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const match = value.match(/^([^\d]*)(\d+(?:\.\d+)?)(.*)$/);
+  // A value like "1,200" keeps its thousands separator while counting.
+  const match = value.match(/^([^\d]*)(\d[\d,]*(?:\.\d+)?)(.*)$/);
+  const grouped = Boolean(match && match[2].includes(','));
   const [text, setText] = useState(match ? `${match[1]}0${match[3]}` : value);
 
   useEffect(() => {
     const element = ref.current;
     if (!element || !match) return;
-    const target = Number(match[2]);
+    const target = Number(match[2].replace(/,/g, ''));
     const decimals = (match[2].split('.')[1] ?? '').length;
+    const format = (n: number) => (grouped ? n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) : n.toFixed(decimals));
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setText(value); return; }
     let raf = 0;
     const io = new IntersectionObserver(([entry]) => {
@@ -23,7 +26,7 @@ export function CountUp({ value }: { value: string }) {
       const tick = (now: number) => {
         const t = clamp((now - start) / duration);
         const eased = 1 - Math.pow(2, -10 * t);
-        setText(`${match[1]}${(target * (t === 1 ? 1 : eased)).toFixed(decimals)}${match[3]}`);
+        setText(`${match[1]}${format(target * (t === 1 ? 1 : eased))}${match[3]}`);
         if (t < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);

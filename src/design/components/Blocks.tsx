@@ -58,6 +58,7 @@ function Sequence({ block }: { block: Extract<Block, { type: 'sequence' }> }) {
     <div ref={root} className={`sequence sequence--${block.device}`}>
       <div className="sequence__stage">
         <div className="sequence__pin">
+          <Reveal kind="clip" className="sequence__reveal">
           <Frame className="sequence__device">
             {block.steps.map((step, index) => (
               <img
@@ -72,6 +73,7 @@ function Sequence({ block }: { block: Extract<Block, { type: 'sequence' }> }) {
               />
             ))}
           </Frame>
+          </Reveal>
           <div className="sequence__meter" aria-hidden="true">
             <span className="mono">{String(active + 1).padStart(2, '0')}</span>
             <i><b /></i>
@@ -85,9 +87,9 @@ function Sequence({ block }: { block: Extract<Block, { type: 'sequence' }> }) {
             <span className="mono">{String(index + 1).padStart(2, '0')}</span>
             <h3 className="h3">{step.title}</h3>
             <p className="body-l">{step.body}</p>
-            <figure className="sequence__inline">
+            <Reveal as="figure" kind="clip" className="sequence__inline">
               {block.device === 'phone' ? <Phone shot={step.shot} /> : <Browser shot={step.shot} />}
-            </figure>
+            </Reveal>
           </li>
         ))}
       </ol>

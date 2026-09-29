@@ -155,10 +155,21 @@ html.lenis, html.lenis body { height: auto; }
   opacity: 1;
   transform: none;
   clip-path: inset(0 0 100% 0 round var(--radius-lg));
-  transition: clip-path 1300ms var(--ease-in-out) var(--d, 0ms);
+  transition: clip-path 1600ms var(--ease-out) var(--d, 0ms);
 }
 [data-reveal].is-in { opacity: 1; transform: none; will-change: auto; }
 [data-reveal='clip'].is-in { clip-path: inset(0 0 0 0 round var(--radius-lg)); }
+/* A picture arrives with its frame. The frame wipes open on its own clock; what
+   is inside rises into it and settles from slightly larger as the page scrolls
+   (--in, 0 at the bottom edge to 1 in the reading zone, from Reveal.tsx), so
+   the entrance is seen at any scrolling speed and finishes where the eye is. */
+.figure__frame > *, .tiles__frame > *, .sequence__inline > *, .sequence__reveal > * {
+  --lift: calc(1 - var(--in, 1));
+  transform: translate3d(0, calc(var(--lift) * 7%), 0) scale(calc(1 + var(--lift) * 0.06));
+  transform-origin: 50% 100%;
+  transition: transform 600ms var(--ease-out);
+  will-change: transform;
+}
 
 .split { display: block; }
 .split__word {
@@ -189,6 +200,7 @@ html.lenis, html.lenis body { height: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   [data-reveal], [data-reveal='clip'] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
+  .figure__frame > *, .tiles__frame > *, .sequence__inline > *, .sequence__reveal > * { transform: none !important; transition: none !important; }
   .split__word > span { transform: none !important; transition: none !important; }
   .rule { transform: none !important; transition: none !important; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }

@@ -11,19 +11,44 @@ const waiting = new Set<Element>();
 let observer: IntersectionObserver | null = null;
 
 /*
- * An entrance should carry its picture with it. Lazy images inside a reveal
- * may still be loading when the element scrolls into view, so the reveal waits
- * for them to decode (asking for the bytes now if the browser has not started),
- * up to a short cap; after that it plays anyway and the image fades in on load.
+ * An entrance should carry its picture with it. Pictures are asked for early:
+ * once an element is within two screens of the viewport its lazy images are
+ * switched to eager, so they are usually decoded by the time it reveals. If
+ * one is still on its way when the element scrolls into view, the reveal waits
+ * a beat for it and then plays anyway; the frame comes in on time and the
+ * picture fades in when it lands (lib/images.ts marks it loaded).
  */
-const IMAGE_WAIT_MS = 2400;
+const IMAGE_WAIT_MS = 360;
+const WARM_SCREENS = 2;
+/** A clipped piece opens once its top has come this far up the viewport. */
+const CLIP_LINE = 0.85;
+/** …and what is inside it keeps settling, scroll-linked, until its top is this far up (see --in in styles/base.css). */
+const SETTLE_LINE = 0.4;
+function warmImages(element: Element) {
+  element.querySelectorAll('img').forEach(img => { if (img.loading === 'lazy') img.loading = 'eager'; });
+}
 function imagesReady(element: Element): Promise<void> | null {
   const pending = Array.from(element.querySelectorAll('img')).filter(img => !(img.complete && img.naturalWidth > 0));
   if (!pending.length) return null;
-  pending.forEach(img => { if (img.loading === 'lazy') img.loading = 'eager'; });
+  warmImages(element);
   const decoded = Promise.all(pending.map(img => img.decode().catch(() => undefined))).then(() => undefined);
   const cap = new Promise<void>(resolve => window.setTimeout(resolve, IMAGE_WAIT_MS));
   return Promise.race([decoded, cap]);
+}
+let warmObserver: IntersectionObserver | null = null;
+function getWarmObserver() {
+  if (warmObserver) return warmObserver;
+  warmObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        warmObserver!.unobserve(entry.target);
+        warmImages(entry.target);
+      });
+    },
+    { rootMargin: `${WARM_SCREENS * 100}% 0px ${WARM_SCREENS * 100}% 0px`, threshold: 0 },
+  );
+  return warmObserver;
 }
 
 function show(element: Element) {
@@ -63,24 +88,50 @@ export function useRevealRef<T extends Element>(clipped = false) {
 
     // Chromium applies an element's own clip-path when it computes intersections,
     // so a fully clipped element never reports as visible. Clip reveals are
-    // tracked by their layout box on the shared scroll loop instead.
+    // tracked by their layout box on the shared scroll loop instead, with an
+    // observer on the (unclipped) parent as a second pair of eyes for the
+    // moments the loop is not running, such as a tab that loaded in the background.
     if (clipped) {
+      let warmed = false;
+      let done = false;
+      let settled = -1;
+      const fire = () => {
+        if (done) return;
+        done = true;
+        io?.disconnect();
+        show(element);
+      };
+      // Stays subscribed: besides the one-off reveal it writes --in, how far the
+      // piece has travelled from the bottom edge to the reading zone, so the
+      // picture inside can settle with the scroll at any scrolling speed.
       const stop = onScrollFrame(({ vh }) => {
         const rect = element.getBoundingClientRect();
-        if (rect.bottom <= 0 || rect.top >= vh * 0.91) return;
-        stop();
-        show(element);
+        if (!warmed && rect.top < vh * (1 + WARM_SCREENS)) { warmed = true; warmImages(element); }
+        const travel = Math.min(1, Math.max(0, (vh - rect.top) / (vh * (1 - SETTLE_LINE))));
+        const rounded = Math.round(travel * 200) / 200;
+        if (rounded !== settled) { settled = rounded; (element as unknown as HTMLElement).style.setProperty('--in', rounded.toFixed(3)); }
+        if (done || rect.bottom <= 0 || rect.top >= vh * CLIP_LINE) return;
+        fire();
       });
+      const host = element.parentElement;
+      const io = host && typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) fire(); }, { rootMargin: `0px 0px -${Math.round((1 - CLIP_LINE) * 100)}% 0px`, threshold: 0 })
+        : null;
+      io?.observe(host as Element);
       return () => {
         stop();
+        io?.disconnect();
         waiting.delete(element);
       };
     }
 
     const io = getObserver();
     io.observe(element);
+    const warm = element.querySelector('img[loading="lazy"]') ? getWarmObserver() : null;
+    warm?.observe(element);
     return () => {
       io.unobserve(element);
+      warm?.unobserve(element);
       waiting.delete(element);
     };
   }, [clipped]);
