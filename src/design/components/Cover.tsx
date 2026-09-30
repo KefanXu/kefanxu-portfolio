@@ -118,7 +118,7 @@ function Barcode() {
   const bars = [2, 1, 3, 1, 2, 1, 3, 2, 1, 3, 1, 2, 3, 1, 2, 1, 3, 2, 1, 2, 3, 1, 2, 1, 3, 2, 1, 3];
   let x = 0;
   return (
-    <svg className="cover__barcode" viewBox="0 0 106 30" aria-hidden="true">
+    <svg className="opening__barcode" viewBox="0 0 106 30" aria-hidden="true">
       {bars.map((w, i) => { const rect = <rect key={i} x={x} width={w} height="24" />; x += w + 2; return rect; })}
       <text x="0" y="30">2021 — 2026 · 06 · 01</text>
     </svg>
@@ -225,26 +225,26 @@ export function Cover() {
   return (
     // The reveal system toggles `is-in` on the section itself, so React leaves that class list alone:
     // state-driven classes go on the shell inside.
-    <section ref={root} className="cover" id="top" aria-labelledby="cover-title" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
-      <div className={`shell cover__shell${hoverable ? ' is-hover' : ''}${isNight ? ' is-night' : ''}`}>
-        <div className="cover__strap mono">
+    <section ref={root} className="opening" id="top" aria-labelledby="cover-title" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
+      <div className={`shell opening__shell${hoverable ? ' is-hover' : ''}${isNight ? ' is-night' : ''}`}>
+        <div className="opening__strap mono">
           <span><b>Issue {issue.number}</b> · {issue.season} · {issue.title}</span>
           <span>Six case studies · {issue.years}</span>
         </div>
 
-        <h1 className="cover__mast" id="cover-title">
-          <span className="cover__mast-word"><span>Kefan</span></span> <span className="cover__mast-word"><span>Xu</span></span>
+        <h1 className="opening__mast" id="cover-title">
+          <span className="opening__mast-word"><span>Kefan</span></span> <span className="opening__mast-word"><span>Xu</span></span>
           <span className="sr-only"> — health products that hold up in real life</span>
         </h1>
 
-        <div className="cover__body">
+        <div className="opening__body">
           {/* cover lines */}
-          <div className="cover__lines">
-            <span className="cover__issue cover__in mono" style={{ '--d': '900ms' } as CSSProperties}>Inside: one designer, the whole way</span>
+          <div className="opening__lines">
+            <span className="opening__issue opening__in mono" style={{ '--d': '900ms' } as CSSProperties}>Inside: one designer, the whole way</span>
             {coverLines.map((line, index) => {
               const parts = line.text.split('*');
               return (
-                <a key={line.n} className="cover__line cover__in" style={{ '--d': `${1000 + index * 90}ms` } as CSSProperties} href="#/" onClick={link('#/', { section: 'work' })}>
+                <a key={line.n} className="opening__line opening__in" style={{ '--d': `${1000 + index * 90}ms` } as CSSProperties} href="#/" onClick={link('#/', { section: 'work' })}>
                   <span className="mono">{line.n} · {line.kicker}</span>
                   <p>{parts.map((part, i) => (i % 2 ? <em key={i}>{part}</em> : part))}</p>
                   <small>{line.sub}</small>
@@ -254,11 +254,11 @@ export function Cover() {
           </div>
 
           {/* the poster and its stickers */}
-          <div ref={stage} className="cover__stage" style={{ '--px': 0, '--py': 0 } as CSSProperties}>
+          <div ref={stage} className="opening__stage" style={{ '--px': 0, '--py': 0 } as CSSProperties}>
             <p className="sr-only">A poster of a field study: a sun ringed by the layers of a care ecology, capsule-shaped clouds, three hills, and a road forty-two days long from the edge of the page to the sun, with the three interviews marked along it.</p>
-            <div className="cover__plate">
+            <div className="opening__plate">
               <Poster />
-              <button type="button" className="cover__daynight" onClick={() => setNight(!isNight)} aria-pressed={isNight} aria-label={isNight ? 'Switch the poster to day' : 'Switch the poster to night'}>
+              <button type="button" className="opening__daynight" onClick={() => setNight(!isNight)} aria-pressed={isNight} aria-label={isNight ? 'Switch the poster to day' : 'Switch the poster to night'}>
                 {isNight ? <Sun size={13} strokeWidth={1.75} /> : <Moon size={13} strokeWidth={1.75} />}
               </button>
             </div>
@@ -273,9 +273,9 @@ export function Cover() {
           </div>
 
           {/* numerals */}
-          <div className="cover__nums">
+          <div className="opening__nums">
             {coverNumbers.map((item, index) => (
-              <div key={item.label} className="cover__num cover__in" style={{ '--d': `${1000 + index * 90}ms` } as CSSProperties}>
+              <div key={item.label} className="opening__num opening__in" style={{ '--d': `${1000 + index * 90}ms` } as CSSProperties}>
                 <b><CountUp value={item.value} />{item.unit ? <i>{item.unit}</i> : null}</b>
                 <span className="mono">{item.label}</span>
               </div>
@@ -284,23 +284,23 @@ export function Cover() {
         </div>
 
         {/* the band: credits, the deck, the cover story */}
-        <div className="cover__band cover__in" style={{ '--d': '1300ms' } as CSSProperties}>
-          <div className="cover__credits">
-            <div className="cover__lbl mono"><span>On the cover</span><span>Hover a number · click to open</span></div>
+        <div className="opening__band opening__in" style={{ '--d': '1300ms' } as CSSProperties}>
+          <div className="opening__credits">
+            <div className="opening__lbl mono"><span>On the cover</span><span>Hover a number · click to open</span></div>
             <ol>
               {stickers.map(item => {
                 const { credit, slug } = creditOf(item);
                 const href = workHref(slug);
                 return (
                   <li key={item.id} className={hot === item.n ? 'is-hot' : ''} {...hover(item.n)}>
-                    <a href={href} onClick={link(href)}><span className="mono">{item.n}</span><span key={credit} className="cover__credit">{credit} <i className="mono">{item.stage}</i></span></a>
+                    <a href={href} onClick={link(href)}><span className="mono">{item.n}</span><span key={credit} className="opening__credit">{credit} <i className="mono">{item.stage}</i></span></a>
                   </li>
                 );
               })}
             </ol>
           </div>
-          <div className="cover__inside">
-            <div className="cover__lbl mono"><span>Inside · six stories</span><span>{issue.years}</span></div>
+          <div className="opening__inside">
+            <div className="opening__lbl mono"><span>Inside · six stories</span><span>{issue.years}</span></div>
             <ol>
               {projects.map((project, index) => {
                 const href = workHref(project.slug);
@@ -310,13 +310,13 @@ export function Cover() {
               })}
             </ol>
           </div>
-          <div className="cover__plus">
-            <span className="mono cover__plus-k">Plus · the cover story</span>
+          <div className="opening__plus">
+            <span className="mono opening__plus-k">Plus · the cover story</span>
             <Magnetic>
               <a className="btn" href={firstHref} onClick={link(firstHref)}>Start with {first.name} <ArrowRight size={18} aria-hidden="true" /></a>
             </Magnetic>
-            <div className="cover__totals mono">{totals.map(item => <span key={item.label}><b>{item.value}</b> {item.label}</span>)}</div>
-            <div className="cover__colophon">
+            <div className="opening__totals mono">{totals.map(item => <span key={item.label}><b>{item.value}</b> {item.label}</span>)}</div>
+            <div className="opening__colophon">
               <span className="mono">Issue {issue.number} · {issue.season}<br />Atlanta, GA</span>
               <Barcode />
             </div>
