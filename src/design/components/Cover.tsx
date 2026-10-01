@@ -255,7 +255,7 @@ export function Cover() {
 
           {/* the poster and its stickers */}
           <div ref={stage} className="opening__stage" style={{ '--px': 0, '--py': 0 } as CSSProperties}>
-            <p className="sr-only">A poster of a field study: a sun ringed by the layers of a care ecology, capsule-shaped clouds, three hills, and a road forty-two days long from the edge of the page to the sun, with the three interviews marked along it.</p>
+            <p className="sr-only">A flat, printed illustration of dusk in the field: a grainy sun setting behind five ridges of hills, wearing a dial of forty-two ticks for the six weeks of the longest study; thin clouds, a few birds, far trees, and grasses, cattails, leaves and seed heads in the foreground. After dark the sun becomes a moon and the stars come out.</p>
             <div className="opening__plate">
               <Poster />
               <button type="button" className="opening__daynight" onClick={() => setNight(!isNight)} aria-pressed={isNight} aria-label={isNight ? 'Switch the poster to day' : 'Switch the poster to night'}>
