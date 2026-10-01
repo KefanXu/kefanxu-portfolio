@@ -66,20 +66,24 @@
   top: calc(var(--header-h) + 3vh);
   display: grid;
   place-items: center;
-  gap: 22px;
   height: calc(100svh - var(--header-h) - 6vh);
   border-radius: var(--radius-xl);
   background: var(--soft);
   overflow: hidden;
 }
+/* the device sits in the exact centre of the pin (the meter is taken out of the grid and kept to the bottom edge) */
 .sequence__reveal { display: grid; justify-items: center; width: 100%; }
+/* its wipe is clipped well outside its box, so the device's soft shadow is not cut into a hard-edged band beside it */
+.sequence__reveal[data-reveal='clip'] { clip-path: inset(-60px -120px 100% -120px); }
+.sequence__reveal[data-reveal='clip'].is-in { clip-path: inset(-60px -120px -160px -120px); }
 .sequence--phone .sequence__device { --phone-w: min(300px, calc((100svh - var(--header-h) - 6vh - 150px) * 0.462)); }
-.sequence--browser .sequence__device { width: 88%; }
+/* the browser keeps clear of the meter on short screens: its width is capped by the pin's height */
+.sequence--browser .sequence__device { width: min(88%, calc((100svh - var(--header-h) - 6vh - 160px) * 1.55)); }
 .sequence--browser .sequence__device .browser__view { aspect-ratio: 1926 / 1203; }
 .sequence__shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; opacity: 0; transform: translateY(5%) scale(1.02); transition: opacity 520ms ease, transform 900ms var(--ease-out); }
 .sequence__shot.is-past { transform: translateY(-5%) scale(1.02); }
 .sequence__shot.is-on { opacity: 1; transform: none; }
-.sequence__meter { display: flex; align-items: center; gap: 12px; color: var(--muted); }
+.sequence__meter { position: absolute; left: 0; right: 0; bottom: clamp(18px, 2.6vh, 30px); display: flex; justify-content: center; align-items: center; gap: 12px; color: var(--muted); }
 .sequence__meter i { position: relative; width: clamp(90px, 12vw, 180px); height: 2px; border-radius: 2px; background: var(--line-strong); overflow: hidden; }
 .sequence__meter b { position: absolute; inset: 0; background: var(--ink); transform: scaleX(var(--seq)); transform-origin: 0 50%; }
 .sequence__steps { display: grid; }
