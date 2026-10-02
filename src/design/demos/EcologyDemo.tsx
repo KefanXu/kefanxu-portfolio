@@ -60,7 +60,7 @@ export const SCENARIOS: Scenario[] = [
     note: 'A steady state. Practices sit closest to Jordan, the people who help come next, and systems such as insurance and work form the outer layer.' },
   { id: 'insurance', label: 'Insurance drops insulin coverage', source: 'insurance',
     strained: ['insulin', 'pharmacy', 'meds', 'pcp', 'plan'], broken: [key('insurance', 'insulin'), key('insurance', 'pharmacy')], rerouted: [],
-    note: 'Coverage ends. The pen, the pharmacy run and the medication routine all lose their footing, and the treatment plan now needs a clinician’s attention.' },
+    note: 'Coverage ends. The pen, the pharmacy run and the medication routine are all disrupted, and the treatment plan now needs a clinician’s attention.' },
   { id: 'surgery', label: 'Partner has hand surgery', source: 'partner',
     strained: ['foot', 'diet', 'visits', 'transport', 'podiatrist'], broken: [key('partner', 'foot'), key('partner', 'transport'), key('partner', 'visits')], rerouted: [['daughter', 'foot'], ['daughter', 'visits']],
     note: 'For weeks the partner cannot change dressings or drive. Foot care and clinic visits are exposed; the adult daughter is the likely new route.' },

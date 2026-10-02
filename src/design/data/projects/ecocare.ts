@@ -49,7 +49,7 @@ export const ecocare: Project = {
     {
       type: 'demo',
       eyebrow: '02 — The model',
-      title: 'Same ecology, *different weather.*',
+      title: 'One ecology, *three events.*',
       body:
         'A sketch of the model. Entities sit on concentric layers around the patient: daily practices closest, then the people who help, then systems such as insurance and work. Pick a life-changing event and watch which connections strain or break. The prototype itself draws four layers, from the household to the healthcare system.',
       demo: 'ecology',
@@ -58,7 +58,7 @@ export const ecocare: Project = {
     {
       type: 'figure',
       eyebrow: '03 — The interface',
-      title: 'A map you can *ask questions of.*',
+      title: 'A map you can *question.*',
       shot: {
         src: img('ecocare/ui-baseline.webp'),
         alt: 'EcoCare interface at baseline: a life-changing event menu at the top, an inspector on the left, the concentric ecology map with a map key and editing toolbar in the centre, and the AI sense-making assistant with sample questions on the right.',
@@ -70,7 +70,7 @@ export const ecocare: Project = {
     {
       type: 'figure',
       eyebrow: '04 — Mediation',
-      title: 'From ripple *to repair.*',
+      title: 'What broke, and *what might repair it.*',
       shot: {
         src: img('ecocare/ui-mediation.webp'),
         alt: 'EcoCare with the insurance event active and the Mediation ideas panel open: a strategy called Bridge insulin coverage is previewed on the map, four entities carry Repaired badges, a Pharmacy Advocate is added, and a damage bar reads eight to one still affected.',
@@ -116,7 +116,7 @@ export const ecocare: Project = {
     {
       type: 'insights',
       eyebrow: '07 — Design decisions',
-      title: 'Three ideas *hold it together.*',
+      title: 'Relationships, repair *and reasoning.*',
       items: [
         {
           title: 'Relationships are the data',
@@ -135,7 +135,7 @@ export const ecocare: Project = {
     {
       type: 'build',
       eyebrow: '08 — Under the hood',
-      title: 'A map that *briefs its own assistant.*',
+      title: 'A map and an assistant *over one store.*',
       intro: 'EcoCare is a React 18 app built with Vite. The care ecology is plain SVG drawn from a zustand store, and the assistant reaches an OpenAI-compatible model through serverless endpoints whose prompt is rebuilt from whatever is selected on the map.',
       specs: [
         { label: 'Client', value: 'React 18 · Vite · SVG · zustand' },
@@ -288,7 +288,7 @@ export const ecocare: Project = {
     {
       type: 'outcome',
       eyebrow: '10 — Status',
-      title: 'Proposed, prototyped, *honest about it.*',
+      title: 'A proposal with *a working prototype.*',
       body: [
         'EcoCare is part of my dissertation proposal. I include it here because it shows how I think about complex systems and AI: start from field evidence, make the structure visible, and give people a way to question it.',
       ],

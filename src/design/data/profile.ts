@@ -2,11 +2,11 @@ import { img, researchHref } from './img';
 
 export const profile = {
   name: 'Kefan Xu',
-  title: 'Product Designer',
+  title: 'Research · Design · Build',
   location: 'Atlanta, GA',
   timezone: 'America/New_York',
   email: 'kefanxu@gatech.edu',
-  availability: 'Open to product & UX design roles',
+  availability: 'Open to new roles',
   links: {
     linkedin: 'https://www.linkedin.com/in/kefan-xu-8a8b2b1b3/',
     github: 'https://github.com/kefanxu',
@@ -33,19 +33,19 @@ export const principles = [
   },
   {
     index: '02',
-    title: 'Make the idea touchable',
+    title: 'Make the idea concrete',
     body: 'Flows and wireframes in Figma, then interaction concepts people can react to early. I care about the small decisions, such as what a colour means or what a default implies, because that is where a product earns trust.',
     proof: 'Figma · Wireframes · Prototypes · Visual systems',
   },
   {
     index: '03',
-    title: 'Build it for real',
+    title: 'Build the real thing',
     body: 'I write Swift and React Native, so my designs ship as working apps rather than as decks. Engineering choices follow from field constraints, not the other way round.',
     proof: 'Swift · React Native · Expo · TestFlight',
   },
   {
     index: '04',
-    title: 'Live with the result',
+    title: 'Deploy for weeks, not days',
     body: 'Multi-week deployments show what a usability test cannot: whether people still open the app in week five, and what they have turned it into by then. I design the study as carefully as the product.',
     proof: '28 · 42 · 42-day deployments · CHI · CSCW',
   },

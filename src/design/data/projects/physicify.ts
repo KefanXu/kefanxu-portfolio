@@ -51,7 +51,7 @@ export const physicify: Project = {
       device: 'phone',
       steps: [
         {
-          title: 'Plan on the calendar you already live in',
+          title: 'Plan on your own calendar',
           body: 'Plans sit beside weather, temperature and anonymised Google Calendar events. Green and red blocks mark completed and missed plans; grey blocks are the rest of the day’s schedule.',
           shot: { src: img('physicify/final-calendar-planning.webp'), alt: 'Calendar with colour-coded plan outcomes, weather and schedule events.' },
         },
@@ -80,7 +80,7 @@ export const physicify: Project = {
     {
       type: 'demo',
       eyebrow: '03 — Process',
-      title: 'Flows before *pixels.*',
+      title: 'Study and app, *designed together.*',
       body:
         'Study logic and app logic were designed together: what each build reveals, when, and what that lets us compare. Two designs were on the table for the same 28 days. The one that ran gives every participant both builds in turn, so each person is their own control.',
       demo: 'methods',
@@ -121,11 +121,11 @@ export const physicify: Project = {
         device: 'phone',
         shot: { src: img('physicify/final-calendar-planning.webp'), alt: 'Physicify 2 calendar for June 2021 with weather icons, grey calendar events and colour-coded exercise records.' },
         callouts: [
-          { x: 37, y: 21.5, title: 'Calendar events, without the words', body: 'Google Calendar events arrive as untitled grey blocks. Titles, descriptions and locations are dropped before anything is stored.' },
+          { x: 37, y: 21.5, title: 'Calendar events, titles stripped', body: 'Google Calendar events arrive as untitled grey blocks. Titles, descriptions and locations are dropped before anything is stored.' },
           { x: 63, y: 21, title: 'Records straight from Firebase', body: 'Each plan is a document with its type, time and outcome; the chips are colour-coded from it. A deleted plan is flagged, never removed.' },
           { x: 13, y: 45, title: 'Weather on every date', body: 'Condition and temperature are fetched for the forecast and kept on every past record, so history can be grouped by them.' },
           { x: 50, y: 57, title: 'Same weekday, highlighted', body: 'Choosing a date lights the whole column, so a Wednesday plan is made against previous Wednesdays.' },
-          { x: 48, y: 92.5, side: 'right', title: 'One plan, two side effects', body: 'A new plan is written to Firebase and a reminder scheduled an hour before it; the 8 pm notification asks for the day’s report.' },
+          { x: 48, y: 92.5, side: 'right', title: 'One plan, a record and a reminder', body: 'A new plan is written to Firebase and a reminder scheduled an hour before it; the 8 pm notification asks for the day’s report.' },
         ],
       },
       scene: {
@@ -196,7 +196,7 @@ export const physicify: Project = {
       },
       record: {
         kind: 'planning',
-        title: 'What a plan *has to survive.*',
+        title: 'How plans are made, *and why they break.*',
         body: 'The interviews produced a small model of everyday exercise planning: what people weigh when they make a plan, what breaks it, and what their own records taught them once they could see them. Each bar counts the seventeen participants.',
         columns: [
           { label: 'Making the plan', items: [{ title: 'Fitting it around routines', n: 9, of: 17 }, { title: 'The energy they expected to have', n: 5, of: 17 }, { title: 'How a similar session went before', n: 8, of: 17 }] },
@@ -207,9 +207,9 @@ export const physicify: Project = {
       },
       insights: [
         { title: 'Failures drew the eye first', body: 'Given their history, people went straight to the plans that had not happened, to extreme values, and to clusters of records with something in common.', evidence: { kind: 'shot', shot: { src: img('physicify/study-p7-weekday.webp'), alt: 'P7’s planning history in Physicify 2: a bar chart by weekday shows every Tuesday and Wednesday plan uncompleted.', caption: 'P7: every Tuesday and Wednesday plan had failed' } } },
-        { title: 'Records became likelihoods', body: 'Over half read from their records how likely a given day or time was to be disrupted, and planned around it instead of hoping.', evidence: { kind: 'share', n: 11, of: 17, label: 'identified likely disruptions' } },
+        { title: 'Records read as likelihoods', body: 'Over half read from their records how likely a given day or time was to be disrupted, and planned around it instead of hoping.', evidence: { kind: 'share', n: 11, of: 17, label: 'identified likely disruptions' } },
         { title: 'Some saw a pattern in their absences', body: 'The calendar made gaps visible. P3 noticed she rarely planned anything on weekends; others moved sessions away from events that kept getting in the way.', evidence: { kind: 'shot', shot: { src: img('physicify/study-p3-calendar.webp'), alt: 'P3’s calendar view in Physicify 2: plans cluster on weekdays and the weekend columns are almost empty.', caption: 'P3: weekends stayed empty' } } },
-        { title: 'The record spoke to what people already valued', body: 'The most persuasive chart was the one that matched a person’s own question, whether that was activity type, weekday or time of day.', evidence: { kind: 'quote', text: 'The bar chart that is showing activities by types is more important and influential on my decisions.', who: 'P2, Interview III' } },
+        { title: 'The chart that matched their own question', body: 'The most persuasive chart was the one that matched a person’s own question, whether that was activity type, weekday or time of day.', evidence: { kind: 'quote', text: 'The bar chart that is showing activities by types is more important and influential on my decisions.', who: 'P2, Interview III' } },
       ],
       method: [
         { label: 'Who', value: '20 students and alumni at the University of Michigan enrolled, 17 completed: 16 women, 1 man, aged 18–55.' },

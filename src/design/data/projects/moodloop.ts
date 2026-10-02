@@ -14,7 +14,7 @@ export const moodloop: Project = {
   cover: 'moodloop',
   theme: { panel: '#fae1ce', ink: '#15263e', accent: '#5b7df5', soft: '#fff3e9' },
   meta: [
-    { label: 'Role', value: 'Research & product design: flows and interface in Figma, researcher companion app, pilot testing, thematic analysis' },
+    { label: 'Role', value: 'Research & design: flows and interface in Figma, researcher companion app, pilot testing, thematic analysis' },
     { label: 'Timeline', value: '2025 — 2026' },
     { label: 'With', value: 'Ubicomp Health & Wellness Lab, Georgia Tech · advised by Rosa I. Arriaga' },
     { label: 'Platform', value: 'Cross-platform mobile app + researcher portal' },
@@ -49,7 +49,7 @@ export const moodloop: Project = {
       eyebrow: '02 — Early concept',
       title: 'First, a scale *with a face.*',
       body:
-        'The earliest explorations paired the slider with a character whose colour and expression follow the score. The probe that shipped went number-first instead, and made the scale itself the thing people shape. I rebuilt the first concept here because it is still fun to play with.',
+        'The earliest explorations paired the slider with a character whose colour and expression follow the score. The probe that shipped went number-first instead, and made the scale itself the thing people shape. The first concept is rebuilt here so it can still be tried.',
       demo: 'mood',
       hint: 'Drag the slider.',
     },
@@ -77,7 +77,7 @@ export const moodloop: Project = {
       device: 'phone',
       steps: [
         {
-          title: 'A home that shows the rhythm',
+          title: 'Home: the scale, the next review, the calendar',
           body: 'The current scale, the days left until the next review, and a calendar of past reports. Nothing else competes for attention.',
           shot: { src: img('moodloop/app-07.webp'), alt: 'Home: current reflection scale, days until reflection, and a reporting calendar.' },
         },
@@ -87,7 +87,7 @@ export const moodloop: Project = {
           shot: { src: img('moodloop/app-08.webp'), alt: 'Report: slider and number wheel showing 22 out of 30.' },
         },
         {
-          title: 'Keep the story, optionally',
+          title: 'Add context, optionally',
           body: 'After the number, six optional annotation modes: images, video, audio, tags, descriptions and drawings. Every one is skippable, because reporting effort was a design constraint.',
           shot: { src: img('moodloop/app-13.webp'), alt: 'Annotation options below the reported score: media, voice note, tags, description.' },
         },
@@ -135,7 +135,7 @@ export const moodloop: Project = {
     {
       type: 'build',
       eyebrow: '07 — Under the hood',
-      title: 'Scores travel, *media stays home.*',
+      title: 'Scores upload; *media stays on the phone.*',
       intro: 'Moodloop is a React Native app with a Node.js backend on AWS. I designed the flows in Figma and built the researcher version; a teammate implemented the participant app, partly with Cursor. Numbers go to the server; the media people attach never leaves the phone.',
       specs: [
         { label: 'Client', value: 'React Native · iOS and Android' },
@@ -149,14 +149,14 @@ export const moodloop: Project = {
         shot: { src: img('moodloop/app-13.webp'), alt: 'Moodloop report screen: a 1 to 30 slider set to 22, media attachments, a voice note, tags and a description before submitting.' },
         callouts: [
           { x: 20, y: 17, side: 'left', title: 'A scale is three numbers', body: 'Minimum, maximum and step. Presets are saved values like any other, and every seventh day the app asks whether to keep this one.' },
-          { x: 61, y: 30, side: 'right', title: 'What the server learns', body: 'The score, the scale it was given on and the types of annotation attached. That is the whole upload.' },
-          { x: 62, y: 53, side: 'right', title: 'What it never sees', body: 'Photos, video, voice notes and drawings are stored on the phone. Only the fact that a note exists, and its type, goes up.' },
-          { x: 12, y: 80, side: 'left', title: 'The two that do travel', body: 'Descriptions and tags upload with the score, so a note can be found again without exposing the media.' },
+          { x: 61, y: 30, side: 'right', title: 'What the server receives', body: 'The score, the scale it was given on and the types of annotation attached. That is the whole upload.' },
+          { x: 62, y: 53, side: 'right', title: 'What stays on the phone', body: 'Photos, video, voice notes and drawings are stored on the phone. Only the fact that a note exists, and its type, goes up.' },
+          { x: 12, y: 80, side: 'left', title: 'Text and tags do upload', body: 'Descriptions and tags upload with the score, so a note can be found again without exposing the media.' },
           { x: 30, y: 91.5, side: 'left', title: 'Submit posts the report', body: 'The calendar and the weekly scale review read it back from the same API. A daily notification fires at the time each person chose.' },
         ],
       },
       scene: {
-        title: 'Structure · the phone, the API and what never leaves',
+        title: 'Structure · the phone, the API and what stays on the phone',
         hint: 'Numbers go to the server; the media people attach never leaves the phone. Select a part, or follow one report.',
         items: [
           { id: 'zone', type: 'zone', x: 36, y: 30, w: 500, h: 600, label: 'On the phone' },
@@ -187,7 +187,7 @@ export const moodloop: Project = {
           { key: 'score', value: '22', note: 'one a day, more if wanted, slid or typed' },
           { key: 'scale', value: '{ min 1, max 30, step 1 }', note: 'presets 1–5, 1–10 and 1–100; any custom scale is the same three numbers' },
           { key: 'annotations', value: 'photo · video · voice · drawing · text · tags', note: 'six media, any combination' },
-          { key: 'uploaded', value: 'score · scale · annotation types · text · tags', note: 'the whole of what the server learns', nested: true },
+          { key: 'uploaded', value: 'score · scale · annotation types · text · tags', note: 'everything the server receives', nested: true },
           { key: 'on device', value: 'photos · video · voice notes · drawings', note: 'stored on the phone, never sent', nested: true },
           { key: 'scale review', value: 'reliability · swiftness · validity · satisfaction → keep or change', note: 'every seventh day, over the reports made on that scale' },
           { key: 'account', value: 'created by the study team', note: 'credentials emailed before the first interview' },
@@ -231,7 +231,7 @@ export const moodloop: Project = {
       },
       insights: [
         { title: 'A number needs a personal anchor', body: 'Neutral days were harder to score than extremes, and most people could not tell nearby values apart. They built their own meanings for scores and ranges instead.', evidence: { kind: 'quote', text: 'When I’m at a baseline level, then it’s harder for me to tell if I’m slightly above or slightly below normal.', who: 'P5, on scoring an ordinary day' } },
-        { title: 'Granularity is a trade', body: 'Small scales were quick and intuitive, large ones caught nuance but brought doubt. Everyone passed through 1–10; two thirds tried something else and weighed effort against detail.', evidence: { kind: 'quote', text: 'Let’s say I’m feeling 60 today, but I don’t know if I’m feeling 67 or 68 tomorrow.', who: 'P11, on the 1–100 scale' } },
+        { title: 'Granularity is a trade-off', body: 'Small scales were quick and intuitive, large ones caught nuance but brought doubt. Everyone passed through 1–10; two thirds tried something else and weighed effort against detail.', evidence: { kind: 'quote', text: 'Let’s say I’m feeling 60 today, but I don’t know if I’m feeling 67 or 68 tomorrow.', who: 'P11, on the 1–100 scale' } },
         { title: 'Annotation shaped the number itself', body: 'Once context could be attached, reporting became more deliberate: people chose the medium by the day they had, and the note became proof for the score.', evidence: { kind: 'share', n: 10, of: 15, label: 'said annotating made scores more thoughtful' } },
         { title: 'Context is what made looking back possible', body: 'Without notes, people could not say why they had given a score a week earlier. With them, most could recover the nuance behind a number weeks later.', evidence: { kind: 'quote', text: 'If I go another five months from now, it’s going to be harder to remember. I would love to have notes.', who: 'P9, before annotations were switched on' } },
       ],
@@ -256,7 +256,7 @@ export const moodloop: Project = {
     {
       type: 'outcome',
       eyebrow: '10 — Outcome',
-      title: 'A probe that *earned its findings.*',
+      title: 'A completed deployment, *a paper under review.*',
       body: [
         'Fifteen participants completed the six-week deployment and three interviews each, and the probe held up through 594 reports inside the study windows.',
         'The work changed how I approach self-report in any product that asks people to rate something about themselves: the scale is an interface, and it deserves the same design attention as the screen around it.',

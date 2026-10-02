@@ -35,13 +35,13 @@ export const planneregy: Project = {
     {
       type: 'text',
       eyebrow: '01 — The problem',
-      title: 'Most plans fail *quietly.*',
+      title: 'A streak says a plan failed, *not why.*',
       body: [
         'Physical activity plans stop fitting when schedules, health, travel or motivation change. Apps usually answer with a streak counter, which records that the plan failed without helping anyone understand why or what to try instead.',
         'Planneregy turns the plan into something you iterate on. It operationalises a framework we call reflective iteration: articulate a strategy, live with it for a week, then judge the strategy rather than yourself.',
       ],
       aside: [
-        { label: 'What I did', items: ['Framework & product design', 'iOS build, participant + researcher versions', 'Brand & recruitment materials', '42-day deployment & interviews'] },
+        { label: 'What I did', items: ['Framework & design', 'iOS build, participant + researcher versions', 'Brand & recruitment materials', '42-day deployment & interviews'] },
       ],
     },
     {
@@ -71,12 +71,12 @@ export const planneregy: Project = {
         },
         {
           title: 'Track against the plan',
-          body: 'The calendar fills with what was planned and what happened. The current strategy stays pinned, so daily reports are always read in its light.',
+          body: 'The calendar fills with what was planned and what happened. The current strategy stays pinned, so daily reports are read against it.',
           shot: { src: img('planneregy/app-mock-1.webp'), alt: 'Tracking calendar with planned and completed activities and the current strategy card.' },
         },
         {
           title: 'Report what really happened',
-          body: 'Done as planned, done differently, or not done, each with a reason. Unplanned activity counts too, because real life rarely follows the script.',
+          body: 'Done as planned, done differently, or not done, each with a reason. Unplanned activity counts too, because unplanned activity is part of the week.',
           shot: { src: img('planneregy/app-tracking.webp'), alt: 'Tracking list with completed and partially completed activities and the current planning strategy.' },
         },
         {
@@ -110,9 +110,9 @@ export const planneregy: Project = {
     {
       type: 'identity',
       eyebrow: '05 — Identity',
-      title: 'Recruitment is *a design problem* too.',
+      title: 'A looping mark and *a poster series.*',
       body:
-        'A field study lives or dies on sign-ups. The identity pairs a looping mark with a poster series loud enough for a gym noticeboard, produced in versions for print, email and screens.',
+        'A field study depends on sign-ups. The identity pairs a looping mark with a poster series loud enough for a gym noticeboard, produced in versions for print, email and screens.',
       swatches: [
         { name: 'Go', hex: '#1ab700', role: 'Completed' },
         { name: 'Amber', hex: '#feb800', role: 'Done differently' },

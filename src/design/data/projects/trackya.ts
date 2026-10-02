@@ -14,7 +14,7 @@ export const trackya: Project = {
   cover: 'trackya',
   theme: { panel: '#e4e2fb', ink: '#17163a', accent: '#5d5fee', soft: '#f3f2ff' },
   meta: [
-    { label: 'Role', value: 'Lead product designer & researcher: interface, interaction model, identity, three-phase study protocol' },
+    { label: 'Role', value: 'Lead designer & researcher: interface, interaction model, identity, three-phase study protocol' },
     { label: 'Timeline', value: '2025 — present' },
     { label: 'With', value: 'Myeonghan Ryu, Alan Matias, Upasana Bhattacharjee, Rosa I. Arriaga · Ubicomp Health & Wellness Lab, Georgia Tech' },
     { label: 'Status', value: 'Shipped to participants; early findings presented at a CHI 2026 workshop' },
@@ -35,7 +35,7 @@ export const trackya: Project = {
     {
       type: 'text',
       eyebrow: '01 — The problem',
-      title: 'A step count is a verdict *without a story.*',
+      title: 'A daily step count hides *when and why.*',
       body: [
         'Similar step-count patterns can describe very different days. A quiet hour might be a desk-bound afternoon, a strength workout, or a phone left on the table. Most trackers flatten all of it into one daily number, which hides when sedentary time happens and why.',
         'Trackya explores what changes when the data keeps its context. Step counts stay attached to the hour, the weather, the place and the person’s own account of what was going on, so the record supports interpretation instead of judgement.',
@@ -50,7 +50,7 @@ export const trackya: Project = {
       eyebrow: '02 — The core idea',
       title: 'Every hour becomes *a capsule.*',
       body:
-        'Mint means the hour cleared a personal activity threshold; pink means it did not. Stack the capsules and a day becomes a column. Line the columns up and a week becomes a texture you can read without a single axis label.',
+        'Mint means the hour cleared a personal activity threshold; pink means it did not. Stack the capsules and a day becomes a column. Line the columns up and a week can be read at a glance, without an axis.',
       demo: 'capsules',
       hint: 'Switch the view, or hover an hour.',
     },
@@ -58,7 +58,7 @@ export const trackya: Project = {
       type: 'sequence',
       eyebrow: '03 — The flow',
       title: 'Plan, track, reflect.',
-      intro: 'The same capsule carries the whole product, from the first glance at today to the conversation about what to change next week.',
+      intro: 'The same capsule runs through the whole product, from today’s view to next week’s plan.',
       device: 'phone',
       steps: [
         {
@@ -78,7 +78,7 @@ export const trackya: Project = {
         },
         {
           title: 'Plan small swaps for tomorrow',
-          body: 'Planning mode asks one modest question: which of tomorrow’s time slots could be less sedentary? People pick capsules, not a daunting number.',
+          body: 'Planning mode asks one modest question: which of tomorrow’s time slots could be less sedentary? People pick time slots rather than commit to a daily total.',
           shot: { src: img('trackya/day-filter-plan.webp'), alt: 'Planning sheet listing selected time slots for tomorrow.' },
         },
         {
@@ -96,7 +96,7 @@ export const trackya: Project = {
     {
       type: 'gallery',
       eyebrow: '04 — In production',
-      title: 'From Figma to a phone in *someone’s pocket.*',
+      title: 'Screens from *the production build.*',
       intro: 'Screens from the production build running with real step data.',
       kind: 'phones',
       shots: [
@@ -113,7 +113,7 @@ export const trackya: Project = {
       title: '“Active” is *not the same* for everyone.',
       body: [
         'A fixed goal would make the grid wrong for most people. Onboarding therefore asks three short questions: how many steps make an hour count as active, how much sedentary time feels realistic to reduce, and which hours of the day should be tracked at all.',
-        'Those answers set the colour of every capsule afterwards, so the visual language stays honest to the person rather than to a population average.',
+        'Those answers set the colour of every capsule afterwards, so the colours follow the person’s own baseline rather than a population average.',
       ],
     },
     {
@@ -162,7 +162,7 @@ export const trackya: Project = {
       title: 'Built, deployed, and *still being studied.*',
       body: [
         'Trackya is running with participants in a multi-phase field study, and I presented early findings at a CHI 2026 workshop. The design rationale is documented in a CHI 2025 workshop paper.',
-        'Because the study is ongoing I am not reporting outcomes here. What I can share in conversation: the design decisions that survived contact with real routines, and the ones that did not.',
+        'Because the study is ongoing I am not reporting outcomes here. I am glad to discuss which design decisions held up in daily use and which did not.',
       ],
       links: [{ label: 'Read the workshop paper', href: 'https://arxiv.org/abs/2509.19420' }],
     },

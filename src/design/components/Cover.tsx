@@ -240,7 +240,7 @@ export function Cover() {
         <div className="opening__body">
           {/* cover lines */}
           <div className="opening__lines">
-            <span className="opening__issue opening__in mono" style={{ '--d': '900ms' } as CSSProperties}>Inside: one designer, the whole way</span>
+            <span className="opening__issue opening__in mono" style={{ '--d': '900ms' } as CSSProperties}>Inside: six products, research to deployment</span>
             {coverLines.map((line, index) => {
               const parts = line.text.split('*');
               return (

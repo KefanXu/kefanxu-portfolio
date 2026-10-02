@@ -75,7 +75,7 @@ See `QA.md` for the clean-build results, asset-path checks, browser interactions
 
 ## Designer mode (`/design/`)
 
-The site has a second mode for product/UX design roles. It is a separate HTML entry with its own styles, so the academic site above is untouched: same markup, same stylesheet bundle, same behaviour.
+The site has a second mode that presents the same work as design case studies. It is a separate HTML entry with its own styles, so the academic site above is untouched: same markup, same stylesheet bundle, same behaviour.
 
 - **Switching.** A small pill, `Researcher | Designer`, floats at the bottom of both modes (`src/mode/modeSwitch.ts`, `mode-switch.css`). It is plain TypeScript outside either React tree. Clicking it raises a curtain, loads the other entry, and lifts the curtain on arrival. It tucks away while scrolling down, works as a normal link without JavaScript or with reduced motion, and resets correctly from the back/forward cache. The academic entry mounts it with one call in `src/main.tsx`; nothing in `App.tsx` changed.
 - **Entry and routing.** `design/index.html` → `src/design/main.tsx`. Vite builds both entries (`vite.config.ts`), so static hosts serve the designer mode at `/design/` with no rewrites. Inside it, a tiny hash router (`src/design/lib/router.tsx`) handles `#/` and `#/work/<slug>` with a cover → swap → reveal page transition, and restores the scroll position when returning to the index.

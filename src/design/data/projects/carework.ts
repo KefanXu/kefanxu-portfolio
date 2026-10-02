@@ -97,11 +97,11 @@ export const carework: Project = {
     {
       type: 'gallery',
       eyebrow: '05 — Details',
-      title: 'Editorial calm for *clinical work.*',
+      title: 'Type that shows *who wrote what.*',
       intro: 'Warm paper, a serif for the things clinicians write, a mono for the things the system says. The hierarchy makes authorship legible at a glance, which matters when some of the words come from a model.',
       kind: 'wide',
       shots: [
-        { src: img('carework/ui-assignment.webp'), alt: 'Assignment editor with a title, summary and the reason given to the patient.', caption: 'The assignment reads like a letter, because part of it is one.' },
+        { src: img('carework/ui-assignment.webp'), alt: 'Assignment editor with a title, summary and the reason given to the patient.', caption: 'The assignment editor: a title, a summary and the reason given to the patient.' },
         { src: img('carework/ui-tasks.webp'), alt: 'Task cards grouped by type: self-report, medications, exercise, lifestyle, learn.', caption: 'Task cards by type, each editable in place.' },
         { src: img('carework/shot-08.webp'), alt: 'An AI summary popover and an AI-drafted clinician note with retry and accept actions.', caption: 'AI output is always a proposal: retry, edit or accept.' },
         { src: img('carework/shot-10.webp'), alt: 'Planning the next homework with a refinement diff of modified tasks.', caption: 'A refinement diff: what changed, and why.' },
@@ -125,8 +125,8 @@ export const carework: Project = {
           ],
         },
         {
-          title: 'Change it by *talking.*',
-          body: 'Modification was explored as chat before it became a diff: say what to add, react to the generated draft, ask how the homework is going. The shape of every exchange survived into the product: a proposal from the assistant, then a decision from the clinician.',
+          title: 'Modification *as a conversation.*',
+          body: 'Modification was explored as chat before it became a diff: say what to add, react to the generated draft, ask how the homework is going. The shape of every exchange carried into the product: a proposal from the assistant, then a decision from the clinician.',
           shots: [
             { src: img('carework/wireframes/iterate-01.webp'), alt: 'Wireframe: a patient list, the prompt “What do you wish to add to the homework?” and an input field.', caption: 'Ask what to add' },
             { src: img('carework/wireframes/iterate-02.webp'), alt: 'Wireframe: the same prompt with a large summary panel above it and a navigation rail on the left.', caption: 'Same prompt, summary in view' },
@@ -278,8 +278,8 @@ export const carework: Project = {
       insights: [
         { title: 'A whole plan, in minutes', body: 'Clinicians valued an assignment that spans diet, medication, exercise and learning in one view, and AI that turned a goal into tasks faster than they could by hand.', evidence: { kind: 'quote', text: 'I do not have time to divide task by task. I need the AI to divide the task component for me.', who: 'P11, registered dietitian' } },
         { title: 'Drafts, never orders', body: 'Nobody treated generated tasks as ready to send. They read as proposals to verify and edit, and the safety worry was named outright.', evidence: { kind: 'quote', text: 'Because agents can hallucinate.', who: 'P7, on AI-generated clinical content' } },
-        { title: 'The log between visits was the point', body: 'Task-level logs, completion patterns and a summary that opens into detail let clinicians see the period between encounters rather than reconstruct it from a conversation.', evidence: { kind: 'quote', text: 'If it can give us a suggestion and modify each week’s homework based on their progress and based on my notes, I think that’s game-changing.', who: 'P5, speech-language pathologist' } },
-        { title: 'Adoption has a price they named', body: 'Workload, privacy and cost came up unprompted, sharpened by CareWork being a standalone tool rather than part of the record system they already use.', evidence: { kind: 'quote', text: 'To be very frank and honest with you, I wouldn’t start, because it sounds like giving me more work.', who: 'P10, registered dietitian' } },
+        { title: 'The log between visits mattered most', body: 'Task-level logs, completion patterns and a summary that opens into detail let clinicians see the period between encounters rather than reconstruct it from a conversation.', evidence: { kind: 'quote', text: 'If it can give us a suggestion and modify each week’s homework based on their progress and based on my notes, I think that’s game-changing.', who: 'P5, speech-language pathologist' } },
+        { title: 'Workload, privacy and cost', body: 'Workload, privacy and cost came up unprompted, sharpened by CareWork being a standalone tool rather than part of the record system they already use.', evidence: { kind: 'quote', text: 'To be very frank and honest with you, I wouldn’t start, because it sounds like giving me more work.', who: 'P10, registered dietitian' } },
       ],
       method: [
         { label: 'Study 1', value: 'Six clinicians by snowball sampling; semi-structured interviews on Zoom or Teams, 30–60 minutes.' },
@@ -294,10 +294,10 @@ export const carework: Project = {
     {
       type: 'outcome',
       eyebrow: '09 — Outcome',
-      title: 'A pattern library for *accountable AI.*',
+      title: 'Fourteen clinicians, *three patterns.*',
       body: [
         'Two studies with fourteen healthcare professionals in total: six formative interviews that produced the framework, and eleven hour-long prototype sessions that tested it.',
-        'The part I would carry into any AI product: make authorship visible, keep every generated artefact editable, and let people see what changed before they commit to it.',
+        'Three patterns I would carry into any AI product: make authorship visible, keep every generated artefact editable, and let people see what changed before they commit to it.',
       ],
       links: [],
     },

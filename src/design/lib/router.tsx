@@ -145,7 +145,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const project = route.name === 'case' ? projects.find(item => item.slug === route.slug) : undefined;
-    document.title = project ? `${project.name} — Kefan Xu` : 'Kefan Xu — Product Designer';
+    document.title = project ? `${project.name} — Kefan Xu` : 'Kefan Xu — Research · Design · Build';
   }, [route]);
 
   const value = useMemo<RouterValue>(() => ({ route, navigate, link, transitioning: wipe.phase !== 'idle' }), [route, navigate, link, wipe.phase]);

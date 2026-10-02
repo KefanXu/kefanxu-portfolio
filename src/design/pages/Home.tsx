@@ -53,7 +53,7 @@ function Marquee() {
 
 /* ── Statement ─────────────────────────────────────────────────────────── */
 const statement =
-  'I am a product designer who researches, designs and builds. Over the past five years I have taken health and wellbeing products from the first interview to working software, deployed them for weeks at a time with the people they are for, and published what we learned at CHI and CSCW. I am looking for a team where that kind of care makes better products.';
+  'I research, design and build. Over the past five years I have taken health and wellbeing products from the first interview to working software, deployed them for weeks at a time with the people they are for, and published what we learned at CHI and CSCW. I am looking for a team that works this way.';
 
 function Statement() {
   const root = useRef<HTMLDivElement>(null);
@@ -200,9 +200,9 @@ function Approach() {
     <section className="approach shell" id="approach" aria-labelledby="approach-title">
       <div className="approach__head">
         <span className="mono">(Approach)</span>
-        <SplitText as="h2" id="approach-title" className="h2" text="Research is how I *de-risk* design." />
+        <SplitText as="h2" id="approach-title" className="h2" text="Four habits, *in every project.*" />
         <Reveal delay={200}>
-          <p className="body-l muted">Four habits that show up in every project here, whether the output is a Figma file, a TestFlight build or a paper.</p>
+          <p className="body-l muted">They show up in every project here, whether the output is a Figma file, a TestFlight build or a paper.</p>
         </Reveal>
       </div>
       <ol className="approach__list">
@@ -251,7 +251,7 @@ function About() {
     <section className="about shell" id="about" aria-labelledby="about-title">
       <div className="about__lead">
         <span className="mono">(About)</span>
-        <SplitText as="h2" id="about-title" className="h2" text="Designer by training, researcher *by temperament.*" />
+        <SplitText as="h2" id="about-title" className="h2" text="Design and research *for health and care.*" />
       </div>
       <div className="about__grid">
         <Portraits />
@@ -263,7 +263,7 @@ function About() {
           </Reveal>
           <Reveal delay={100}>
             <p className="body-l muted">
-              My projects sit in health and care: tools for people managing chronic conditions, the families who support them and the clinicians who treat them. It is a domain that punishes careless design, which is exactly why I like it. I also teach a graduate course on designing mobile experiences for wellbeing, and I mentor students on system design and study protocols.
+              My projects sit in health and care: tools for people managing chronic conditions, the families who support them and the clinicians who treat them. It is a domain where details matter, which is why I chose it. I also teach a graduate course on designing mobile experiences for wellbeing, and I mentor students on system design and study protocols.
             </p>
           </Reveal>
           <Reveal delay={160} className="about__actions">
@@ -364,7 +364,7 @@ function Contact() {
     <footer className="contact" id="contact" aria-labelledby="contact-title">
       <div className="shell contact__inner">
         <span className="pill contact__pill"><i className="dot" aria-hidden="true" />{profile.availability}</span>
-        <SplitText as="h2" id="contact-title" className="display contact__title" text="Let’s make something *careful.*" />
+        <SplitText as="h2" id="contact-title" className="display contact__title" text="Let’s work *together.*" />
         <div className="contact__row">
           <Reveal className="contact__mail">
             <Magnetic strength={0.12}>
