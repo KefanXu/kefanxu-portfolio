@@ -8,7 +8,7 @@ export const profile = {
   email: 'kefanxu@gatech.edu',
   availability: 'Open to new roles',
   links: {
-    linkedin: 'https://www.linkedin.com/in/kefan-xu-8a8b2b1b3/',
+    linkedin: 'https://www.linkedin.com/in/kefanxusam',
     github: 'https://github.com/kefanxu',
     scholar: 'https://scholar.google.com/citations?user=ocdZFbwAAAAJ&hl=en',
     /** The site before this one, kept online. */

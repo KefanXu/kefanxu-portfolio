@@ -49,7 +49,7 @@ export const personalInfo = {
   social: {
     github: "https://github.com/kefanxu",
     scholar: "https://scholar.google.com/citations?user=ocdZFbwAAAAJ&hl=en",
-    linkedin: "https://www.linkedin.com/in/kefan-xu-8a8b2b1b3/",
+    linkedin: "https://www.linkedin.com/in/kefanxusam",
     email: "mailto:kefan.xu@gatech.edu"
   }
 };

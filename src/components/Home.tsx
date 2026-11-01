@@ -184,7 +184,7 @@ export const Home: React.FC = () => {
               <GraduationCap size={24} />
             </a>
             <a
-              href="https://www.linkedin.com/in/kefan-xu-8a8b2b1b3/"
+              href="https://www.linkedin.com/in/kefanxusam"
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-xl bg-bg-light dark:bg-bg-dark shadow-neu-light dark:shadow-neu-dark flex items-center justify-center text-text-light/60 dark:text-text-dark/60 hover:text-blue-500 transition-all hover:scale-110 active:scale-95"
