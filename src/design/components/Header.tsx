@@ -3,7 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { profile } from '../data/profile';
 import { homeHref, useRouter } from '../lib/router';
 import { onScrollFrame } from '../lib/scroll';
-import cvPdf from '../../assets/KefanXu_CV.pdf';
+import cvPdf from '../../assets/KefanXu_CV_Industry.pdf';
 
 const sections = [
   { id: 'work', label: 'Work' },

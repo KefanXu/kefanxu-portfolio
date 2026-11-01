@@ -12,7 +12,7 @@ import type { Project } from '../data/types';
 import { useRouter, workHref } from '../lib/router';
 import { coarsePointer, onScrollFrame, scrollToTop } from '../lib/scroll';
 import { goToMode } from '../../mode/modeSwitch';
-import cvPdf from '../../assets/KefanXu_CV.pdf';
+import cvPdf from '../../assets/KefanXu_CV_Industry.pdf';
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 

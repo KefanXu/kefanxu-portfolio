@@ -51,7 +51,7 @@ The default build uses `/`, suitable for Vercel and other hosts that serve the s
 - `src/components/academic/Publications.tsx`: publication search, year filtering, expandable records, abstracts, related projects, and citations.
 - `src/data/publications.ts` and `src/data/publications.generated.json`: publication data and local enrichments.
 - `src/index.css` and component stylesheets: typography, layout, responsiveness, and motion.
-- `src/assets/KefanXu_CV.pdf`: curriculum vitae.
+- `src/assets/KefanXu_CV.pdf`: curriculum vitae (academic; used by the researcher mode). `src/assets/KefanXu_CV_Industry.pdf` is the industry version linked from the designer mode.
 
 ## Project media
 
